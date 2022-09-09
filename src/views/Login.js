@@ -98,8 +98,8 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>APP</h2>
-                    <p>Gerenciados de Condôminios.</p>
+                    <h2>SuperCond</h2>
+                    <p>Gerenciador de Condôminios.</p>
                     <Link to="/register">
                       <CButton color="primary" className="mt-3" active tabIndex={-1}>Feitor por: agenciatecnet.com.br</CButton>
                     </Link>

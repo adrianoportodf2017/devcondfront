@@ -1,26 +1,25 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
-  "version": "3.2.1",
-  "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
+  "name": "@supercond/admin",
+  "version": "0.1",
+  "description": "Sistema para Gerenciamento de condominios",
   "author": {
-    "name": "CoreUI",
-    "url": "https://coreui.io",
-    "github": "https://github.com/coreui",
-    "twitter": "https://twitter.com/core_ui"
+    "name": "Adriano Alves",
+    "url": "https://agenciatecnet.com.br",
+    "github": "https://github.com/adrianoportodf2017"
   },
   "contributors": [
     {
-      "name": "CoreUI Team",
-      "url": "https://github.com/orgs/coreui/people"
+      "name": "",
+      "url": ""
     }
   ],
-  "homepage": ".",
-  "copyright": "Copyright 2017-2020 creativeLabs Łukasz Holeczek",
+  "homepage": "https://supercond.agenciatecnet.com.br",
+  "copyright": "Copyright 2022 Agência Tecnet",
   "license": "MIT",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
+    "url": ""
   },
   "dependencies": {
     "@coreui/chartjs": "^2.0.0",
@@ -58,7 +57,7 @@
     "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
   },
   "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+    "url": ""
   },
   "eslintConfig": {
     "extends": "react-app"
