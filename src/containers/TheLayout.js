@@ -18,12 +18,14 @@ const TheLayout = () => {
   useEffect(()=>{
     const checkLogin = async () => {
       if (api.getToken()) {
+       // alert(api.getToken());
 
         const result = await api.validateToken();
-        if (result.error === '') {
+       //alert(result);
+        if (result.error === "") {
           setLoading(false);
         }else{
-          alert(result.error);
+          console.log(result);
           history.push('/login');
         }
       } else {

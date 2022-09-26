@@ -35,8 +35,9 @@ const Login = () => {
       setLoading(true);
       const result = await api.login(email, password);
       setLoading(false);
-      if (result.error === '') {
+      if (result.error === "") {
         localStorage.setItem('token', result.token);
+        alert(result.token);
         history.push('/');
       } else {
         setError(result.error);
