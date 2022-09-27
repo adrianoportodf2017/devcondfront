@@ -44,5 +44,12 @@ export default () => {
       let json = await request('post', '/auth/login', {email, password});
       return json
     },
+
+    logout: async () => {
+      let token = localStorage.getItem('token')
+      let json = await request('post', '/auth/logout', {}, token);
+      localStorage.removeItem('token');
+      return json
+    },
   }
 }
