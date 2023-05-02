@@ -1,5 +1,5 @@
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -54,6 +54,60 @@ export default () => {
       let json = await request('post', '/auth/logout', {}, token);
       localStorage.removeItem('token');
       return json
+    },
+ /********************************************************************************/
+    /******************************--__-- Condominios --__--***********************************/
+    /********************************************************************************/
+
+    getCondominios: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/condominios', {}, token);
+      return json;
+    },
+    addCondominio: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('codigo', data.codigo);
+      formData.append('cnpj', data.cnpj);
+
+
+      if (data.thumb) {
+        formData.append('thumb', data.thumb);
+      }
+      let req = await fetch(`${baseUrl}/condominios`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      let json = await req.json();
+      return json;
+    },
+    updateCondominio: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      formData.append('name', data.name);
+      if (data.file) {
+        formData.append('file', data.thumblr);
+      }
+      let req = await fetch(`${baseUrl}/condominio/${id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      let json = await req.json();
+      return json;
+    },
+    removeCondominio: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/condominio/${id}`, {}, token);
+      return json;
     },
 
     /********************************************************************************/
