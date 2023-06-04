@@ -1,28 +1,27 @@
 {
   "name": "@supercond/admin",
-  "version": "0.1",
-  "description": "Sistema para Gerenciamento de condominios",
-  "author": {
-    "name": "Adriano Alves",
-    "url": "https://agenciatecnet.com.br",
-    "github": "https://github.com/adrianoportodf2017"
+  "version": "1.0.0",
+  "description": "Super Cond",
+  "homepage": "http://supercond.agenciatecnet.com.br/",
+  "bugs": {
+    "url": "https://github.com/adrianoportodf2017/devcondfront.git"
   },
-  "contributors": [
-    {
-      "name": "",
-      "url": ""
-    }
-  ],
-  "homepage": "https://supercond.agenciatecnet.com.br",
-  "copyright": "Copyright 2022 Agência Tecnet",
-  "license": "MIT",
-  "private": true,
   "repository": {
     "type": "git",
     "url": ""
   },
-  "dependencies": {  
-    
+  "license": "MIT",
+  "author": "Adriano Alves",
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "lint": "eslint \"src/**/*.js\"",
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "test:cov": "npm test -- --coverage --watchAll=false",
+    "test:debug": "react-scripts --inspect-brk test --runInBand"
+  },
+  "dependencies": {
     "@coreui/chartjs": "^3.1.1",
     "@coreui/coreui": "^4.2.6",
     "@coreui/icons": "^3.0.1",
@@ -40,44 +39,13 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
     "redux": "4.2.1",
-    "simplebar-react": "^2.4.3",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.0",  
-    "enzyme": "^3.11.0",  
-    "sass": "^1.32.8"
+    "simplebar-react": "^2.4.3"
   },
-  "devDependencies": {
-    "@babel/core": "^7.13.14",
-    "auto-changelog": "~2.2.1",
-    "react-scripts": "^4.0.3"
-  },
-  "scripts": {
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "lint": "eslint \"src/**/*.js\"",
-    "start": "react-scripts start",
-    "test": "react-scripts test",
-    "test:cov": "npm test -- --coverage --watchAll=false",
-    "test:debug": "react-scripts --inspect-brk test --runInBand"
-  },
-  "bugs": {
-    "url": ""
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 10",
-    "not op_mini all"
-  ],
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!**/*index.js",
-      "!src/serviceWorker.js",
-      "!src/polyfill.js"
-    ]
+  "devDependencies": { 
+    "@testing-library/react": "^14.0.0",    
+    "react-scripts": "5.0.1",
+    "sass": "^1.58.3",
+    "web-vitals": "^3.1.1"
   },
   "engines": {
     "node": ">=10",

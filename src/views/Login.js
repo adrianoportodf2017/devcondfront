@@ -65,14 +65,12 @@ const Login = () => {
 
                     <CInputGroup className="mb-3">
                         <CInputGroupText>
-                          <CIcon name="cil-user" />
                         </CInputGroupText>
                       <CFormInput type="text" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)}   disabled={loading}    />
                     </CInputGroup>
 
                     <CInputGroup className="mb-4">
                         <CInputGroupText>
-                          <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       <CFormInput type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)}   disabled={loading}    />
                     </CInputGroup>

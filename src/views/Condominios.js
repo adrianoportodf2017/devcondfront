@@ -6,16 +6,18 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CTable,
+  CDataTable,
   CRow,
   CModal,
   CModalHeader,
   CModalBody,
   CModalFooter,
-  CForm,
-  CFormLabel ,
-  CFormTextarea,
-  CFormInput,
+  CFormGroup,
+  CLabel,
+  CTextarea,
+  CInput,
+  CInputFile,
+  CModalProvider 
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
@@ -166,13 +168,6 @@ export default () => {
     }
   }
 
-  const handleBackdropClick = (e) => {
-    const modalContent = document.querySelector('.modal-content');
-    if (modalContent && !modalContent.contains(e.target)) {
-      e.stopPropagation();
-    }
-  };
-
   return (
     <>
       <CRow>
@@ -185,8 +180,7 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CTable
-
+              <CDataTable
                 items={list}
                 fields={fields}
                 loading={loading}
@@ -211,14 +205,13 @@ export default () => {
           </CCard>
         </CCol>
       </CRow>
-
-      <CModal show={showModal} onClose={handleCloseModal} onBackdropClick={handleBackdropClick} className="show d-block position-static">
-        
-        <CModalHeader closeButton>{modalData.id === '' ? 'Novo' : 'Editar'} Condomínio</CModalHeader>
+      <CModalProvider backdrop="static">
+      <CModal visible={true} show={showModal} onClose={handleCloseModal}>
+        <CModalHeader closeButton>{modalData.id === '' ? 'Novo' : 'Edssitar'} Condomínio</CModalHeader>
         <CModalBody>
-          <CForm>
-            <CFormLabel  htmlFor="modal-name">Nome</CFormLabel >
-            <CFormInput 
+          <CFormGroup>
+            <CLabel htmlFor="modal-name">Nome</CLabel>
+            <CInput
               type="text"
               id="modal-name"
               placeholder="Digite o nome"
@@ -226,8 +219,8 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, name: e.target.value })}
               disabled={modalLoading}
             />
-            <CFormLabel  htmlFor="modal-cnpj">CNPJ</CFormLabel >
-            <CFormInput 
+            <CLabel htmlFor="modal-cnpj">CNPJ</CLabel>
+            <CInput
               type="text"
               id="modal-cnpj"
               placeholder="Digite o CNPJ"
@@ -235,8 +228,8 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, cnpj: e.target.value })}
               disabled={modalLoading}
             />
-             <CFormLabel  htmlFor="modal-cnpj">Link para 2ª via do Boleto</CFormLabel >
-            <CFormInput 
+             <CLabel htmlFor="modal-cnpj">Link para 2ª via do Boleto</CLabel>
+            <CInput
               type="text"
               id="modal-billit"
               placeholder="Insira o Link"
@@ -244,29 +237,29 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, billit: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-Thumb">Insira uma Logo do Condomínio</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-Thumb">Insira uma Logo do Condomínio</CLabel>
+            <CInput
               type="file"
               id="modal-Thumb"
               name="Thumb"
               onChange={(e) => setModalData({ ...modalData, Thumb: e.target.files[0] })}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-description">Descrição</CFormLabel >
-            <CFormTextarea
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-description">Descrição</CLabel>
+            <CTextarea
               id="modal-description"
               placeholder="Digite a descrição"
               value={modalData.description}
               onChange={(e) => setModalData({ ...modalData, description: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-address">Endereço</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-address">Endereço</CLabel>
+            <CInput
               type="text"
               id="modal-address"
               placeholder="Digite o endereço"
@@ -274,10 +267,10 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, address: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-adress-number">Número do Endereço</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-adress-number">Número do Endereço</CLabel>
+            <CInput
               type="text"
               id="modal-adress-number"
               placeholder="Digite o número do endereço"
@@ -285,10 +278,10 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, adress_number: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-city">Cidade</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-city">Cidade</CLabel>
+            <CInput
               type="text"
               id="modal-city"
               placeholder="Digite a cidade"
@@ -296,10 +289,10 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, city: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-district">Bairro</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-district">Bairro</CLabel>
+            <CInput
               type="text"
               id="modal-district"
               placeholder="Digite o bairro"
@@ -307,10 +300,10 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, district: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-address-zip">CEP</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-address-zip">CEP</CLabel>
+            <CInput
               type="text"
               id="modal-address-zip"
               placeholder="Digite o CEP"
@@ -318,10 +311,10 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, address_zip: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-state">Estado</CFormLabel >
-            <CFormInput 
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-state">Estado</CLabel>
+            <CInput
               type="text"
               id="modal-state"
               placeholder="Digite o estado"
@@ -329,7 +322,7 @@ export default () => {
               onChange={(e) => setModalData({ ...modalData, state: e.target.value })}
               disabled={modalLoading}
             />
-          </CForm>
+          </CFormGroup>
         </CModalBody>
         <CModalFooter>
           <CButton
@@ -348,6 +341,8 @@ export default () => {
           </CButton>
         </CModalFooter>
       </CModal>
+      </CModalProvider>
+
     </>
   );
 }

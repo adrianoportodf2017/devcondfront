@@ -1,5 +1,5 @@
-import React, { Component, Suspense } from 'react'
-import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import React, { Component, Suspense } from 'react';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import './scss/style.scss';
 
 const loading = (
