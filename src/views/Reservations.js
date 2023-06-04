@@ -6,16 +6,16 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CDataTable,
+  CTable,
   CRow,
   CModal,
   CModalHeader,
   CModalBody,
   CModalFooter,
-  CFormGroup,
-  CLabel,
-  CTextarea,
-  CInput,
+  CForm,
+  CFormLabel ,
+  CFormTextarea,
+  CFormInput  ,
   CInputFile
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
@@ -141,7 +141,7 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CDataTable
+              <CTable
                 items={list}
                 fields={fields}
                 loading={loading}
@@ -174,9 +174,9 @@ export default () => {
       <CModal show={showModal} onClose={handleCloseModal}>
         <CModalHeader closeButton>{modalId === '' ? 'Novo' : 'Editar'} Reserva</CModalHeader>
         <CModalBody>
-          <CFormGroup>
-            <CLabel htmlFor="modal-title">Título da Reserva</CLabel>
-            <CInput
+          <CForm>
+            <CFormLabel  htmlFor="modal-title">Título da Reserva</CFormLabel >
+            <CFormInput  
               type="text"
               id="modal-title"
               placeholder="Digite um título do documento"
@@ -184,16 +184,16 @@ export default () => {
               onChange={e => setModalTitleField(e.target.value)}
               disabled={modalLoading}
             />
-          </CFormGroup>
-          <CFormGroup>
-            <CLabel htmlFor="modal-file">Insira uma Imagem ou PDF</CLabel>
-            <CInput
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-file">Insira uma Imagem ou PDF</CFormLabel >
+            <CFormInput  
               type="file"
               id="modal-file"
               name="file"
               onChange={e => setModalFileField(e.target.files[0])}
             />
-          </CFormGroup>
+          </CForm>
         </CModalBody>
         <CModalFooter>
           <CButton

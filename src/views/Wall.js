@@ -6,16 +6,16 @@ import {
     CCardBody,
     CCardHeader,
     CCol,
-    CDataTable,
+    CTable,
     CRow,
     CModal,
     CModalHeader,
     CModalBody,
     CModalFooter ,
-    CFormGroup,
-    CLabel,
-    CTextarea,
-    CInput
+    CForm,
+    CFormLabel,
+    CFormTextarea,
+    CFormInput  
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
@@ -125,7 +125,7 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CDataTable
+              <CTable
                 items={list}
                 fields={fields}
                 loading={loading}
@@ -156,9 +156,9 @@ export default () => {
       <CModal show={showModal} onClose={handleCloseModal}>
         <CModalHeader closeButton>{modalId === '' ? 'Novo' : 'Editar'} Aviso</CModalHeader>
         <CModalBody>
-            <CFormGroup>
-                <CLabel htmlFor="modal-title">Título do Aviso</CLabel>
-                <CInput
+            <CForm>
+                <CFormLabel  htmlFor="modal-title">Título do Aviso</CFormLabel >
+                <CFormInput  
                     type="text"
                     id="modal-title"
                     placeholder="Digite um título para o aviso"
@@ -166,17 +166,17 @@ export default () => {
                     onChange={e => setModalTitleField(e.target.value)}
                     disabled={modalLoading}
                 />
-            </CFormGroup>
-            <CFormGroup>
-                <CLabel htmlFor="modal-body">Corpo do Aviso</CLabel>
-                <CTextarea
+            </CForm>
+            <CForm>
+                <CFormLabel  htmlFor="modal-body">Corpo do Aviso</CFormLabel >
+                <CFormTextarea
                     id="modal-body"
                     placeholder="Digite o conteúdo do aviso"
                     value={modalBodyField}
                     onChange={e => setModalBodyField(e.target.value)}
                     disabled={modalLoading}
                 />
-            </CFormGroup>
+            </CForm>
         </CModalBody>
         <CModalFooter>
             <CButton

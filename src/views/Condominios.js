@@ -6,22 +6,20 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CDataTable,
+  CTable,
   CRow,
   CModal,
   CModalHeader,
   CModalBody,
   CModalFooter,
-  CFormGroup,
-  CLabel,
-  CTextarea,
-  CInput,
-  CInputFile
+  CForm,
+  CFormLabel ,
+  CFormTextarea,
+  CFormInput,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
 import useApi from '../services/api';
-
 export default () => {
   const api = useApi();
 
@@ -29,11 +27,21 @@ export default () => {
   const [list, setList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
-  const [modalNameField, setModalNameField] = useState('');
-  const [modalCodigoField, setModalCodigoField] = useState('');
-  const [modalCNPJField, setModalCNPJField] = useState('');
-  const [modalThumbField, setModalThumbField] = useState('');
-  const [modalId, setModalId] = useState('');
+  const [modalData, setModalData] = useState({
+    id: '',
+    name: '',
+    cnpj: '',
+    Thumb: '',
+    description: '',
+    address: '',
+    adress_number: '',
+    city: '',
+    district: '',
+    address_zip: '',
+    state: '',
+    billit: ''
+
+  });
 
   const fields = [
     { label: 'Nome', key: 'name' },
@@ -60,17 +68,28 @@ export default () => {
   }
 
   const handleEditButton = (index) => {
-    setModalId(list[index]['id']);
-    setModalNameField(list[index]['name']);
-    setModalNameField(list[index]['cnpj']);
-    setModalCodigoField(list[index]['codigo']);
-    setModalThumbField(list[index]['Thumb']);
+    const condominio = list[index];
+    setModalData({
+      id: condominio.id,
+      name: condominio.name,
+      cnpj: condominio.cnpj,
+      Thumb: condominio.Thumb,
+      description: condominio.description,
+      address: condominio.address,
+      adress_number: condominio.adress_number,
+      city: condominio.city,
+      district: condominio.district,
+      address_zip: condominio.address_zip,
+      state: condominio.state,
+      billit: condominio.billit
+
+    });
     setShowModal(true);
   }
 
   const handleRemoveButton = async (index) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      const result = await api.removeDocument(list[index]['id']);
+      const result = await api.removeDocument(list[index].id);
       if (result.error === '') {
         getList();
       } else {
@@ -79,52 +98,64 @@ export default () => {
     }
   }
 
-
   const handleDownloadButton = async (index) => {
-    window.open(list[index]['fileurl']);
+    window.open(list[index].fileurl);
   }
 
   const handleNewButton = () => {
-    setModalId('');
-    setModalNameField('');
-    setModalCodigoField('');
-    setModalCNPJField('');
-    setModalThumbField('');
+    setModalData({
+      id: '',
+      name: '',
+      cnpj: '',
+      Thumb: '',
+      description: '',
+      address: '',
+      adress_number: '',
+      city: '',
+      district: '',
+      address_zip: '',
+      state: '',
+      billit: ''
+
+    });
     setShowModal(true);
   }
 
   const handleModalSave = async () => {
-
-    if (modalNameField) {
+    if (modalData.name && modalData.cnpj) {
       setModalLoading(true);
       let result;
 
-      let data = {
-        name: modalNameField,
-        codigo: modalCodigoField,
-        cnpj: modalCNPJField
+      const data = {
+        name: modalData.name,
+        cnpj: modalData.cnpj,
+        Thumb: modalData.Thumb,
+        description: modalData.description,
+        address: modalData.address,
+        adress_number: modalData.adress_number,
+        city: modalData.city,
+        district: modalData.district,
+        address_zip: modalData.address_zip,
+        state: modalData.state,
+        billit: modalData.billit
 
       };
 
-      if (modalId === '') {
-        if (setModalThumbField) {
-          data.thumb = modalThumbField;
+      if (modalData.id === '') {
+        if (modalData.Thumb) {
           result = await api.addCondominio(data);
-        }
-        else {
+        } else {
           alert('Selecione o arquivo');
           setModalLoading(false);
           return;
         }
       } else {
-        if (modalThumbField) {
-          data.thumb = modalThumbField;
-        }
-        result = await api.updateCondominio(modalId, data);
+        result = await api.updateCondominio(modalData.id, data);
       }
 
       setModalLoading(false);
-      if (result.error === '') {
+
+      if (result.error === '' && result.error != true ) {
         setShowModal(false);
         getList();
       } else {
@@ -133,8 +164,14 @@ export default () => {
     } else {
       alert('Preencha os campos!');
     }
-
   }
+
+  const handleBackdropClick = (e) => {
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent && !modalContent.contains(e.target)) {
+      e.stopPropagation();
+    }
+  };
 
   return (
     <>
@@ -148,7 +185,8 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CDataTable
+              <CTable
+
                 items={list}
                 fields={fields}
                 loading={loading}
@@ -166,7 +204,6 @@ export default () => {
                         <CButton color='danger' onClick={() => handleRemoveButton(index)}>Excluir</CButton>
                       </CButtonGroup>
                     </td>
-
                   )
                 }}
               />
@@ -175,48 +212,124 @@ export default () => {
         </CCol>
       </CRow>
 
-
-      <CModal show={showModal} onClose={handleCloseModal}>
-        <CModalHeader closeButton>{modalId === '' ? 'Novo' : 'Editar'} Condomínio</CModalHeader>
+      <CModal show={showModal} onClose={handleCloseModal} onBackdropClick={handleBackdropClick} className="show d-block position-static">
+        
+        <CModalHeader closeButton>{modalData.id === '' ? 'Novo' : 'Editar'} Condomínio</CModalHeader>
         <CModalBody>
-          <CFormGroup>
-            <CLabel htmlFor="modal-name">Nome</CLabel>
-            <CInput
+          <CForm>
+            <CFormLabel  htmlFor="modal-name">Nome</CFormLabel >
+            <CFormInput 
               type="text"
               id="modal-name"
               placeholder="Digite o nome"
-              value={modalNameField}
-              onChange={e => setModalNameField(e.target.value)}
+              value={modalData.name}
+              onChange={(e) => setModalData({ ...modalData, name: e.target.value })}
               disabled={modalLoading}
             />
-        <CLabel htmlFor="modal-codigo">Código</CLabel>
-            <CInput
-              type="text"
-              id="modal-codigo"
-              placeholder="Digite o codigo do Condomínio"
-              value={modalCodigoField}
-              onChange={e => setModalCodigoField(e.target.value)}
-              disabled={modalLoading}
-            />
-             <CLabel htmlFor="modal-codigo">CNPJ</CLabel>
-            <CInput
+            <CFormLabel  htmlFor="modal-cnpj">CNPJ</CFormLabel >
+            <CFormInput 
               type="text"
               id="modal-cnpj"
               placeholder="Digite o CNPJ"
-              value={modalCNPJField}
-              onChange={e => setModalCNPJField(e.target.value)}
+              value={modalData.cnpj}
+              onChange={(e) => setModalData({ ...modalData, cnpj: e.target.value })}
               disabled={modalLoading}
             />
-          </CFormGroup>
-          <CFormGroup>
-            <CLabel htmlFor="modal-Thumb">Insira uma Logo do Condomínio</CLabel>
-            <CInput
+             <CFormLabel  htmlFor="modal-cnpj">Link para 2ª via do Boleto</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-billit"
+              placeholder="Insira o Link"
+              value={modalData.billit}
+              onChange={(e) => setModalData({ ...modalData, billit: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-Thumb">Insira uma Logo do Condomínio</CFormLabel >
+            <CFormInput 
               type="file"
               id="modal-Thumb"
               name="Thumb"
-              onChange={e => setModalThumbField(e.target.files[0])}
+              onChange={(e) => setModalData({ ...modalData, Thumb: e.target.files[0] })}
             />
-          </CFormGroup>
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-description">Descrição</CFormLabel >
+            <CFormTextarea
+              id="modal-description"
+              placeholder="Digite a descrição"
+              value={modalData.description}
+              onChange={(e) => setModalData({ ...modalData, description: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-address">Endereço</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-address"
+              placeholder="Digite o endereço"
+              value={modalData.address}
+              onChange={(e) => setModalData({ ...modalData, address: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-adress-number">Número do Endereço</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-adress-number"
+              placeholder="Digite o número do endereço"
+              value={modalData.adress_number}
+              onChange={(e) => setModalData({ ...modalData, adress_number: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-city">Cidade</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-city"
+              placeholder="Digite a cidade"
+              value={modalData.city}
+              onChange={(e) => setModalData({ ...modalData, city: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-district">Bairro</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-district"
+              placeholder="Digite o bairro"
+              value={modalData.district}
+              onChange={(e) => setModalData({ ...modalData, district: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-address-zip">CEP</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-address-zip"
+              placeholder="Digite o CEP"
+              value={modalData.address_zip}
+              onChange={(e) => setModalData({ ...modalData, address_zip: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-state">Estado</CFormLabel >
+            <CFormInput 
+              type="text"
+              id="modal-state"
+              placeholder="Digite o estado"
+              value={modalData.state}
+              onChange={(e) => setModalData({ ...modalData, state: e.target.value })}
+              disabled={modalLoading}
+            />
+          </CForm>
         </CModalBody>
         <CModalFooter>
           <CButton
@@ -230,7 +343,9 @@ export default () => {
             color="secondary"
             onClick={handleCloseModal}
             disabled={modalLoading}
-          >Cancelar</CButton>
+          >
+            Cancelar
+          </CButton>
         </CModalFooter>
       </CModal>
     </>

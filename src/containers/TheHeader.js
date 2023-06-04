@@ -2,13 +2,12 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CHeader,
-  CToggler,
+  CFormSwitch,
   CHeaderBrand,
   CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
-  CSubheader,
-  CBreadcrumbRouter,
+  CNavItem,
+  CNavLink,
+  CBreadcrumb,
   CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -39,12 +38,12 @@ const TheHeader = () => {
 
   return (
     <CHeader withSubheader>
-      <CToggler
+      <CFormSwitch
         inHeader
         className="ml-md-3 d-lg-none"
         onClick={toggleSidebarMobile}
       />
-      <CToggler
+      <CFormSwitch
         inHeader
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
@@ -54,23 +53,23 @@ const TheHeader = () => {
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3" >
-          <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem  className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem>
+        <CNavItem className="px-3" >
+          <CNavLink to="/dashboard">Dashboard</CNavLink>
+        </CNavItem>
+        <CNavItem  className="px-3">
+          <CNavLink to="/users">Users</CNavLink>
+        </CNavItem>
+        <CNavItem className="px-3">
+          <CNavLink>Settings</CNavLink>
+        </CNavItem>
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
       
       </CHeaderNav>
 
-      <CSubheader className="px-3 justify-content-between">
-        <CBreadcrumbRouter 
+      <CHeader className="px-3 justify-content-between">
+        <CBreadcrumb 
           className="border-0 c-subheader-nav m-0 px-0 px-md-3" 
           routes={routes} 
         />
@@ -89,7 +88,7 @@ const TheHeader = () => {
               <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings
             </CLink>
           </div>
-      </CSubheader>
+      </CHeader>
     </CHeader>
   )
 }

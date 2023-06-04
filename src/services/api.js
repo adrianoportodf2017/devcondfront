@@ -1,5 +1,6 @@
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -20,7 +21,7 @@ const request = async (method, endpoint, params, token = null) => {
   }
 
 
-  let headers = { 'Content-Type': 'application/json' }
+  let headers = { 'Content-Type': 'application/json'  }
   if (token) {
     headers.Authorization = `Bearer ${token}`
   }
@@ -68,11 +69,21 @@ export default () => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('name', data.name);
-      formData.append('codigo', data.codigo);
+      formData.append('code', data.code);
       formData.append('cnpj', data.cnpj);
+      formData.append('Thumb', data.Thumb);
+      formData.append('description', data.description);
+      formData.append('address', data.address);
+      formData.append('adress_number', data.adress_number);
+      formData.append('city', data.city);
+      formData.append('district', data.district);
+      formData.append('address_zip', data.address_zip);
+      formData.append('state', data.state);
+      formData.append('billit', data.billit);
 
 
-      if (data.thumb) {
+
+      if (data.Thumb) {
         formData.append('thumb', data.thumb);
       }
       let req = await fetch(`${baseUrl}/condominios`, {
@@ -90,8 +101,22 @@ export default () => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('name', data.name);
-      if (data.file) {
-        formData.append('file', data.thumblr);
+      formData.append('code', data.code);
+      formData.append('cnpj', data.cnpj);
+      formData.append('Thumb', data.Thumb);
+      formData.append('description', data.description);
+      formData.append('address', data.address);
+      formData.append('adress_number', data.adress_number);
+      formData.append('city', data.city);
+      formData.append('district', data.district);
+      formData.append('address_zip', data.address_zip);
+      formData.append('state', data.state);
+      formData.append('billit', data.billit);
+
+
+
+      if (data.Thumb) {
+        formData.append('thumb', data.thumb);
       }
       let req = await fetch(`${baseUrl}/condominio/${id}`, {
         method: 'POST',
@@ -104,9 +129,14 @@ export default () => {
       let json = await req.json();
       return json;
     },
+    
+    
+    
+    
+    
     removeCondominio: async (id) => {
       let token = localStorage.getItem('token');
-      let json = await request('delete', `/condominio/${id}`, {}, token);
+      let json = await request('delete', `/condominios/${id}`, {}, token);
       return json;
     },
 

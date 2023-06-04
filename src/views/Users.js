@@ -6,16 +6,16 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CDataTable,
+  CTable,
   CRow,
   CModal,
   CModalHeader,
   CModalBody,
   CModalFooter,
-  CFormGroup,
-  CLabel,
-  CTextarea,
-  CInput,
+  CForm,
+  CFormLabel ,
+  CFormTextarea,
+  CFormInput  ,
   CAlert,
   CInputFile
 } from '@coreui/react';
@@ -152,7 +152,7 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CDataTable
+              <CTable
                 items={list}
                 fields={fields}
                 loading={loading}
@@ -194,42 +194,42 @@ export default () => {
           {modalId === '' ? 'Nova ' : 'Editar '}Usuário
         </CModalHeader>
         <CModalBody>
-          <CFormGroup>
-            <CLabel htmlFor="modal-name">Nome do Usuário</CLabel>
-            <CInput
+          <CForm>
+            <CFormLabel  htmlFor="modal-name">Nome do Usuário</CFormLabel >
+            <CFormInput  
               type="text"
               id="modal-name"
               value={modalNameField}
               onChange={(e: any) => setModalNameField(e.target.value)}
               disabled={loading}
             />
-          </CFormGroup>
+          </CForm>
 
-          <CFormGroup>
-            <CLabel htmlFor="modal-email">E-mail do Usuário</CLabel>
-            <CInput
+          <CForm>
+            <CFormLabel  htmlFor="modal-email">E-mail do Usuário</CFormLabel >
+            <CFormInput  
               type="email"
               id="modal-email"
               value={modalEmailField}
               onChange={(e: any) => setModalEmailField(e.target.value)}
               disabled={loading}
             />
-          </CFormGroup>
+          </CForm>
 
-          <CFormGroup>
-            <CLabel htmlFor="modal-cpf">Cpf do Usuário</CLabel>
-            <CInput
+          <CForm>
+            <CFormLabel  htmlFor="modal-cpf">Cpf do Usuário</CFormLabel >
+            <CFormInput  
               type="text"
               id="modal-cpf"
               value={modalCPFField}
               onChange={(e: any) => setModalCPFField(e.target.value)}
               disabled={loading}
             />
-          </CFormGroup>
+          </CForm>
 
-          <CFormGroup>
-            <CLabel htmlFor="modal-password">Nova Senha</CLabel>
-            <CInput
+          <CForm>
+            <CFormLabel  htmlFor="modal-password">Nova Senha</CFormLabel >
+            <CFormInput  
               type="password"
               id="modal-password"
               value={modalPasswordField}
@@ -237,10 +237,10 @@ export default () => {
               onChange={(e: any) => setModalPasswordField(e.target.value)}
               disabled={loading}
             />
-          </CFormGroup>
-          <CFormGroup>
-            <CLabel htmlFor="modal-password">Confirme a Nova Senha</CLabel>
-            <CInput
+          </CForm>
+          <CForm>
+            <CFormLabel  htmlFor="modal-password">Confirme a Nova Senha</CFormLabel >
+            <CFormInput  
               type="password"
               id="modal-password"
               placeholder="Confirme a nova Senha"
@@ -250,7 +250,7 @@ export default () => {
               }
               disabled={loading}
             />
-          </CFormGroup>
+          </CForm>
 
           {error !== '' && <CAlert color="danger">{error}</CAlert>}
         </CModalBody>

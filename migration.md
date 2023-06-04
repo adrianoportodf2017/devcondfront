@@ -16,7 +16,7 @@ The best way to do a migration is:
 
 Layout components/ corresponding components in version 3
 - Aside -> CSidebar (with prop aside={true})
-- AsideToggler -> CToggler
+- AsideToggler -> CFormSwitch
 - Breadcrumb -> CBreadcrumbRouter
 - Footer -> CFooter
 - Header -> CHeader

@@ -12,8 +12,7 @@ import {
   CCardHeader,
   CCol,
   CProgress,
-  CRow,
-  CCallout
+  CRow,  
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 

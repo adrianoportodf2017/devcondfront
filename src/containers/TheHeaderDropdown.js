@@ -5,7 +5,7 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImg
+  CImage
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
@@ -18,7 +18,7 @@ const TheHeaderDropdown = () => {
     >
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
-          <CImg
+          <CImage
             src={'avatars/6.jpg'}
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
