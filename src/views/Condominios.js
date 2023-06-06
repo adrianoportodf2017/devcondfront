@@ -17,7 +17,6 @@ import {
   CTextarea,
   CInput,
   CInputFile,
-  CModalProvider 
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
@@ -91,7 +90,7 @@ export default () => {
 
   const handleRemoveButton = async (index) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      const result = await api.removeDocument(list[index].id);
+      const result = await api.removeCondominio(list[index].id);
       if (result.error === '') {
         getList();
       } else {
@@ -205,7 +204,6 @@ export default () => {
           </CCard>
         </CCol>
       </CRow>
-      <CModalProvider backdrop="static">
       <CModal visible={true} show={showModal} onClose={handleCloseModal}>
         <CModalHeader closeButton>{modalData.id === '' ? 'Novo' : 'Edssitar'} Condomínio</CModalHeader>
         <CModalBody>
@@ -341,7 +339,6 @@ export default () => {
           </CButton>
         </CModalFooter>
       </CModal>
-      </CModalProvider>
 
     </>
   );

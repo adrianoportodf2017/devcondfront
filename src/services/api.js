@@ -130,13 +130,9 @@ export default () => {
       return json;
     },
     
-    
-    
-    
-    
     removeCondominio: async (id) => {
       let token = localStorage.getItem('token');
-      let json = await request('delete', `/condominios/${id}`, {}, token);
+      let json = await request('delete', `/condominio/${id}`, {}, token);
       return json;
     },
 

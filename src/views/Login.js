@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useApi from '../services/api'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import {
+  CAlert,
   CButton,
   CCard,
   CCardBody,
@@ -10,15 +11,13 @@ import {
   CCol,
   CContainer,
   CForm,
-  CFormInput,
+  CInput,
   CInputGroup,
+  CInputGroupPrepend,
   CInputGroupText,
-  CRow,
-  CAlert,
-
+  CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
 
 
 const Login = () => {
@@ -29,7 +28,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const api = useApi();
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleLoginButton = async () => {
     if (email && password) {
@@ -39,7 +38,7 @@ const Login = () => {
       if (result.error === "") {
         localStorage.setItem('token', result.token);
        // alert(result.token);
-       navigate('/');
+        history.push('/');
       } else {
         setError(result.error);
       }
@@ -49,7 +48,7 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md="8">
@@ -64,15 +63,21 @@ const Login = () => {
                   }
 
                     <CInputGroup className="mb-3">
+                      <CInputGroupPrepend>
                         <CInputGroupText>
+                          <CIcon name="cil-user" />
                         </CInputGroupText>
-                      <CFormInput type="text" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)}   disabled={loading}    />
+                      </CInputGroupPrepend>
+                      <CInput type="text" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)}   disabled={loading}    />
                     </CInputGroup>
 
                     <CInputGroup className="mb-4">
+                      <CInputGroupPrepend>
                         <CInputGroupText>
+                          <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
-                      <CFormInput type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)}   disabled={loading}    />
+                      </CInputGroupPrepend>
+                      <CInput type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)}   disabled={loading}    />
                     </CInputGroup>
 
                     <CRow>

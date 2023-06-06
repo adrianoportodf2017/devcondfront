@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import useApi from '../services/api';
 
 export default () => {
 
   const api = useApi();
-  const history = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
     const doLogout = async() => {

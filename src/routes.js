@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React from 'react';
 
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const Condominios = React.lazy(() => import('./views/Condominios'));
@@ -14,13 +13,13 @@ const Users = React.lazy(() => import('./views/Users'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/condominios', name: 'Lista de Condôminios', element: Condominios },
-  { path: '/logout', name: 'Logout', element: Logout },
-  { path: '/wall', name: 'Wall', element: Wall },
-  { path: '/documents', name: 'Documents', element: Documents },
-  { path: '/reservations', name: 'Reservations', element: Reservations },
-  { path: '/users', name: 'Users', element: Users },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/condominios', name: 'Lista de Condôminios', component: Condominios },
+  { path: '/logout', name: 'Logout', component: Logout },
+  { path: '/wall', name: 'Wall', component: Wall },
+  { path: '/documents', name: 'Documents', component: Documents },
+  { path: '/reservations', name: 'Reservations', component: Reservations },
+  { path: '/users', name: 'Users', component: Users },
 
 
 

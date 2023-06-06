@@ -6,16 +6,16 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CTable,
+  CDataTable,
   CRow,
   CModal,
   CModalHeader,
   CModalBody,
   CModalFooter,
-  CForm,
-  CFormLabel ,
-  CFormTextarea,
-  CFormInput  ,
+  CFormGroup,
+  CLabel,
+  CTextarea,
+  CInput,
   CAlert,
   CInputFile
 } from '@coreui/react';
@@ -60,7 +60,7 @@ export default () => {
 
   useEffect(() => {
     getList()
-    // eslint-disable-next-line 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleloseModal = () => {
@@ -152,7 +152,7 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CTable
+              <CDataTable
                 items={list}
                 fields={fields}
                 loading={loading}
@@ -194,42 +194,42 @@ export default () => {
           {modalId === '' ? 'Nova ' : 'Editar '}Usuário
         </CModalHeader>
         <CModalBody>
-          <CForm>
-            <CFormLabel  htmlFor="modal-name">Nome do Usuário</CFormLabel >
-            <CFormInput  
+          <CFormGroup>
+            <CLabel htmlFor="modal-name">Nome do Usuário</CLabel>
+            <CInput
               type="text"
               id="modal-name"
               value={modalNameField}
               onChange={(e: any) => setModalNameField(e.target.value)}
               disabled={loading}
             />
-          </CForm>
+          </CFormGroup>
 
-          <CForm>
-            <CFormLabel  htmlFor="modal-email">E-mail do Usuário</CFormLabel >
-            <CFormInput  
+          <CFormGroup>
+            <CLabel htmlFor="modal-email">E-mail do Usuário</CLabel>
+            <CInput
               type="email"
               id="modal-email"
               value={modalEmailField}
               onChange={(e: any) => setModalEmailField(e.target.value)}
               disabled={loading}
             />
-          </CForm>
+          </CFormGroup>
 
-          <CForm>
-            <CFormLabel  htmlFor="modal-cpf">Cpf do Usuário</CFormLabel >
-            <CFormInput  
+          <CFormGroup>
+            <CLabel htmlFor="modal-cpf">Cpf do Usuário</CLabel>
+            <CInput
               type="text"
               id="modal-cpf"
               value={modalCPFField}
               onChange={(e: any) => setModalCPFField(e.target.value)}
               disabled={loading}
             />
-          </CForm>
+          </CFormGroup>
 
-          <CForm>
-            <CFormLabel  htmlFor="modal-password">Nova Senha</CFormLabel >
-            <CFormInput  
+          <CFormGroup>
+            <CLabel htmlFor="modal-password">Nova Senha</CLabel>
+            <CInput
               type="password"
               id="modal-password"
               value={modalPasswordField}
@@ -237,10 +237,10 @@ export default () => {
               onChange={(e: any) => setModalPasswordField(e.target.value)}
               disabled={loading}
             />
-          </CForm>
-          <CForm>
-            <CFormLabel  htmlFor="modal-password">Confirme a Nova Senha</CFormLabel >
-            <CFormInput  
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="modal-password">Confirme a Nova Senha</CLabel>
+            <CInput
               type="password"
               id="modal-password"
               placeholder="Confirme a nova Senha"
@@ -250,7 +250,7 @@ export default () => {
               }
               disabled={loading}
             />
-          </CForm>
+          </CFormGroup>
 
           {error !== '' && <CAlert color="danger">{error}</CAlert>}
         </CModalBody>
