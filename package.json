@@ -1,7 +1,26 @@
 {
-  "name": "devcondfront",
-  "version": "0.1.0",
+  "name": "@supercond/admin",
+  "version": "0.1",
+  "description": "Sistema para Gerenciamento de condominios",
+  "author": {
+    "name": "Adriano Alves",
+    "url": "https://agenciatecnet.com.br",
+    "github": "https://github.com/adrianoportodf2017"
+  },
+  "contributors": [
+    {
+      "name": "",
+      "url": ""
+    }
+  ],
+  "homepage": "https://supercond.agenciatecnet.com.br",
+  "copyright": "Copyright 2022 Agência Tecnet",
+  "license": "MIT",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "dependencies": {
     "@coreui/chartjs": "^2.0.0",
     "@coreui/coreui": "^3.4.0",
@@ -14,41 +33,50 @@
     "core-js": "^3.9.1",
     "enzyme": "^3.11.0",
     "prop-types": "^15.7.2",
+    "react": "^18.0.2",
     "react-app-polyfill": "^2.0.0",
+    "react-dom": "^17.0.2",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
-    "sass": "^1.32.8",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "sass": "^1.32.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "auto-changelog": "~2.2.1",
+    "react-scripts": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:cov": "npm test -- --coverage --watchAll=false",
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "eject": "react-scripts eject",
+    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
+  },
+  "bugs": {
+    "url": ""
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 10",
+    "not op_mini all"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/*index.js",
+      "!src/serviceWorker.js",
+      "!src/polyfill.js"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6"
   }
 }
