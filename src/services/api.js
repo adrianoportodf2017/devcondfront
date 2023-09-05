@@ -21,7 +21,7 @@ const request = async (method, endpoint, params, token = null) => {
   }
 
 
-  let headers = { 'Content-Type': 'application/json'  }
+  let headers = { 'Content-Type': 'application/json' }
   if (token) {
     headers.Authorization = `Bearer ${token}`
   }
@@ -56,7 +56,7 @@ export default () => {
       localStorage.removeItem('token');
       return json
     },
- /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Condominios --__--***********************************/
     /********************************************************************************/
 
@@ -129,7 +129,7 @@ export default () => {
       let json = await req.json();
       return json;
     },
-    
+
     removeCondominio: async (id) => {
       let token = localStorage.getItem('token');
       let json = await request('delete', `/condominio/${id}`, {}, token);
@@ -212,59 +212,108 @@ export default () => {
       return json;
     },
 
-    
+
     /********************************************************************************/
     /******************************--__-- Reservations --__--***********************************/
     /********************************************************************************/
 
     getReservations: async () => {
       let token = localStorage.getItem('token');
-      let json = await request('get', '/reservations', {}, token);
+      let json = await request('get', `/reservations`, {}, token);
       return json;
     },
-    addDocument: async (data) => {
+    addReservation: async (data) => {
       let token = localStorage.getItem('token');
-      let formData = new FormData();
-      formData.append('title', data.title);
-      if (data.file) {
-        formData.append('file', data.file);
-      }
-      let req = await fetch(`${baseUrl}/docs`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      let json = await request('POST', '/reservations', data, token);
+      return json;
+    },
+    updateReservation: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('put', `/reservation/${id}`, data, token);
+      return json
+    },
+    removeReservation: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/reservation/${id}`, {}, token);
+      return json
+
+    },
+
+
+    /********************************************************************************/
+    /******************************--__-- Units --__--***********************************/
+    /********************************************************************************/
+
+    getUnits: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', `/units`, {}, token);
+      return json;
+    },
+    addUnit: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/units`, data, token);
+      return json;
+    },
+    updateUnit: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('put', `/unit/${id}`, data, token);
+      return json;
+    },
+    removeUnit: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/unit/${id}`, {}, token);
+      return json;
+    },
+
+      /********************************************************************************/
+    /******************************--__-- Areas --__--***********************************/
+    
+    getAreas: async()=>{
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/areas`, {}, token);  
+      return json;
+  },
+     addArea: async(data)=>{
+            let token = localStorage.getItem('token');
+            let formData = new FormData();
+            for ( let i in data){
+                formData.append(i,data[i])
+            }
+            let req = await fetch(
+                `${baseUrl}/areas`,
+                {
+                    method: 'POST',
+                    headers: {'Authorization': `Bearer ${token}`},
+                    body: formData
+                 });
+            let json = req.json();
+            return json;
         },
-        body: formData
-      });
-
-      let json = await req.json();
-      return json;
-    },
-    updateDocument: async (id, data) => {
-      let token = localStorage.getItem('token');
-      let formData = new FormData();
-      formData.append('title', data.title);
-      if (data.file) {
-        formData.append('file', data.file);
-      }
-      let req = await fetch(`${baseUrl}/doc/${id}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
+        updateArea: async(id, data)=>{
+            let token = localStorage.getItem('token');
+            let formData = new FormData();
+            for ( let i in data){
+                formData.append(i,data[i])
+            }
+            let req = await fetch(
+                `${baseUrl}/area/${id}`,
+                {
+                    method: 'POST',
+                    headers: {'Authorization': `Bearer ${token}`},
+                    body: formData
+                 });
+            let json = req.json();
+            return json;
         },
-        body: formData
-      });
+        updateAreaAllowed: async (id)=>{
+            let token = localStorage.getItem('token');
+            let json = await request('put', `/area/${id}/allowed`, {}, token);  
+            return json;
+        },
 
-      let json = await req.json();
-      return json;
-    },
-    removeDocument: async (id) => {
-      let token = localStorage.getItem('token');
-      let json = await request('delete', `/doc/${id}`, {}, token);
-      return json;
-    },
 
-     /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Users --__--***********************************/
     /********************************************************************************/
 

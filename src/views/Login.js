@@ -47,6 +47,25 @@ const Login = () => {
     }
   }
 
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Evita que o formulário seja enviado normalmente (evita atualização da página)
+
+    if (email && password) {
+      setLoading(true);
+      const result = await api.login(email, password);
+      setLoading(false);
+
+      if (result.error === '') {
+        localStorage.setItem('token', result.token);
+        history.push('/');
+      } else {
+        setError(result.error);
+      }
+    } else {
+      setError('Digite seus dados');
+    }
+  };
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -55,7 +74,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                <CForm onSubmit={handleLogin}>
                     <h1>Login</h1>
                     <p className="text-muted">Digite seus dados de acesso</p>
                   {error !== '' &&
@@ -82,14 +101,13 @@ const Login = () => {
 
                     <CRow>
                       <CCol xs="6">
-                        <CButton
-                          color="primary"
-                          className="px-4"
-                          onClick={handleLoginButton}
-                          disabled={loading}                 
-                        >
-                          {loading ? 'Carregando' : 'Entrar'}
-                          </CButton>
+                      <CButton
+                        type="submit"
+                        className="btn btn-primary px-4"
+                        disabled={loading}
+                      >
+                        {loading ? 'Carregando' : 'Entrar'}
+                      </CButton>
                       </CCol>
                     </CRow>
 
