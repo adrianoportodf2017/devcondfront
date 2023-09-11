@@ -8,6 +8,8 @@ const Documents = React.lazy(() => import('./views/Documents'));
 const Reservations = React.lazy(() => import('./views/Reservations'));
 const Users = React.lazy(() => import('./views/Users'));
 const Commonareas= React.lazy(() => import('./views/Commonareas'));
+const Units= React.lazy(() => import('./views/Units'));
+
 
 
 
@@ -20,7 +22,9 @@ const routes = [
   { path: '/wall', name: 'Wall', component: Wall },
   { path: '/documents', name: 'Documents', component: Documents },
   { path: '/reservations', name: 'Reservations', component: Reservations },
-  { path: '/commonareas', name: 'Commonareas', component: Commonareas },
+  { path: '/commonareas', name: 'Áreas Comuns', component: Commonareas },
+  { path: '/units', name: 'Unidades', component: Units },
+
   { path: '/users', name: 'Users', component: Users },
 
 

@@ -1,6 +1,6 @@
 
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -311,6 +311,11 @@ export default () => {
             let json = await request('put', `/area/${id}/allowed`, {}, token);  
             return json;
         },
+        removeArea: async (id) => {
+          let token = localStorage.getItem('token');
+          let json = await request('delete', `/area/${id}`, {}, token);
+          return json;
+        },
 
 
     /********************************************************************************/
@@ -337,5 +342,10 @@ export default () => {
       let json = await request('delete', `/user/${id}`, {}, token);
       return json;
     },
+    searchUser: async (query)=>{
+      let token = localStorage.getItem('token');
+      let json = await request('get', `/users/search`, {q:query}, token);  
+      return json;
+  },
   }
 }
