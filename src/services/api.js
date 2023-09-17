@@ -256,7 +256,7 @@ export default () => {
     },
     updateUnit: async (id, data) => {
       let token = localStorage.getItem('token');
-      let json = await request('put', `/unit/${id}`, data, token);
+      let json = await request('post', `/unit/${id}`, data, token);
       return json;
     },
     removeUnit: async (id) => {
@@ -334,7 +334,7 @@ export default () => {
     },
     updateUser: async (id, data) => {
       let token = localStorage.getItem('token');
-      let json = await request('put', `/user/${id}`, data, token);
+      let json = await request('post', `/user/${id}`, data, token);
       return json;
     },
     removeUser: async (id) => {

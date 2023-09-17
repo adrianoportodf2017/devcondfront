@@ -27,6 +27,8 @@ const fields = [
   { label: 'Nome', key: 'name' },
   { label: 'CPF', key: 'cpf' },
   { label: 'EMAIL', key: 'email' },
+  { label: 'CELULAR', key: 'phone' },
+
   { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
 ];
 
@@ -42,6 +44,8 @@ export default () => {
   const [modalNameField, setModalNameField] = useState('')
   const [modalCPFField, setModalCPFField] = useState('')
   const [modalEmailField, setModalEmailField] = useState('')
+  const [modalPhoneField, setModalPhoneField] = useState('')
+
   const [modalPasswordField, setModalPasswordField] = useState('')
   const [modalPasswordConfirmField, setModalPasswordConfirmField] = useState('')
 
@@ -74,6 +78,7 @@ export default () => {
     setModalNameField('')
     setModalCPFField('')
     setModalEmailField('')
+    setModalPhoneField('')
     setModalPasswordField('')
     setModalPasswordConfirmField('')
     setShowModal(true)
@@ -86,6 +91,7 @@ export default () => {
     setModalNameField(list[index]['name'])
     setModalCPFField(list[index]['cpf'])
     setModalEmailField(list[index]['email'])
+    setModalPhoneField(list[index]['phone'])
     setModalPasswordField('')
     setModalPasswordConfirmField('')
     setShowModal(true)
@@ -98,6 +104,7 @@ export default () => {
       let data = {
         name: modalNameField,
         email: modalEmailField,
+        phone: modalPhoneField,
         cpf: modalCPFField
       }
 
@@ -120,6 +127,8 @@ export default () => {
       if (result.error === '') {
         setShowModal(false)
         getList()
+        setError('')
+
       } else {
         setError(result.error)
       }
@@ -212,6 +221,17 @@ export default () => {
               id="modal-email"
               value={modalEmailField}
               onChange={(e: any) => setModalEmailField(e.target.value)}
+              disabled={loading}
+            />
+          </CFormGroup>
+
+          <CFormGroup>
+            <CLabel htmlFor="modal-email">Telefone do Usuário</CLabel>
+            <CInput
+              type="number"
+              id="modal-email"
+              value={modalPhoneField}
+              onChange={(e: any) => setModalPhoneField(e.target.value)}
               disabled={loading}
             />
           </CFormGroup>
