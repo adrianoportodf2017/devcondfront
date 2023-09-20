@@ -41,10 +41,9 @@ const Login = () => {
   const history = useHistory();
 
   const location = useLocation();
-const { resetSuccess } = location.state || {}; // Acessa resetSuccess do objeto de estado
+  const   {resetSuccess}  = location.state || {}; // Acessa resetSuccess do objeto de estado
 
   const handleLoginButton = async () => {
-    resetSuccess  = {};
     if (email && password) {
       setLoading(true);
       const result = await api.login(email, password);
@@ -66,7 +65,6 @@ const { resetSuccess } = location.state || {}; // Acessa resetSuccess do objeto 
   };
   
   const handleResetPassword = async () => {
-     resetSuccess  = {};
 
     setLoading(true);
 
