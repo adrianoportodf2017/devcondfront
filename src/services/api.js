@@ -56,6 +56,15 @@ export default () => {
       localStorage.removeItem('token');
       return json
     },
+
+    recoveryPassword: async (email) => {
+      let json = await request('post', '/auth/forgot-password', { email });
+      return json
+    },
+    resetPassword: async (password, password_confirmation, email, token) => {
+      let json = await request('post', '/auth/reset-password', { password, password_confirmation, email, token });
+      return json
+    },
     /********************************************************************************/
     /******************************--__-- Condominios --__--***********************************/
     /********************************************************************************/

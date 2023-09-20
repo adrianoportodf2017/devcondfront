@@ -9,6 +9,8 @@ const Reservations = React.lazy(() => import('./views/Reservations'));
 const Users = React.lazy(() => import('./views/Users'));
 const Commonareas= React.lazy(() => import('./views/Commonareas'));
 const Units= React.lazy(() => import('./views/Units'));
+const RecoveryPassword = React.lazy(() => import('./views/RecoveryPassword'));
+
 
 
 
@@ -26,6 +28,8 @@ const routes = [
   { path: '/units', name: 'Unidades', component: Units },
 
   { path: '/users', name: 'Users', component: Users },
+  { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
+
 
 
 
