@@ -28,7 +28,7 @@ const _nav =  [
   {
     _tag: 'CSidebarNavItem',
     name: 'Assembleias',
-    to: '/classifield',
+    to: '/assembleias',
     icon: <CIcon content={freeSet.cilShortText}  customClasses="c-sidebar-nav-icon"/>,
   },
   {
