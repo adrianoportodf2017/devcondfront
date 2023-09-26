@@ -338,14 +338,14 @@ export default () => {
       let json = await request('get', `/documentos/assembleia/${id}/documentos`, {}, token);  
       return json;
   },
-     addAssembleia: async(data)=>{
+  addDocumentoAssembleia: async(data)=>{
             let token = localStorage.getItem('token');
             let formData = new FormData();
             for ( let i in data){
                 formData.append(i,data[i])
             }
             let req = await fetch(
-                `${baseUrl}/assembleia`,
+                `${baseUrl}/documentos/assembleia`,
                 {
                     method: 'POST',
                     headers: {'Authorization': `Bearer ${token}`},
