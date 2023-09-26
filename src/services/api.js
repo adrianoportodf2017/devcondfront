@@ -329,6 +329,58 @@ export default () => {
         },
 
 
+        /********************************************************************************/
+    /******************************--__-- Documentos Assembleia --__--***********************************/
+    
+    getDocumentosAssembleia: async(id)=>{
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/documentos/assembleia/${id}/documentos`, {}, token);  
+      return json;
+  },
+     addAssembleia: async(data)=>{
+            let token = localStorage.getItem('token');
+            let formData = new FormData();
+            for ( let i in data){
+                formData.append(i,data[i])
+            }
+            let req = await fetch(
+                `${baseUrl}/assembleia`,
+                {
+                    method: 'POST',
+                    headers: {'Authorization': `Bearer ${token}`},
+                    body: formData
+                 });
+            let json = req.json();
+            return json;
+        },
+        updateAssembleia: async(id, data)=>{
+            let token = localStorage.getItem('token');
+            let formData = new FormData();  
+            for ( let i in data){
+              formData.append(i,data[i])
+          } 
+            console.log(formData)    ; 
+            let req = await fetch(
+                `${baseUrl}/assembleia/${id}`,
+                {
+                    method: 'POST',
+                    headers: {'Authorization': `Bearer ${token}`},
+                    body: formData
+                 });
+            let json = req.json();
+            return json;
+        },
+        updateAssembleiaStatus: async (id, dataStatus)=>{
+          let token = localStorage.getItem('token');
+          let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
+          return json;
+        },
+        removeAssembleia: async (id) => {
+          let token = localStorage.getItem('token');
+          let json = await request('delete', `/assembleia/${id}`, {}, token);
+          return json;
+        },
 
 
       /********************************************************************************/

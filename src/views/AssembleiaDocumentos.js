@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import {
     CButton,
     CButtonGroup,
@@ -20,13 +21,17 @@ import {
 
 } from '@coreui/react';
 import CIcon from "@coreui/icons-react";
+import { freeSet } from '@coreui/icons';
+
 
 import useApi from '../services/api'
 
 
 
-const Assembleias = () => {
+const DocumentosAssembleia = () => {
     const api = useApi();
+    const { id } = useParams();
+
 
     const [loading, setLoading] = useState(true);
     const [list, setList] = useState([]);
@@ -60,7 +65,7 @@ const Assembleias = () => {
 
     const getList = async () => {
         setLoading(true);
-        const result = await api.getAssembleias();
+        const result = await api.getDocumentosAssembleia(id);
         console.log(result);
         setLoading(false);
 
@@ -172,17 +177,23 @@ const Assembleias = () => {
         <>
             <CRow>
                 <CCol>
-                    <h2>Assembleias </h2>
+                    <h2>Documentos da Assembleia: { id }  </h2>
 
                     <CCard>
                         <CCardHeader>
-                            <CButton
-                                onClick={handleAddButton}
-                                color="primary"
+                            <CButtonGroup className="p-2">
 
-                            >
-                                <CIcon name="cil-check" /> Nova Assembleia
-                            </CButton>
+
+                                <CButton color="success" to="/Assembleias">
+                                    <div className="d-flex align-items-center">
+                                        <CIcon content={freeSet.cilArrowCircleLeft} customClasses="" />
+                                        Voltar
+                                    </div>
+                                </CButton>
+                                <CButton onClick={handleAddButton} color="primary">
+                                    <CIcon name="cil-check" /> Novo Documento
+                                </CButton>
+                            </CButtonGroup>
                         </CCardHeader>
 
                         <CCardBody>
@@ -232,7 +243,7 @@ const Assembleias = () => {
                                                     Editar
                                                 </CButton>
                                                 <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
-                                                <CButton color="success" to={`/AssembleiaDocumentos/${item.id}`}> Ver Documentos </CButton>
+
                                             </CButtonGroup>
                                         </td>
                                     )
@@ -315,4 +326,4 @@ const Assembleias = () => {
 
 
 };
-export default Assembleias;
+export default DocumentosAssembleia;
