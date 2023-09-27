@@ -1,6 +1,6 @@
 
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {

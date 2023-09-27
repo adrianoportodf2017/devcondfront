@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   CCreateElement,
   CSidebar,
@@ -7,35 +7,35 @@ import {
   CSidebarNavTitle,
   CSidebarMinimizer,
   CSidebarNavItem,
-} from '@coreui/react'
-
+  CSidebarNavDropdown, // Importe o componente CSidebarNavDropdown
+} from '@coreui/react';
 
 // sidebar nav config
-import navigation from './_nav'
+import navigation from './_nav';
 
 const TheSidebar = () => {
-  const dispatch = useDispatch()
-  const show = useSelector(state => state.sidebarShow)
+  const dispatch = useDispatch();
+  const show = useSelector(state => state.sidebarShow);
 
   return (
     <CSidebar
       show={show}
-      onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
+      onShowChange={val => dispatch({ type: 'set', sidebarShow: val })}
     >
-    
       <CSidebarNav>
         <img src="/homelogo.png" className="mt-2 mb-3 ml-auto mr-auto" width="70%" />
         <CCreateElement
           items={navigation}
           components={{
             CSidebarNavItem,
-            CSidebarNavTitle
+            CSidebarNavTitle,
+            CSidebarNavDropdown, // Adicione CSidebarNavDropdown como componente
           }}
         />
       </CSidebarNav>
-      <CSidebarMinimizer className="c-d-md-down-none"/>
+      <CSidebarMinimizer className="c-d-md-down-none" />
     </CSidebar>
-  )
-}
+  );
+};
 
-export default React.memo(TheSidebar)
+export default React.memo(TheSidebar);
