@@ -5,7 +5,44 @@ import { freeSet } from '@coreui/icons'
 
 
 const _nav =  [
- 
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Dashboard',
+    to: '/dashboard',
+    icon: <CIcon content={freeSet.cilApplications}  customClasses="c-sidebar-nav-icon"/>,
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    }
+  },
+  {
+    _tag: 'CSidebarNavTitle',
+    _children: ['Gestão do Sistema']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Condominios',
+    to: '/condominios',
+    icon: 'cil-speedometer',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Assembleias',
+    to: '/assembleias',
+    icon: <CIcon content={freeSet.cilShortText}  customClasses="c-sidebar-nav-icon"/>,
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Avisos',
+    to: '/wall',
+    icon: 'cil-warning',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Documentos',
+    to: '/documents',
+    icon: 'cil-file',
+  },
   {
     _tag: 'CSidebarNavDropdown',
     name: 'Notícias', // Nome da categoria
@@ -119,6 +156,40 @@ const _nav =  [
     _children: ['Dados']
   },
   
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Usuários',
+    to: '/users',
+    icon: 'cil-people',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Unidades',
+    to: '/units',
+    icon: 'cil-home',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Áreas Comuns',
+    to: '/commonareas',
+    icon: 'cil-paperclip',
+  },
+  {
+    _tag: 'CSidebarNavTitle',
+    _children: ['Configurações']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Meu Perfil',
+    to: '/profile',
+    icon: 'cil-user',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'sair',
+    to: '/logout',
+    icon: 'cil-drop',
+  },
   
 ]
 

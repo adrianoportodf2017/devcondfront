@@ -156,7 +156,7 @@ export default () => {
     },
     addWall: async (data) => {
       let token = localStorage.getItem('token');
-      let json = await request('post', '/walls', data, token);
+      let json = await request('post', '/wall', data, token);
       return json;
     },
     updateWall: async (id, data) => {
@@ -186,7 +186,7 @@ export default () => {
       if (data.file) {
         formData.append('file', data.file);
       }
-      let req = await fetch(`${baseUrl}/docs`, {
+      let req = await fetch(`${baseUrl}/doc`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

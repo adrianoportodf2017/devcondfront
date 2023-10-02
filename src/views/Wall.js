@@ -29,7 +29,7 @@ export default () => {
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalTitleField, setModalTitleField] = useState('');
-  const [modalBodyField, setModalBodyField] = useState('');
+  const [modalContentField, setModalContentField] = useState('');
   const [modalId, setModalId] = useState('');
 
   const fields= [
@@ -46,7 +46,8 @@ export default () => {
     setLoading(true);
     const result = await api.getWall();
     setLoading(false);
-    if(result.error === '') {
+    console.log(result.list);
+    if(result.error == '') {
       setList(result.list);
     } else {
       alert(result.error);
@@ -60,7 +61,7 @@ export default () => {
   const handleEditButton = (index) => {
     setModalId(list[index]['id']);
     setModalTitleField(list[index]['title']);
-    setModalBodyField(list[index]['body']);
+    setModalContentField(list[index]['content']);
     setShowModal(true);
   }
 
@@ -78,19 +79,19 @@ export default () => {
   const handleNewButton = () => {
     setModalId('');
     setModalTitleField('');
-    setModalBodyField('');
+    setModalContentField('');
     setShowModal(true);
   }
 
   const handleModalSave = async () => {
 
-    if (modalTitleField && modalBodyField) {
+    if (modalTitleField && modalContentField) {
         setModalLoading(true);
         let result;
 
         let data = {
           title: modalTitleField,
-          body: modalBodyField
+          content: modalContentField
         };
 
         if (modalId === '') {
@@ -168,12 +169,12 @@ export default () => {
                 />
             </CFormGroup>
             <CFormGroup>
-                <CLabel htmlFor="modal-body">Corpo do Aviso</CLabel>
+                <CLabel htmlFor="modal-content">Corpo do Aviso</CLabel>
                 <CTextarea
-                    id="modal-body"
+                    id="modal-content"
                     placeholder="Digite o conteúdo do aviso"
-                    value={modalBodyField}
-                    onChange={e => setModalBodyField(e.target.value)}
+                    value={modalContentField}
+                    onChange={e => setModalContentField(e.target.value)}
                     disabled={modalLoading}
                 />
             </CFormGroup>
