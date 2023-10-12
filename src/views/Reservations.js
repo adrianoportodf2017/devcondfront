@@ -37,12 +37,14 @@ const Reservation = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalId, setModalId] = useState('');
+  const [modalStartTime, setModalStartTime] = useState('');
+  const [modalEndTime, setModalEndTime] = useState('');
 
 
   const fields = [
     { label: 'Unidade', key: 'name_unit', sorter: false },
     { label: 'Área', key: 'name_area', sorter: false },
-    { label: 'Data da reserva', key: 'reservation_date' },
+    { label: 'Data da reserva', key: 'date_reservation' },
     { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
 
   ]
@@ -100,10 +102,11 @@ const Reservation = () => {
       setModalLoading(true);
       let result;
       let data = {
-        id_unit: modalUnitId,
-        id_area: modalAreaId,
-        reservation_date: modalDateField
-      };
+        unit_id: modalUnitId,
+        area_id: modalAreaId,
+        reservation_date: modalDateField,
+        start_time: modalStartTime,
+        end_time: modalEndTime,      };
 
       if (modalId === '') {
         result = await api.addReservation(data)
@@ -129,8 +132,8 @@ const Reservation = () => {
   const handleEditButton = (id) => {
     let index = list.findIndex(v => v.id === id)
     setModalId(list[index]['id']);
-    setModalUnitId(list[index]['id_unit'])
-    setModalAreaId(list[index]['id_area'])
+    setModalUnitId(list[index]['unit_id'])
+    setModalAreaId(list[index]['area_id'])
     setModalDateField(list[index]['reservation_date']);
     setShowModal(true);
 
@@ -169,6 +172,43 @@ const Reservation = () => {
     }
 
   }
+
+ // Função para criar um array de opções de hora para o campo "Hora de término da reserva"
+ const generateEndTimeOptions = () => {
+  if (!modalStartTime) {
+    return [];
+  }
+
+  const startTimeParts = modalStartTime.split(":");
+  const startHour = parseInt(startTimeParts[0], 10) + 2;
+  const startMinute = parseInt(startTimeParts[1], 10);
+
+  const options = [];
+  for (let hour = startHour; hour <= 23; hour++) {
+    for (let minute = 0; minute < 60; minute += 60) {
+      const formattedHour = hour.toString().padStart(2, "0");
+      const formattedMinute = minute.toString().padStart(2, "0");
+      options.push(`${formattedHour}:${formattedMinute}`);
+    }
+  }
+  return options;
+};
+
+const [endTimeOptions, setEndTimeOptions] = useState(generateEndTimeOptions());
+
+const handleStartTimeChange = (e) => {
+  setModalStartTime(e.target.value);
+  const newEndTimeOptions = generateEndTimeOptions();
+  setEndTimeOptions(newEndTimeOptions);
+  if (newEndTimeOptions.length > 0) {
+    setModalEndTime(newEndTimeOptions[0]);
+  } else {
+    setModalEndTime('');
+  }
+};
+
+
+
 
 
   return (
@@ -255,13 +295,20 @@ const Reservation = () => {
             <CSelect
               id='modal_area'
               custom
-              onChange={e => setModalAreaId(e.target.value)}
+              onChange={e => {
+                setModalAreaId(e.target.value);
+                const selectedArea = modalAreaList.find(area => area.id === e.target.value);
+                if (selectedArea) {
+                  setModalStartTime(selectedArea.start_time);
+                  setModalEndTime(selectedArea.end_time);
+                }
+              }}
               value={modalAreaId}
             >
               {modalAreaList.map((item, index) => (
                 <option
                   key={index}
-                  value={item.id_area}>
+                  value={item.id}>
                   {item.title}
                 </option>
               ))
@@ -276,25 +323,38 @@ const Reservation = () => {
               type="date"
               id="modal_date"
               value={formatDate('Date', modalDateField)}
-              onChange={e => setModalDateField(formatDate('onlyDate', e.target.value))}
+              onChange={e => setModalDateField(e.target.value)}
               disabled={modalLoading}
             />
 
 
           </CFormGroup>
-
           <CFormGroup>
-            <CLabel htmlFor="modal-time">Hora da reserva</CLabel>
-            <CInput
-              type="time"
-              id="modal_time"
-              value={formatDate('time', modalDateField)}
-              onChange={e => setModalDateField(formatDate('onlyTime', e.target.value))}
-              disabled={modalLoading}
-            />
-
-
-          </CFormGroup>
+  <CLabel htmlFor="modal-start-time">Hora de início da reserva</CLabel>
+  <CInput
+    type="time"
+    id="modal_start_time"
+    value={modalStartTime}
+    onChange={handleStartTimeChange}
+    disabled={modalLoading}
+  />
+</CFormGroup>
+<CFormGroup>
+  <CLabel htmlFor="modal-end-time">Hora de término da reserva</CLabel>
+  <CSelect
+    id="modal_end_time"
+    custom
+    value={modalEndTime}
+    onChange={e => setModalEndTime(e.target.value)}
+    disabled={modalLoading}
+  >
+    {endTimeOptions.map((option, index) => (
+      <option key={index} value={option}>
+        {option}
+      </option>
+    ))}
+  </CSelect>
+</CFormGroup>
 
 
         </CModalBody>

@@ -1,6 +1,6 @@
 
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -238,7 +238,7 @@ export default () => {
     },
     updateReservation: async (id, data) => {
       let token = localStorage.getItem('token');
-      let json = await request('put', `/reservation/${id}`, data, token);
+      let json = await request('post', `/reservation/${id}`, data, token);
       return json
     },
     removeReservation: async (id) => {
