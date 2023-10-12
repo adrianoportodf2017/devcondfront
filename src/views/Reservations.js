@@ -173,43 +173,15 @@ const Reservation = () => {
 
   }
 
- // Função para criar um array de opções de hora para o campo "Hora de término da reserva"
- const generateEndTimeOptions = () => {
-  if (!modalStartTime) {
-    return [];
+ 
+  const startHour = 6; // Hora de início desejada
+  const endHour = 23; // Hora de término desejada
+  
+  const hours = [];
+  for (let hour = startHour; hour <= endHour; hour++) {
+    const formattedHour = hour.toString().padStart(2, "0");
+    hours.push(`${formattedHour}:00`);
   }
-
-  const startTimeParts = modalStartTime.split(":");
-  const startHour = parseInt(startTimeParts[0], 10) + 2;
-  const startMinute = parseInt(startTimeParts[1], 10);
-
-  const options = [];
-  for (let hour = startHour; hour <= 23; hour++) {
-    for (let minute = 0; minute < 60; minute += 60) {
-      const formattedHour = hour.toString().padStart(2, "0");
-      const formattedMinute = minute.toString().padStart(2, "0");
-      options.push(`${formattedHour}:${formattedMinute}`);
-    }
-  }
-  return options;
-};
-
-const [endTimeOptions, setEndTimeOptions] = useState(generateEndTimeOptions());
-
-const handleStartTimeChange = (e) => {
-  setModalStartTime(e.target.value);
-  const newEndTimeOptions = generateEndTimeOptions();
-  setEndTimeOptions(newEndTimeOptions);
-  if (newEndTimeOptions.length > 0) {
-    setModalEndTime(newEndTimeOptions[0]);
-  } else {
-    setModalEndTime('');
-  }
-};
-
-
-
-
 
   return (
     <>
@@ -331,13 +303,19 @@ const handleStartTimeChange = (e) => {
           </CFormGroup>
           <CFormGroup>
   <CLabel htmlFor="modal-start-time">Hora de início da reserva</CLabel>
-  <CInput
-    type="time"
+   <CSelect
     id="modal_start_time"
+    custom
     value={modalStartTime}
-    onChange={handleStartTimeChange}
+    onChange={e => setModalStartTime(e.target.value)}
     disabled={modalLoading}
-  />
+  >
+    {hours.map((option, index) => (
+      <option key={index} value={option}>
+        {option}
+      </option>
+    ))}
+  </CSelect>
 </CFormGroup>
 <CFormGroup>
   <CLabel htmlFor="modal-end-time">Hora de término da reserva</CLabel>
@@ -348,7 +326,7 @@ const handleStartTimeChange = (e) => {
     onChange={e => setModalEndTime(e.target.value)}
     disabled={modalLoading}
   >
-    {endTimeOptions.map((option, index) => (
+    {hours.map((option, index) => (
       <option key={index} value={option}>
         {option}
       </option>
