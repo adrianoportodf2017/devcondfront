@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import moment from 'moment';
+
 import {
   CButton,
   CButtonGroup,
@@ -33,7 +35,7 @@ const Reservation = () => {
   const [modalAreaList, setModalAreaList] = useState([]);
   const [modalAreaId, setModalAreaId] = useState(0);
   const [modalUnitId, setModalUnitId] = useState(0);
-  const [modalDateField, setModalDateField] = useState('');
+  const [modalDateField, setModalDateField] = useState(moment().format('YYYY-MM-DD'));
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalId, setModalId] = useState('');
@@ -87,6 +89,8 @@ const Reservation = () => {
     setModalId('');
     setModalUnitId(modalUnitList[0]['id'])
     setModalAreaId(modalAreaList[0]['id'])
+    setModalStartTime('08:00');
+    setModalEndTime('12:00');
     setModalDateField('');
     setShowModal(true);
   }
@@ -174,13 +178,26 @@ const Reservation = () => {
   }
 
  
-  const startHour = 6; // Hora de início desejada
+  const startHour = modalDateField == moment().format('YYYY-MM-DD') ? moment().format('H') : 8;
   const endHour = 23; // Hora de término desejada
   
   const hours = [];
   for (let hour = startHour; hour <= endHour; hour++) {
     const formattedHour = hour.toString().padStart(2, "0");
     hours.push(`${formattedHour}:00`);
+  }
+
+  const hoursEndTime = () => {     
+    const startHourEndtime = parseInt(modalStartTime.slice(0, 2)) + 1;
+    const endHourEndTime = 23; // Hora de término desejada
+
+      const hourEndtime = modalStartTime;
+      const hourssEndTime = [];
+      for (let hour = startHourEndtime; hour <= endHourEndTime; hour++) {
+        const formattedHour = hour.toString().padStart(2, "0");
+        hourssEndTime.push(`${formattedHour}:00`);
+      }
+      return hourssEndTime
   }
 
   return (
@@ -297,6 +314,8 @@ const Reservation = () => {
               value={formatDate('Date', modalDateField)}
               onChange={e => setModalDateField(e.target.value)}
               disabled={modalLoading}
+              min={moment().format('YYYY-MM-DD')}
+
             />
 
 
@@ -326,7 +345,7 @@ const Reservation = () => {
     onChange={e => setModalEndTime(e.target.value)}
     disabled={modalLoading}
   >
-    {hours.map((option, index) => (
+    {hoursEndTime().map((option, index) => (
       <option key={index} value={option}>
         {option}
       </option>
