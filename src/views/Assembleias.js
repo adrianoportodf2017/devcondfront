@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 import {
     CButton,
     CButtonGroup,
@@ -38,7 +41,8 @@ const Assembleias = () => {
     const [modalYearField, setModalYearField] = useState('');
 
     const [modalThumbField, setModalThumbField] = useState('');
-    const [modalContentField, setModalContentField] = useState([]);
+    const [modalContentField, setModalContentField] = useState('');
+
 
     const fields = [
         { label: 'Ativo', key: 'Status', sorter: false, filter: false },
@@ -47,7 +51,6 @@ const Assembleias = () => {
         { label: 'Ano', key: 'year' },
         { label: 'Descrição', key: 'content' },
         { label: 'Data da publicação', key: 'created_at' },
-
         { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
     ]
 
@@ -160,6 +163,24 @@ const Assembleias = () => {
         }
     }
 
+    const modules = {
+        toolbar: [
+          [{ header: '1' }, { header: '2' }],
+          ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
+          [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
+          ['link', 'image'], // Inserção de links e imagens
+          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+          [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        
+          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+        
+
+          ['clean'], // Remoção de formatação
+        ],
+      };
 
 
 
@@ -216,6 +237,13 @@ const Assembleias = () => {
                                     'Title': (item) => (
                                         <td>
                                             {item.title}
+                                        </td>
+                                    ),
+
+                                    'content': (item) => (
+                                        <td>
+                                            {item.content.replace(/<[^>]*>/g, '').substring(0, 150)}
+                                            {item.content.length > 150 ? '...' : ''}
                                         </td>
                                     ),
 
@@ -288,21 +316,21 @@ const Assembleias = () => {
                         />
                     </CFormGroup>
 
-                    <CFormGroup>
-                        <CLabel htmlFor="modal_Content">Descrição</CLabel>
-                        <CInput
-                            type="text"
-                            id='modal_Content'
-                            name="Content"
-                            placeholder=""
-                            value={modalContentField}
-                            onChange={(e) => setModalContentField(e.target.value)}
-                        />
-                    </CFormGroup>
+
+                        <CFormGroup className="mb-5">
+                            <CLabel htmlFor="modal_Content">Descrição</CLabel>
+                            <ReactQuill
+                                style={{ height: '300px' }} // Defina a altura desejada aqui
+                                theme="snow"                             
+                                modules={modules}                                                  
+                                value={modalContentField}
+                                onChange={(content) => setModalContentField(content)}
+                            />
+                        </CFormGroup>
 
 
                 </CModalBody>
-                <CModalFooter>
+                <CModalFooter className="mt-5">
                     <CButton disabled={modalLoading} onClick={handleModalSave} color="primary">{modalLoading ? 'Carregando' : 'Salvar'}</CButton>
                     <CButton disabled={modalLoading} onClick={handleCloseModal} color="secondary">Cancelar</CButton>
 

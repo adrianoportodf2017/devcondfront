@@ -19,12 +19,14 @@ const _nav =  [
     _tag: 'CSidebarNavTitle',
     _children: ['Gestão do Sistema']
   },
-  {
+/*  {
+função de cadastrar novos condominios pos lancamento
+
     _tag: 'CSidebarNavItem',
     name: 'Condominios',
     to: '/condominios',
     icon: 'cil-speedometer',
-  },
+  },*/
   {
     _tag: 'CSidebarNavItem',
     name: 'Assembleias',

@@ -345,7 +345,7 @@ export default () => {
                 formData.append(i,data[i])
             }
             let req = await fetch(
-                `${baseUrl}/documentos/assembleia`,
+                `${baseUrl}/documento/assembleia`,
                 {
                     method: 'POST',
                     headers: {'Authorization': `Bearer ${token}`},
@@ -354,7 +354,7 @@ export default () => {
             let json = req.json();
             return json;
         },
-        updateAssembleia: async(id, data)=>{
+        updateDocumentoAssembleia: async(id, data)=>{
             let token = localStorage.getItem('token');
             let formData = new FormData();  
             for ( let i in data){
@@ -362,7 +362,7 @@ export default () => {
           } 
             console.log(formData)    ; 
             let req = await fetch(
-                `${baseUrl}/assembleia/${id}`,
+                `${baseUrl}/documento/assembleia/${id}`,
                 {
                     method: 'POST',
                     headers: {'Authorization': `Bearer ${token}`},
@@ -371,14 +371,14 @@ export default () => {
             let json = req.json();
             return json;
         },
-        updateAssembleiaStatus: async (id, dataStatus)=>{
+        updateDocumentoAssembleiaStatus: async (id, dataStatus)=>{
           let token = localStorage.getItem('token');
-          let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
+          let json = await request('post', `/documento/assembleia/${id}/status`, dataStatus, token);
           return json;
         },
-        removeAssembleia: async (id) => {
+        removeDocumentoAssembleia: async (id) => {
           let token = localStorage.getItem('token');
-          let json = await request('delete', `/assembleia/${id}`, {}, token);
+          let json = await request('delete', `/documento/assembleia/${id}`, {}, token);
           return json;
         },
 

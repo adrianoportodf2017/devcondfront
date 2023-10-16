@@ -170,8 +170,8 @@ const DocumentosAssembleia = () => {
 
     const handleDelButton = async (id) => {
         if (window.confirm('Tem certeza que deseja excluir?')) {
-            const result = await api.removeAssembleia(id);
-            if (result.error === '' || result.erro === undefined) {
+            const result = await api.removeDocumentoAssembleia(id);
+            if (result.error == '' || result.error == undefined) {
                 getList();
             } else {
                 alert(result.error)
