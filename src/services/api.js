@@ -148,27 +148,55 @@ export default () => {
     /********************************************************************************/
     /******************************--__-- Walls --__--***********************************/
     /********************************************************************************/
-
-    getWall: async () => {
+    getWall: async()=>{
       let token = localStorage.getItem('token');
-      let json = await request('get', '/walls', {}, token);
+      console.log(token);
+      let json = await request('get', `/walls`, {}, token);  
       return json;
-    },
-    addWall: async (data) => {
+  },
+    addWall: async(data)=>{
       let token = localStorage.getItem('token');
-      let json = await request('post', '/wall', data, token);
+      let formData = new FormData();
+      for ( let i in data){
+          formData.append(i,data[i])
+      }
+      let req = await fetch(
+          `${baseUrl}/wall`,
+          {
+              method: 'POST',
+              headers: {'Authorization': `Bearer ${token}`},
+              body: formData
+           });
+      let json = req.json();
       return json;
-    },
-    updateWall: async (id, data) => {
+  },
+  updateWall: async(id, data)=>{
       let token = localStorage.getItem('token');
-      let json = await request('put', `/wall/${id}`, data, token);
+      let formData = new FormData();  
+      for ( let i in data){
+        formData.append(i,data[i])
+    } 
+      console.log(formData)    ; 
+      let req = await fetch(
+          `${baseUrl}/wall/${id}`,
+          {
+              method: 'POST',
+              headers: {'Authorization': `Bearer ${token}`},
+              body: formData
+           });
+      let json = req.json();
       return json;
-    },
-    removeWall: async (id) => {
-      let token = localStorage.getItem('token');
-      let json = await request('delete', `/wall/${id}`, {}, token);
-      return json;
-    },
+  },
+  updateWallStatus: async (id, dataStatus)=>{
+    let token = localStorage.getItem('token');
+    let json = await request('post', `/wall/${id}/status`, dataStatus, token);
+    return json;
+  },
+  removeWall: async (id) => {
+    let token = localStorage.getItem('token');
+    let json = await request('delete', `/wall/${id}`, {}, token);
+    return json;
+  },
 
     /********************************************************************************/
     /******************************--__-- Documents --__--***********************************/

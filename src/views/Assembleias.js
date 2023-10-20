@@ -36,12 +36,13 @@ const Assembleias = () => {
     const [modalLoading, setModalLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [modalId, setModalId] = useState('');
-    const [modalStatusField, setModalStatusField] = useState('');
     const [modalTitleField, setModalTitleField] = useState('');
     const [modalYearField, setModalYearField] = useState('');
 
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalContentField, setModalContentField] = useState('');
+    const [modalStatusField, setModalStatusField] = useState('');
+
 
 
     const fields = [
@@ -76,9 +77,9 @@ const Assembleias = () => {
 
     const handleAddButton = () => {
         setModalId('');
-        setModalStatusField('1');
         setModalTitleField('');
         setModalYearField('');
+        setModalStatusField('1');
         setModalThumbField('');
         setModalContentField('');
         setShowModal(true);
@@ -277,7 +278,7 @@ const Assembleias = () => {
                 <CModalBody>
                     <CFormGroup>
                         <CLabel htmlFor="modal_status">Ativo</CLabel><br />
-                        <CSwitch
+                       <CSwitch
                             color="success"
                             checked={modalStatusField == '0' ? '' : 'true'}
                             onChange={handleModalSwitchClick}
