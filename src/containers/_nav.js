@@ -4,6 +4,140 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
 
+let json = [
+  {
+    "id": 1,
+    "title": "Assembleia",
+    "status": "Ativo",
+    "content": "Informações gerais sobre as assembleias realizadas no Condomínio ABC.",
+    "thumb": "https://via.placeholder.com/800x600.png/004411?text=optio",
+    "thumb_file": "https://via.placeholder.com/800x600.png/0099bb?text=consectetur",
+    "parent_id": null,
+    "created_at": "2023-10-21T03:42:15.000000Z",
+    "updated_at": "2023-10-21T03:42:15.000000Z",
+    "children": [
+      {
+        "id": 2,
+        "title": "Assembleia de Janeiro de 2023",
+        "thumb": "https://via.placeholder.com/800x600.png/00ddcc?text=officia",
+        "content": "Resumo da assembleia realizada em janeiro de 2023.",
+        "children": [
+          {
+            "id": 4,
+            "title": "Ata da Assembleia",
+            "thumb": "https://via.placeholder.com/800x600.png/00aa99?text=quidem",
+            "content": "Ata da assembleia realizada em janeiro de 2023.",
+            "children": [
+              {
+                "id": 4,
+                "title": "Ata da Assembleia",
+                "thumb": "https://via.placeholder.com/800x600.png/00aa99?text=quidem",
+                "content": "Ata da assembleia realizada em janeiro de 2023.",
+                "children": []
+              },
+              {
+                "id": 5,
+                "title": "Documentos da Assembleia",
+                "thumb": "https://via.placeholder.com/800x600.png/0099bb?text=quae",
+                "content": "Documentos relacionados à assembleia de janeiro de 2023.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "title": "Documentos da Assembleia",
+            "thumb": "https://via.placeholder.com/800x600.png/0099bb?text=quae",
+            "content": "Documentos relacionados à assembleia de janeiro de 2023.",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Assembleia de Janeiro de 2021",
+        "thumb": "https://via.placeholder.com/800x600.png/00ddcc?text=officia",
+        "content": "Resumo da assembleia realizada em janeiro de 2023.",
+        "children": [
+          {
+            "id": 4,
+            "title": "Ata da Assembleia",
+            "thumb": "https://via.placeholder.com/800x600.png/00aa99?text=quidem",
+            "content": "Ata da assembleia realizada em janeiro de 2023.",
+            "children": []
+          },
+          {
+            "id": 5,
+            "title": "Documentos da Assembleia",
+            "thumb": "https://via.placeholder.com/800x600.png/0099bb?text=quae",
+            "content": "Documentos relacionados à assembleia de janeiro de 2023.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Reuniões do Conselho",
+    "status": "Ativo",
+    "content": "Informações sobre as reuniões do conselho do Condomínio ABC.",
+    "thumb": "https://via.placeholder.com/800x600.png/00ee00?text=ullam",
+    "thumb_file": "https://via.placeholder.com/800x600.png/008888?text=neque",
+    "parent_id": null,
+    "created_at": "2023-10-21T03:42:15.000000Z",
+    "updated_at": "2023-10-21T03:42:15.000000Z",
+    "children": [
+      {
+        "id": 9,
+        "title": "Reunião de Fevereiro de 2023",
+        "thumb": "https://via.placeholder.com/800x600.png/002233?text=ut",
+        "content": "Resumo da reunião do conselho realizada em fevereiro de 2023.",
+        "children": [
+          {
+            "id": 10,
+            "title": "Pauta da Reunião",
+            "thumb": "https://via.placeholder.com/800x600.png/00dd22?text=harum",
+            "content": "Pauta da reunião do conselho de fevereiro de 2023.",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]
+
+
+const generateMenu = (jsonData) => {
+  return jsonData.map((item) => {
+    const menuItem = {
+      _tag: 'CSidebarNavItem',
+      name: item.title,
+      to: item.to,
+      customClasses: 'text-left', // Alinha o texto à esquerda
+    };
+
+    // Adicione uma classe CSS para permitir a quebra de palavras no título
+    menuItem.name = (
+      <span style={{ whiteSpace: 'normal' }}>{item.title}</span>
+    );
+
+    if (item.children && item.children.length > 0) {
+      menuItem._tag = 'CSidebarNavDropdown';
+      menuItem._children = generateMenu(item.children);
+    }
+
+    return menuItem;
+  });
+};
+
+
+// Gere o menu dinamicamente a partir do JSON
+const dynamicMenu = generateMenu(json);
+
+
+
+
 const _nav =  [
   {
     _tag: 'CSidebarNavItem',
@@ -19,14 +153,14 @@ const _nav =  [
     _tag: 'CSidebarNavTitle',
     _children: ['Gestão do Sistema']
   },
-/*  {
-função de cadastrar novos condominios pos lancamento
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Pastas', // Nome da categoria
+    route: '/folders', // Rota da categoria
+    icon: <CIcon content={freeSet.cilFolder}  customClasses="c-sidebar-nav-icon"/>,
+    _children: dynamicMenu,
 
-    _tag: 'CSidebarNavItem',
-    name: 'Condominios',
-    to: '/condominios',
-    icon: 'cil-speedometer',
-  },*/
+  },
   {
     _tag: 'CSidebarNavItem',
     name: 'Assembleias',
