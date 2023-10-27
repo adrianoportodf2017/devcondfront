@@ -249,6 +249,68 @@ export default () => {
       return json;
     },
 
+ /********************************************************************************/
+    /******************************--__-- PAstas --__--***********************************/
+    /********************************************************************************/
+
+    getFolders: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/folders', {}, token);
+      return json;
+    },
+    getFolderById: async(id)=>{
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/folder/${id}`, {}, token);  
+      return json;
+  },
+
+  updateFolderStatus: async (id, dataStatus)=>{
+    let token = localStorage.getItem('token');
+    let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
+    return json;
+  },
+    addDocument: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      formData.append('title', data.title);
+      if (data.file) {
+        formData.append('file', data.file);
+      }
+      let req = await fetch(`${baseUrl}/doc`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      let json = await req.json();
+      return json;
+    },
+    updateDocument: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      formData.append('title', data.title);
+      if (data.file) {
+        formData.append('file', data.file);
+      }
+      let req = await fetch(`${baseUrl}/doc/${id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      let json = await req.json();
+      return json;
+    },
+    removeDocument: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/doc/${id}`, {}, token);
+      return json;
+    },
 
     /********************************************************************************/
     /******************************--__-- Reservations --__--***********************************/

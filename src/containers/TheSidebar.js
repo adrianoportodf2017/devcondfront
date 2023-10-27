@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   CCreateElement,
@@ -7,15 +7,22 @@ import {
   CSidebarNavTitle,
   CSidebarMinimizer,
   CSidebarNavItem,
-  CSidebarNavDropdown, // Importe o componente CSidebarNavDropdown
+  CSidebarNavDropdown,
 } from '@coreui/react';
-
-// sidebar nav config
-import navigation from './_nav';
+import loadMenu from './_nav';
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector(state => state.sidebarShow);
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      const menuData = await loadMenu();
+      setMenuItems(menuData);
+    };
+    fetchMenu();
+  }, []);
 
   return (
     <CSidebar
@@ -25,11 +32,11 @@ const TheSidebar = () => {
       <CSidebarNav>
         <img src="/homelogo.png" className="mt-2 mb-3 ml-auto mr-auto" width="70%" />
         <CCreateElement
-          items={navigation}
+          items={menuItems}
           components={{
             CSidebarNavItem,
             CSidebarNavTitle,
-            CSidebarNavDropdown, // Adicione CSidebarNavDropdown como componente
+            CSidebarNavDropdown,
           }}
         />
       </CSidebarNav>
