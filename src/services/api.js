@@ -270,14 +270,18 @@ export default () => {
     let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
     return json;
   },
-    addDocument: async (data) => {
+    addFolder: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('title', data.title);
-      if (data.file) {
-        formData.append('file', data.file);
+      formData.append('status', data.status);
+      formData.append('content', data.content);
+
+      if (data.thumb) {
+        formData.append('thumb', data.thumb);
+        
       }
-      let req = await fetch(`${baseUrl}/doc`, {
+      let req = await fetch(`${baseUrl}/folder`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

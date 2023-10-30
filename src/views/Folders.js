@@ -4,17 +4,29 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {
     CButton,
+    CButtonGroup,
     CCard,
     CCardBody,
+    CCardHeader,
     CCol,
+    CDataTable,
     CFormGroup,
     CInput,
+    CInputCheckbox,
     CLabel,
+    CModal,
+    CModalBody,
+    CModalFooter,
+    CModalHeader,
     CRow,
     CSwitch,
+
 } from '@coreui/react';
+import CIcon from "@coreui/icons-react";
+
 
 import useApi from '../services/api';
+
 
 const Folder = () => {
     const api = useApi();
@@ -22,8 +34,19 @@ const Folder = () => {
 
     const [loading, setLoading] = useState(true);
     const [folder, setFolder] = useState({});
+    const [listFolders, setListFolders] = useState([]);
+    const [listFiles, setListFiles] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [modalStatusField, setModalStatusField] = useState('');
+    const [showIframeModal, setShowIframeModal] = useState(false);
+    const [iframeUrl, setIframeUrl] = useState(false);
+
+
+    const fieldsListFolder = [
+        { label: 'Capa', key: 'Thumb', sorter: false, filter: false },
+        { label: 'Título', key: 'title' },
+        { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
+    ]
 
     useEffect(() => {
         getFolder();
@@ -36,14 +59,24 @@ const Folder = () => {
 
         if (result.error === '' || result.error === undefined) {
             setFolder(result);
+            setListFolders(result.children);
+            setListFiles(result.midias);
         } else {
             alert(result.error);
         }
     };
 
+
     const handleEdit = () => {
         setIsEditing(true);
     };
+    const handleAddButton = () => {
+        // setIsEditing(true);
+    };
+    const handleDelButton = () => {
+        // setIsEditing(true);
+    };
+
 
     const handleSave = async () => {
         setLoading(true);
@@ -69,34 +102,64 @@ const Folder = () => {
         }
     }
 
+    /**
+ * 
+ * Função para abrir modal do documento
+*/
+    const openIframeModal = (url) => {
+        setIframeUrl(url);
+        setShowIframeModal(true);
+    };
+
+    const IframeModal = ({ iframeUrl, onClose }) => {
+        return (
+            <CModal show={showIframeModal} onClose={onClose} size="xl">
+                <CModalBody>
+                    <div style={{ width: '100%', height: '800px' }}>
+                        <iframe src={iframeUrl} width="100%" height="100%" frameBorder="0"></iframe>
+                    </div>
+                </CModalBody>
+                <CModalFooter>
+                    <CButton onClick={onClose} color="secondary">Fechar</CButton>
+                    <CButton color="primary" onClick={() => window.open(iframeUrl, "_blank")} >   Visualizar em Nova Guia </CButton>
+                </CModalFooter>
+            </CModal>
+        );
+    };
+
+    const handleFileClick = (item) => {
+        if (item.type === 'imagem' || item.type === 'pdf') {
+            openIframeModal(item.url);
+        } else {
+            window.open(item.url, '_blank');
+        }
+    };
+
     const modules = {
         toolbar: [
-          [{ header: '1' }, { header: '2' }],
-          ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
-          [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
-          ['link', 'image'], // Inserção de links e imagens
-          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-          [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        
-          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-        
-
-          ['clean'], // Remoção de formatação
+            [{ header: '1' }, { header: '2' }],
+            ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
+            [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
+            ['link', 'image'], // Inserção de links e imagens
+            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['clean'], // Remoção de formatação
         ],
-      };
-
+    };
 
     return (
         <>
             <CCard>
+                <IframeModal iframeUrl={iframeUrl} onClose={() => setShowIframeModal(false)} className="modal-lg w-100" style={{ height: '500px' }} />
                 <CCardBody>
                     <CRow>
                         <CCol md="1">
                             <CFormGroup>
-                                <CLabel htmlFor="status">Status</CLabel><br/>
+                                <CLabel htmlFor="status">Status</CLabel><br />
                                 {isEditing ? (
                                     <CSwitch
                                         id="status"
@@ -105,13 +168,18 @@ const Folder = () => {
                                         onChange={handleSwitchClick}
                                     />
                                 ) : (
-                                    <div>{folder.status === '1' ? 'Active' : 'Inactive'}</div>
-                                )}
+                                    <CSwitch
+                                        id="status"
+                                        color="success"
+                                        checked={folder.status === '1'} // Use um valor booleano
+                                        onChange={handleSwitchClick}
+                                        disabled
+                                    />)}
                             </CFormGroup>
                         </CCol>
                         <CCol md="12">
                             <CFormGroup>
-                                <CLabel htmlFor="title">Title</CLabel>
+                                <CLabel htmlFor="title">Titulo</CLabel>
                                 {isEditing ? (
                                     <CInput
                                         type="text"
@@ -128,30 +196,33 @@ const Folder = () => {
                     <CRow className="mb-5">
                         <CCol md="6">
                             <CFormGroup>
-                                <CLabel htmlFor="thumb">Thumb</CLabel>
+                                <CLabel htmlFor="thumb">Imagem</CLabel>
                                 {isEditing ? (
-                                    <CInput
-                                        type="text"
-                                        id="thumb"
-                                        value={folder.thumb}
-                                        onChange={(e) => setFolder({ ...folder, thumb: e.target.value })}
-                                    />
+                                    <div ><img src={folder.thumb} width={300} className="m-3 rounded img-rounded" />
+                                        <CInput
+                                            type="file"
+                                            id='modal_Thumb'
+                                            name="Thumb"
+                                            placeholder="Escolha uma Imagem"
+                                            onChange={(e) => setFolder(e.target.files[0])}
+                                        />
+                                    </div>
                                 ) : (
-                                    <div>{folder.thumb}</div>
+                                    <div><img src={folder.thumb} width={300} /></div>
                                 )}
                             </CFormGroup>
                         </CCol>
                         <CCol md="12" className="mb-5">
                             <CFormGroup >
-                            <CLabel htmlFor="modal_Content">Descrição</CLabel>
+                                <CLabel htmlFor="modal_Content">Descrição</CLabel>
                                 {isEditing ? (
-                                         <ReactQuill
-                                             style={{ height: '300px' }} // Defina a altura desejada aqui
-                                             theme="snow"                             
-                                             modules={modules}                                                  
-                                             value={folder.content}
-                                           //  onChange={(e) => setFolder({ ...folder, content: e.target.value })}
-                                         />                                    
+                                    <ReactQuill
+                                        style={{ height: '300px' }} // Defina a altura desejada aqui
+                                        theme="snow"
+                                        modules={modules}
+                                        value={folder.content}
+                                    //  onChange={(e) => setFolder({ ...folder, content: e.target.value })}
+                                    />
                                 ) : (
                                     <div>{folder.content}</div>
                                 )}
@@ -169,6 +240,77 @@ const Folder = () => {
                     </CRow>
                 </CCardBody>
             </CCard>
+            <CRow>
+                <CCol>
+                    <h2>Pastas </h2>
+
+                    <CCard>
+                        <CCardHeader>
+                            <CButton
+                                onClick={handleAddButton}
+                                color="primary"
+
+                            >
+                                <CIcon name="cil-check" /> Nova Pasta
+                            </CButton>
+                        </CCardHeader>
+
+                        <CCardBody>
+                            <CRow className="File-row">
+                                {listFolders.map((item) => (
+                                    <CCol md="4" key={item.id}>
+                                        <div className="folder-item d-flex flex-column">
+                                            <img src={item.thumb} width={200} alt={item.title} className="img-fluid rounded m-2" style={{ width: '250px', height: '250px' }} />
+                                            <h3 className="flex-fill">{item.title}</h3>
+                                            <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
+                                        </div>
+                                        <CButtonGroup>
+                                            <CButton color="info" to={`/Folders/${item.id}`}>Acessar</CButton>
+                                            <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                        </CButtonGroup>
+                                    </CCol>
+                                ))}
+                            </CRow>
+                        </CCardBody>
+
+                    </CCard>
+                </CCol>
+            </CRow>
+
+            <CRow>
+                <CCol>
+                    <h2>Arquivos </h2>
+
+                    <CCard>
+                        <CCardHeader>
+                            <CButton
+                                onClick={handleAddButton}
+                                color="primary"
+
+                            >
+                                <CIcon name="cil-check" /> Novo Arquivo
+                            </CButton>
+                        </CCardHeader>
+                        <CCardBody>
+                            <CRow className="File-row">
+                                {listFiles.map((item) => (
+                                    <CCol md="4" key={item.id}>
+                                        <div className="file-item " onClick={() => handleFileClick(item)} style={{ cursor: "pointer" }} >
+                                            <img src={item.icon} alt={item.title} className="img-fluid rounded-circle" style={{ width: '200px', height: '200px' }} />
+                                            <h3>{item.title}</h3>
+                                            <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
+                                            <CButtonGroup>
+                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                            </CButtonGroup>
+                                        </div>
+                                    </CCol>
+                                ))}
+                            </CRow>
+                        </CCardBody>
+
+                    </CCard>
+                </CCol>
+            </CRow>
         </>
     );
 };

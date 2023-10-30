@@ -5,13 +5,20 @@ import Folders from '../services/api';
 import { useHistory, Link } from 'react-router-dom';
 
 const api = Folders();
+// Inicialize a variável novaPastaAdded como false
+let novaPastaAdded = false;
 
+// Em algum lugar do seu código, chame generateMenu apenas uma vez:
+
+// ...
+
+// Dentro da função generateMenu:
 const generateMenu = (jsonData) => {
-  return jsonData.map((item) => {
+  const menuItems = jsonData.map((item) => {
     const menuItem = {
       _tag: 'CSidebarNavItem',
       name: item.title,
-      to: '/Folders/' + item.id, // Defina a rota do item
+      to: '/Folders/' + item.id,
       customClasses: 'text-left',
     };
 
@@ -21,19 +28,31 @@ const generateMenu = (jsonData) => {
 
     if (item.children && item.children.length > 0) {
       menuItem._tag = 'CSidebarNavDropdown';
-      menuItem.route = '/Folders/' + item.id; // Defina a rota do dropdown
+      menuItem.route = '/Folders/' + item.id;
       menuItem._children = generateMenu(item.children);
-
-      // Adicione redirecionamento para sublinks em todos os níveis
-      menuItem._children.forEach((child) => {
-        child.name = (
-          <RedirectionLink to={child.to}>{child.name}</RedirectionLink>
-        );
-      });
     }
+
     return menuItem;
   });
+
+  // Adicione o item "Adicionar Nova Pasta" ao menu apenas se não tiver sido adicionado
+  if (!novaPastaAdded) {
+    menuItems.push({
+      _tag: 'CSidebarNavItem',
+      name: 'Adicionar Nova Pasta',
+      to: '/novaPasta', // Defina a rota apropriada
+      customClasses: 'text-left',
+    });
+
+    novaPastaAdded = true; // Defina a variável como true para evitar adicionar novamente
+  }
+
+  return menuItems;
 };
+
+
+
+
 
 const RedirectionLink = ({ to, children }) => {
   const history = useHistory();
@@ -69,25 +88,25 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavTitle',
         _children: ['Gestão do Sistema']
       },
-      {
-        _tag: 'CSidebarNavDropdown',
-        name: 'Pastas',
-        route: '/Folders/1', // Substitua :id pelo ID da pasta
-        icon: <CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" />,
-        _children: dynamicMenu.map((item) => {
-          return {
-            ...item,
-            name: (
-              <RedirectionLink to={item.to}>{item.name}</RedirectionLink>
-            ),
-          };
-        }),
-      },
+     { _tag: 'CSidebarNavDropdown',
+      name: 'Pastas',
+      route: '/Folders/1', // Substitua :id pelo ID da pasta
+      icon: <CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" />,
+      _children: [
+        {
+          _tag: 'CSidebarNavItem',
+          name: 'Adicionar Nova Pasta',
+          to: '/newFolder/0', // Defina a rota apropriada
+        },
+        ...dynamicMenu,
+      
+      ]
+    },
       {
         _tag: 'CSidebarNavItem',
         name: 'Assembleias',
         to: '/assembleias',
-        icon: <CIcon content={freeSet.cilShortText}  customClasses="c-sidebar-nav-icon"/>,
+        icon: <CIcon content={freeSet.cilShortText} customClasses="c-sidebar-nav-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
@@ -118,9 +137,9 @@ const loadMenu = async () => {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
             to: '/news/news-2',
-            icon: <CIcon content={freeSet.cilLayers}  customClasses="c-sidebar-nav-icon"/>,
+            icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
-    
+
           },
           // Adicione mais notícias conforme necessário
         ],
@@ -129,22 +148,22 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavDropdown',
         name: 'Classificados',
         to: '/classifield',
-        icon: <CIcon content={freeSet.cilCart}  customClasses="c-sidebar-nav-icon"/>,
+        icon: <CIcon content={freeSet.cilCart} customClasses="c-sidebar-nav-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Classificados',
             to: '/news/news-1',
-            icon: <CIcon content={freeSet.cilCart}  customClasses="c-sidebar-nav-icon"/>,
+            icon: <CIcon content={freeSet.cilCart} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
             to: '/news/news-2',
-            icon: <CIcon content={freeSet.cilLayers}  customClasses="c-sidebar-nav-icon"/>,
+            icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
-    
+
           },
           // Adicione mais notícias conforme necessário
         ],
@@ -153,28 +172,28 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavItem',
         name: 'Galeria de Fotos',
         to: '/classifield',
-        icon: <CIcon content={freeSet.cilImage}  customClasses="c-sidebar-nav-icon"/>,
+        icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
       },
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Convênios/Parceiros',
         to: '/classifield',
-        icon: <CIcon content={freeSet.cilTouchApp}  customClasses="c-sidebar-nav-icon"/>,
+        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Convênios/Parceiros',
             to: '/news/news-1',
-            icon: <CIcon content={freeSet.cilTouchApp}  customClasses="c-sidebar-nav-icon"/>,
+            icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
             to: '/news/news-2',
-            icon: <CIcon content={freeSet.cilLayers}  customClasses="c-sidebar-nav-icon"/>,
+            icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
-    
+
           },
           // Adicione mais notícias conforme necessário
         ],
@@ -195,13 +214,13 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavItem',
         name: 'Prestores de Serviços',
         to: '/reservations',
-        icon: <CIcon content={freeSet.cilPaint}  customClasses="c-sidebar-nav-icon"/>,
+        icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Ocorrências',
         to: '/warnnings',
-        icon: <CIcon content={freeSet.cilBellExclamation}  customClasses="c-sidebar-nav-icon"/>,
+        icon: <CIcon content={freeSet.cilBellExclamation} customClasses="c-sidebar-nav-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
@@ -213,7 +232,7 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavTitle',
         _children: ['Dados']
       },
-      
+
       {
         _tag: 'CSidebarNavItem',
         name: 'Usuários',
@@ -248,7 +267,7 @@ const loadMenu = async () => {
         to: '/logout',
         icon: 'cil-drop',
       },
-      
+
     ]
 
     return _nav;
