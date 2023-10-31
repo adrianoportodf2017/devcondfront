@@ -12,13 +12,12 @@ let novaPastaAdded = false;
 
 // ...
 
-// Dentro da função generateMenu:
 const generateMenu = (jsonData) => {
-  const menuItems = jsonData.map((item) => {
+  return jsonData.map((item) => {
     const menuItem = {
       _tag: 'CSidebarNavItem',
       name: item.title,
-      to: '/Folders/' + item.id,
+      to: '/Folders/' + item.id, // Defina a rota do item
       customClasses: 'text-left',
     };
 
@@ -28,27 +27,19 @@ const generateMenu = (jsonData) => {
 
     if (item.children && item.children.length > 0) {
       menuItem._tag = 'CSidebarNavDropdown';
-      menuItem.route = '/Folders/' + item.id;
+      menuItem.route = '/Folders/' + item.id; // Defina a rota do dropdown
       menuItem._children = generateMenu(item.children);
-    }
 
+      // Adicione redirecionamento para sublinks em todos os níveis
+      menuItem._children.forEach((child) => {
+        child.name = (
+          <RedirectionLink to={child.to}>{child.name}</RedirectionLink>
+        );
+      });
+    }
     return menuItem;
   });
-
-  // Adicione o item "Adicionar Nova Pasta" ao menu apenas se não tiver sido adicionado
-  if (!novaPastaAdded) {
-    menuItems.push({
-      _tag: 'CSidebarNavItem',
-      name: 'Adicionar Nova Pasta',
-      to: '/novaPasta', // Defina a rota apropriada
-      customClasses: 'text-left',
-    });
-
-    novaPastaAdded = true; // Defina a variável como true para evitar adicionar novamente
-  }
-
-  return menuItems;
-};
+}
 
 
 
@@ -97,9 +88,19 @@ const loadMenu = async () => {
           _tag: 'CSidebarNavItem',
           name: 'Adicionar Nova Pasta',
           to: '/newFolder/0', // Defina a rota apropriada
+          icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
         },
-        ...dynamicMenu,
-      
+        ...dynamicMenu.map((item) => {
+          return {
+            ...item,
+            name: (
+              <RedirectionLink to={item.to}>{item.name}</RedirectionLink>
+            ),
+            icon: (
+              <RedirectionLink to={item.to}><CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" /></RedirectionLink>
+            ),
+          };
+        }),           
       ]
     },
       {

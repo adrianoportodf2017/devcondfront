@@ -7,6 +7,7 @@ import {
     CButtonGroup,
     CCard,
     CCardBody,
+    CCardFooter,
     CCardHeader,
     CCol,
     CDataTable,
@@ -37,9 +38,23 @@ const Folder = () => {
     const [listFolders, setListFolders] = useState([]);
     const [listFiles, setListFiles] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [modalStatusField, setModalStatusField] = useState('');
     const [showIframeModal, setShowIframeModal] = useState(false);
     const [iframeUrl, setIframeUrl] = useState(false);
+
+    // Inicialize os estados para coletar os dados para editar os dados da pasta
+    const [modalLoading, setModalLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [title, setTitle] = useState('');
+    const [status, setStatus] = useState('1'); // Defina o valor padrão desejado
+    const [content, setContent] = useState('');
+    const [thumb, setThumb] = useState(null); // Use null para o input type="file"
+
+    // modal para criar nova pasta dentro de outra pasta
+    const [modalId, setModalId] = useState('');
+    const [modalTitleField, setModalTitleField] = useState('');
+    const [modalThumbField, setModalThumbField] = useState('');
+    const [modalContentField, setModalContentField] = useState('');
+    const [modalStatusField, setModalStatusField] = useState('');
 
 
     const fieldsListFolder = [
@@ -59,6 +74,10 @@ const Folder = () => {
 
         if (result.error === '' || result.error === undefined) {
             setFolder(result);
+            setTitle(result.title);
+            setStatus(result.status);
+            setContent(result.content);
+            //  setThumb(result.thumb);
             setListFolders(result.children);
             setListFiles(result.midias);
         } else {
@@ -70,36 +89,114 @@ const Folder = () => {
     const handleEdit = () => {
         setIsEditing(true);
     };
+
+
+///Função para criar nova pasta
     const handleAddButton = () => {
-        // setIsEditing(true);
+        setModalId('');
+        setModalTitleField('');
+        setModalStatusField('1');
+        setModalThumbField('');
+        setModalContentField('');
+        setShowModal(true);
     };
+///Função para fechar modal de adicionar nova da pasta
+
+    const handleCloseModal = () => {
+        setShowModal(false)
+    };
+
+
+///função para enviar dados para api back end e salvar banco de dados
+
+    const handleAddFolder = async () => {
+
+        if (modalTitleField) {
+            setModalLoading(true);
+            let result;
+            let data = {
+                status: modalStatusField,
+                title: modalTitleField,
+                content: modalContentField,
+                parent_id: id
+            };
+
+            if (modalThumbField) {
+                data.thumb = modalThumbField;
+            };
+        
+              // Chame a API para criar a nova pasta
+              try {
+                console.log(data);
+                const result = await api.addFolder(data);
+
+                if (result.error === '' || result.error === undefined) {
+                    setModalLoading(false);
+                    setShowModal(false);
+                getFolder();
+
+                } else {
+                    alert(result.error)
+                }
+            } catch (error) {
+                alert('Erro ao criar a pasta. Verifique a conexão com a API.');
+            }  
+        } else {
+            alert('Preencha os campos para continuar')
+        }
+
+    };
+
     const handleDelButton = () => {
         // setIsEditing(true);
     };
 
 
-    const handleSave = async () => {
-        setLoading(true);
-        // Envie as informações atualizadas de folder para a API ou faça as ações necessárias
-        // para salvar as alterações na pasta.
-        // Você pode adicionar a lógica de atualização aqui.
-        // Depois, atualize a lista de pastas se necessário.
-        setLoading(false);
-        setIsEditing(false);
-    };
 
+
+    const handleSave = async () => {
+        if (title) {
+            // Construa o objeto de dados a ser enviado à API
+            const data = {
+                id: id,
+                title,
+                status,
+                content,
+                thumb
+            };
+
+            // Chame a API para criar a nova pasta
+            try {
+                console.log(data);
+                const result = await api.updateFolder(data);
+
+                if (result.error === '' || result.error === undefined) {
+                    //console.log(result.list.id);
+                    //  history.push(`/Folders/${result.list.id}`);
+                    // Você pode adicionar redirecionamento ou outras ações aqui após o sucesso
+                    setFolder(result.list);
+                    setIsEditing(false);
+
+
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert('Erro ao criar a pasta. Verifique a conexão com a API.');
+            }
+        } else {
+            alert('Preencha os campos para continuar.');
+        }
+    };
     const handleSwitchClick = async () => {
         setLoading(true);
-        const dataStatus = folder.status === '1' ? '0' : '1'; // Troca o status entre 1 e 0
-        const result = await api.updateFolderStatus(id, { 'status': dataStatus }); // Envie o novo status para a API usando o ID correto
+        const dataStatus = status === '1' ? '0' : '1'; // Troca o status entre 1 e 0
+        setStatus(dataStatus);
         setLoading(false);
-
-        if (result.error === '' || result.error === undefined) {
-            // Atualize o estado local da pasta após a alteração do status
-            setFolder({ ...folder, status: dataStatus });
-        } else {
-            alert(result.error);
-        }
+    }
+    ///função para mudar status na hora de adicionar nova pasta
+    const handleModalSwitchClick = () => {
+        setModalStatusField(modalStatusField == '1' ? '0' : '1');
     }
 
     /**
@@ -156,7 +253,21 @@ const Folder = () => {
             <CCard>
                 <IframeModal iframeUrl={iframeUrl} onClose={() => setShowIframeModal(false)} className="modal-lg w-100" style={{ height: '500px' }} />
                 <CCardBody>
+                    <CCardHeader>
+                        <CButtonGroup>
+
+                            {isEditing ? (
+                                <CButton color="success" onClick={handleSave}>Salvar</CButton>
+                            ) : (
+                                <CButton color="primary" onClick={handleEdit}>Editar</CButton>
+                            )}
+                            <CButton color="danger" onClick={handleEdit}>Excluir Pasta</CButton>
+                        </CButtonGroup>
+
+                    </CCardHeader>
+
                     <CRow>
+
                         <CCol md="1">
                             <CFormGroup>
                                 <CLabel htmlFor="status">Status</CLabel><br />
@@ -175,6 +286,7 @@ const Folder = () => {
                                         onChange={handleSwitchClick}
                                         disabled
                                     />)}
+
                             </CFormGroup>
                         </CCol>
                         <CCol md="12">
@@ -184,37 +296,44 @@ const Folder = () => {
                                     <CInput
                                         type="text"
                                         id="title"
-                                        value={folder.title}
-                                        onChange={(e) => setFolder({ ...folder, title: e.target.value })}
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
                                     />
                                 ) : (
                                     <div>{folder.title}</div>
                                 )}
+
                             </CFormGroup>
                         </CCol>
                     </CRow>
                     <CRow className="mb-5">
                         <CCol md="6">
                             <CFormGroup>
-                                <CLabel htmlFor="thumb">Imagem</CLabel>
                                 {isEditing ? (
-                                    <div ><img src={folder.thumb} width={300} className="m-3 rounded img-rounded" />
+                                    <div >
+                                        <CLabel htmlFor="thumb">Imagem</CLabel>
+                                        <img src={folder.thumb} width={300} className="m-3 rounded img-rounded" />
                                         <CInput
                                             type="file"
                                             id='modal_Thumb'
                                             name="Thumb"
                                             placeholder="Escolha uma Imagem"
-                                            onChange={(e) => setFolder(e.target.files[0])}
+                                            onChange={(e) => setThumb(e.target.files[0])}
+                                            accept="image/*" // Defina o atributo accept para aceitar apenas imagens
+
                                         />
                                     </div>
                                 ) : (
                                     <div><img src={folder.thumb} width={300} /></div>
                                 )}
+
+
                             </CFormGroup>
                         </CCol>
                         <CCol md="12" className="mb-5">
                             <CFormGroup >
                                 <CLabel htmlFor="modal_Content">Descrição</CLabel>
+
                                 {isEditing ? (
                                     <ReactQuill
                                         style={{ height: '300px' }} // Defina a altura desejada aqui
@@ -224,20 +343,20 @@ const Folder = () => {
                                     //  onChange={(e) => setFolder({ ...folder, content: e.target.value })}
                                     />
                                 ) : (
-                                    <div>{folder.content}</div>
+                                    <div dangerouslySetInnerHTML={{ __html: folder.content }} />
                                 )}
+
                             </CFormGroup>
                         </CCol>
                     </CRow>
-                    <CRow className="mt-5">
-                        <CCol md="6">
-                            {isEditing ? (
-                                <CButton color="success" onClick={handleSave}>Save</CButton>
-                            ) : (
-                                <CButton color="primary" onClick={handleEdit}>Edit</CButton>
-                            )}
-                        </CCol>
-                    </CRow>
+                    <CCardFooter>
+                        {isEditing ? (
+                            <CButton color="success" onClick={handleSave}>Salvar</CButton>
+                        ) : (
+                            <></>
+                        )}
+                    </CCardFooter>
+
                 </CCardBody>
             </CCard>
             <CRow>
@@ -311,6 +430,65 @@ const Folder = () => {
                     </CCard>
                 </CCol>
             </CRow>
+
+            <CModal show={showModal} onClose={handleCloseModal}>
+                <CModalHeader closeButton>Nova Pasta </CModalHeader>
+                <CModalBody>
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_status">Ativo</CLabel><br />
+                        <CSwitch
+                            color="success"
+                            checked={modalStatusField == '0' ? '' : 'true'}
+                            onChange={handleModalSwitchClick}
+                        />
+                    </CFormGroup>
+
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_title">Titulo</CLabel>
+                        <CInput
+                            type="text"
+                            id='modal_title'
+                            name="title"
+                            value={modalTitleField}
+                            onChange={(e) => setModalTitleField(e.target.value)}
+                        />
+                    </CFormGroup>                 
+
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_Thumb">Imagem</CLabel>
+                        <CInput
+                            type="file"
+                            id='modal_Thumb'
+                            name="Thumb"
+                            placeholder="Escolha uma Imagem"
+                            onChange={(e) => setModalThumbField(e.target.files[0])}
+                            accept="image/*" // Defina o atributo accept para aceitar apenas imagens
+
+                        />
+                    </CFormGroup>
+
+
+                    <CFormGroup className="mb-5">
+                        <CLabel htmlFor="modal_Content">Descrição</CLabel>
+                        <ReactQuill
+                            style={{ height: '300px' }} // Defina a altura desejada aqui
+                            theme="snow"
+                            modules={modules}
+                            value={modalContentField}
+                            onChange={(content) => setModalContentField(content)}
+                        />
+                    </CFormGroup>
+
+
+                </CModalBody>
+                <CModalFooter className="mt-5">
+                    <CButton disabled={modalLoading} onClick={handleAddFolder} color="primary">{modalLoading ? 'Carregando' : 'Salvar'}</CButton>
+                    <CButton disabled={modalLoading} onClick={handleCloseModal} color="secondary">Cancelar</CButton>
+
+
+
+                </CModalFooter>
+            </CModal>
         </>
     );
 };

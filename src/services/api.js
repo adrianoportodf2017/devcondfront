@@ -1,6 +1,6 @@
 
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -148,55 +148,55 @@ export default () => {
     /********************************************************************************/
     /******************************--__-- Walls --__--***********************************/
     /********************************************************************************/
-    getWall: async()=>{
+    getWall: async () => {
       let token = localStorage.getItem('token');
       console.log(token);
-      let json = await request('get', `/walls`, {}, token);  
+      let json = await request('get', `/walls`, {}, token);
       return json;
-  },
-    addWall: async(data)=>{
+    },
+    addWall: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
-      for ( let i in data){
-          formData.append(i,data[i])
+      for (let i in data) {
+        formData.append(i, data[i])
       }
       let req = await fetch(
-          `${baseUrl}/wall`,
-          {
-              method: 'POST',
-              headers: {'Authorization': `Bearer ${token}`},
-              body: formData
-           });
+        `${baseUrl}/wall`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
       let json = req.json();
       return json;
-  },
-  updateWall: async(id, data)=>{
+    },
+    updateWall: async (id, data) => {
       let token = localStorage.getItem('token');
-      let formData = new FormData();  
-      for ( let i in data){
-        formData.append(i,data[i])
-    } 
-      console.log(formData)    ; 
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
       let req = await fetch(
-          `${baseUrl}/wall/${id}`,
-          {
-              method: 'POST',
-              headers: {'Authorization': `Bearer ${token}`},
-              body: formData
-           });
+        `${baseUrl}/wall/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
       let json = req.json();
       return json;
-  },
-  updateWallStatus: async (id, dataStatus)=>{
-    let token = localStorage.getItem('token');
-    let json = await request('post', `/wall/${id}/status`, dataStatus, token);
-    return json;
-  },
-  removeWall: async (id) => {
-    let token = localStorage.getItem('token');
-    let json = await request('delete', `/wall/${id}`, {}, token);
-    return json;
-  },
+    },
+    updateWallStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/wall/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeWall: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/wall/${id}`, {}, token);
+      return json;
+    },
 
     /********************************************************************************/
     /******************************--__-- Documents --__--***********************************/
@@ -249,7 +249,7 @@ export default () => {
       return json;
     },
 
- /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- PAstas --__--***********************************/
     /********************************************************************************/
 
@@ -258,28 +258,29 @@ export default () => {
       let json = await request('get', '/folders', {}, token);
       return json;
     },
-    getFolderById: async(id)=>{
+    getFolderById: async (id) => {
       let token = localStorage.getItem('token');
       console.log(token);
-      let json = await request('get', `/folder/${id}`, {}, token);  
+      let json = await request('get', `/folder/${id}`, {}, token);
       return json;
-  },
+    },
 
-  updateFolderStatus: async (id, dataStatus)=>{
-    let token = localStorage.getItem('token');
-    let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
-    return json;
-  },
+    updateFolderStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
+      return json;
+    },
     addFolder: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('title', data.title);
       formData.append('status', data.status);
       formData.append('content', data.content);
-
+      if (data.parent_id) {
+        formData.append('parent_id', data.parent_id);
+      }
       if (data.thumb) {
         formData.append('thumb', data.thumb);
-        
       }
       let req = await fetch(`${baseUrl}/folder`, {
         method: 'POST',
@@ -292,14 +293,16 @@ export default () => {
       let json = await req.json();
       return json;
     },
-    updateDocument: async (id, data) => {
+    updateFolder: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('title', data.title);
-      if (data.file) {
-        formData.append('file', data.file);
+      formData.append('content', data.content);
+      formData.append('status', data.status);
+      if (data.thumb) {
+        formData.append('thumb', data.thumb);
       }
-      let req = await fetch(`${baseUrl}/doc/${id}`, {
+      let req = await fetch(`${baseUrl}/folder/${data.id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -369,165 +372,165 @@ export default () => {
     },
 
 
-  /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Assembleias --__--***********************************/
-    
-    getAssembleias: async()=>{
+
+    getAssembleias: async () => {
       let token = localStorage.getItem('token');
       console.log(token);
-      let json = await request('get', `/assembleias`, {}, token);  
+      let json = await request('get', `/assembleias`, {}, token);
       return json;
-  },
-     addAssembleia: async(data)=>{
-            let token = localStorage.getItem('token');
-            let formData = new FormData();
-            for ( let i in data){
-                formData.append(i,data[i])
-            }
-            let req = await fetch(
-                `${baseUrl}/assembleia`,
-                {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${token}`},
-                    body: formData
-                 });
-            let json = req.json();
-            return json;
-        },
-        updateAssembleia: async(id, data)=>{
-            let token = localStorage.getItem('token');
-            let formData = new FormData();  
-            for ( let i in data){
-              formData.append(i,data[i])
-          } 
-            console.log(formData)    ; 
-            let req = await fetch(
-                `${baseUrl}/assembleia/${id}`,
-                {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${token}`},
-                    body: formData
-                 });
-            let json = req.json();
-            return json;
-        },
-        updateAssembleiaStatus: async (id, dataStatus)=>{
-          let token = localStorage.getItem('token');
-          let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
-          return json;
-        },
-        removeAssembleia: async (id) => {
-          let token = localStorage.getItem('token');
-          let json = await request('delete', `/assembleia/${id}`, {}, token);
-          return json;
-        },
+    },
+    addAssembleia: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/assembleia`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateAssembleia: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/assembleia/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateAssembleiaStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/assembleia/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeAssembleia: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/assembleia/${id}`, {}, token);
+      return json;
+    },
 
 
-        /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Documentos Assembleia --__--***********************************/
-    
-    getDocumentosAssembleia: async(id)=>{
+
+    getDocumentosAssembleia: async (id) => {
       let token = localStorage.getItem('token');
       console.log(token);
-      let json = await request('get', `/documentos/assembleia/${id}/documentos`, {}, token);  
+      let json = await request('get', `/documentos/assembleia/${id}/documentos`, {}, token);
       return json;
-  },
-  addDocumentoAssembleia: async(data)=>{
-            let token = localStorage.getItem('token');
-            let formData = new FormData();
-            for ( let i in data){
-                formData.append(i,data[i])
-            }
-            let req = await fetch(
-                `${baseUrl}/documento/assembleia`,
-                {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${token}`},
-                    body: formData
-                 });
-            let json = req.json();
-            return json;
-        },
-        updateDocumentoAssembleia: async(id, data)=>{
-            let token = localStorage.getItem('token');
-            let formData = new FormData();  
-            for ( let i in data){
-              formData.append(i,data[i])
-          } 
-            console.log(formData)    ; 
-            let req = await fetch(
-                `${baseUrl}/documento/assembleia/${id}`,
-                {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${token}`},
-                    body: formData
-                 });
-            let json = req.json();
-            return json;
-        },
-        updateDocumentoAssembleiaStatus: async (id, dataStatus)=>{
-          let token = localStorage.getItem('token');
-          let json = await request('post', `/documento/assembleia/${id}/status`, dataStatus, token);
-          return json;
-        },
-        removeDocumentoAssembleia: async (id) => {
-          let token = localStorage.getItem('token');
-          let json = await request('delete', `/documento/assembleia/${id}`, {}, token);
-          return json;
-        },
+    },
+    addDocumentoAssembleia: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/documento/assembleia`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateDocumentoAssembleia: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/documento/assembleia/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateDocumentoAssembleiaStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/documento/assembleia/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeDocumentoAssembleia: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/documento/assembleia/${id}`, {}, token);
+      return json;
+    },
 
 
-      /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Areas --__--***********************************/
-    
-    getAreas: async()=>{
+
+    getAreas: async () => {
       let token = localStorage.getItem('token');
       console.log(token);
-      let json = await request('get', `/areas`, {}, token);  
+      let json = await request('get', `/areas`, {}, token);
       return json;
-  },
-     addArea: async(data)=>{
-            let token = localStorage.getItem('token');
-            let formData = new FormData();
-            for ( let i in data){
-                formData.append(i,data[i])
-            }
-            let req = await fetch(
-                `${baseUrl}/areas`,
-                {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${token}`},
-                    body: formData
-                 });
-            let json = req.json();
-            return json;
-        },
-        updateArea: async(id, data)=>{
-            let token = localStorage.getItem('token');
-            let formData = new FormData();
-            for ( let i in data){
-                formData.append(i,data[i])
-            }
-            let req = await fetch(
-                `${baseUrl}/area/${id}`,
-                {
-                    method: 'POST',
-                    headers: {'Authorization': `Bearer ${token}`},
-                    body: formData
-                 });
-            let json = req.json();
-            return json;
-        },
-        updateAreaAllowed: async (id)=>{
-            let token = localStorage.getItem('token');
-            let json = await request('put', `/area/${id}/allowed`, {}, token);  
-            return json;
-        },
-        removeArea: async (id) => {
-          let token = localStorage.getItem('token');
-          let json = await request('delete', `/area/${id}`, {}, token);
-          return json;
-        },
+    },
+    addArea: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/areas`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateArea: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/area/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateAreaAllowed: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('put', `/area/${id}/allowed`, {}, token);
+      return json;
+    },
+    removeArea: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/area/${id}`, {}, token);
+      return json;
+    },
 
 
     /********************************************************************************/
@@ -554,10 +557,10 @@ export default () => {
       let json = await request('delete', `/user/${id}`, {}, token);
       return json;
     },
-    searchUser: async (query)=>{
+    searchUser: async (query) => {
       let token = localStorage.getItem('token');
-      let json = await request('get', `/users/search`, {q:query}, token);  
+      let json = await request('get', `/users/search`, { q: query }, token);
       return json;
-  },
+    },
   }
 }
