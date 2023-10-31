@@ -79,30 +79,28 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavTitle',
         _children: ['Gestão do Sistema']
       },
-     { _tag: 'CSidebarNavDropdown',
-      name: 'Pastas',
-      route: '/Folders/1', // Substitua :id pelo ID da pasta
-      icon: <CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" />,
-      _children: [
-        {
-          _tag: 'CSidebarNavItem',
-          name: 'Adicionar Nova Pasta',
-          to: '/newFolder/0', // Defina a rota apropriada
-          icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
-        },
-        ...dynamicMenu.map((item) => {
-          return {
-            ...item,
-            name: (
-              <RedirectionLink to={item.to}>{item.name}</RedirectionLink>
-            ),
-            icon: (
-              <RedirectionLink to={item.to}><CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" /></RedirectionLink>
-            ),
-          };
-        }),           
-      ]
-    },
+      {
+        _tag: 'CSidebarNavDropdown',
+        name: 'Pastas',
+        route: '/Folders/1', // Substitua :id pelo ID da pasta
+        icon: <CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" />,
+        _children: [
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Adicionar Nova Pasta',
+            to: '/newFolder/0', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
+          },
+          ...dynamicMenu.map((item) => {
+            return {
+              ...item,
+              name: (
+                <RedirectionLink to={item.to}>{item.name}</RedirectionLink>
+              )
+            };
+          }),
+        ]
+      },
       {
         _tag: 'CSidebarNavItem',
         name: 'Assembleias',

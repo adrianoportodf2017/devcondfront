@@ -293,6 +293,25 @@ export default () => {
       let json = await req.json();
       return json;
     },
+    addFiles: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      formData.append('title', data.title);
+      if (data.id) {
+        formData.append('id', data.id);
+      }
+        formData.append('file', data.file);
+      let req = await fetch(`${baseUrl}/folder/file/${data.id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      let json = await req.json();
+      return json;
+    },
     updateFolder: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();

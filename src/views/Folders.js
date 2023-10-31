@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Link } from "react-router-dom";
 import {
     CButton,
     CButtonGroup,
@@ -43,18 +44,25 @@ const Folder = () => {
 
     // Inicialize os estados para coletar os dados para editar os dados da pasta
     const [modalLoading, setModalLoading] = useState(false);
-    const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState('');
     const [status, setStatus] = useState('1'); // Defina o valor padrão desejado
     const [content, setContent] = useState('');
     const [thumb, setThumb] = useState(null); // Use null para o input type="file"
 
     // modal para criar nova pasta dentro de outra pasta
+    const [showModal, setShowModal] = useState(false);
     const [modalId, setModalId] = useState('');
     const [modalTitleField, setModalTitleField] = useState('');
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalContentField, setModalContentField] = useState('');
     const [modalStatusField, setModalStatusField] = useState('');
+
+
+    // modal para criar nova arquivo dentro de uma pasta
+    const [showModalFile, setShowModalFile] = useState(false);
+    const [modalFileTitleField, setModalFileTitleField] = useState('');
+    const [modalFileField, setModalFileField] = useState('');
+
 
 
     const fieldsListFolder = [
@@ -91,7 +99,58 @@ const Folder = () => {
     };
 
 
-///Função para criar nova pasta
+
+
+
+    ///Função para criar nova pasta
+    const handleAddFileButton = () => {
+        setModalId('');
+        setModalFileTitleField('');
+        setModalFileField('');
+        setShowModalFile(true);
+    };
+    ///Função para fechar modal de adicionar novo arquivo
+
+    const handleCloseModalFile = () => {
+        setShowModalFile(false)
+    };
+
+    ///função para enviar dados para api back end e salvar  arquuvi banco de dados
+
+    const handleAddFile = async () => {
+
+        if (modalFileField) {
+            setModalLoading(true);
+            let result;
+            let data = {
+                title: modalFileTitleField,
+                file: modalFileField,
+                id: id
+            };
+            // Chame a API para criar a nova pasta
+            try {
+                const result = await api.addFiles(data);
+
+                if (result.error === '' || result.error === undefined) {
+                    setModalLoading(false);
+                    setShowModalFile(false);
+                    getFolder();
+
+                } else {
+                    alert(result.error)
+                }
+            } catch (error) {
+                setModalLoading(false);
+
+                alert('Erro ao criar a pasta. Verifique a conexão com a API.'+error);
+            }
+        } else {
+            alert('Preencha os campos para continuar')
+        }
+
+    };
+
+    ///Função para criar nova pasta
     const handleAddButton = () => {
         setModalId('');
         setModalTitleField('');
@@ -100,14 +159,12 @@ const Folder = () => {
         setModalContentField('');
         setShowModal(true);
     };
-///Função para fechar modal de adicionar nova da pasta
+    ///Função para fechar modal de adicionar nova da pasta
 
     const handleCloseModal = () => {
         setShowModal(false)
     };
-
-
-///função para enviar dados para api back end e salvar banco de dados
+    ///função para enviar dados para api back end e salvar banco de dados
 
     const handleAddFolder = async () => {
 
@@ -124,23 +181,25 @@ const Folder = () => {
             if (modalThumbField) {
                 data.thumb = modalThumbField;
             };
-        
-              // Chame a API para criar a nova pasta
-              try {
+
+            // Chame a API para criar a nova pasta
+            try {
                 console.log(data);
                 const result = await api.addFolder(data);
 
                 if (result.error === '' || result.error === undefined) {
                     setModalLoading(false);
                     setShowModal(false);
-                getFolder();
+                    getFolder();
 
                 } else {
                     alert(result.error)
                 }
             } catch (error) {
-                alert('Erro ao criar a pasta. Verifique a conexão com a API.');
-            }  
+                setModalLoading(false);
+
+                alert('Erro ao criar a pasta. Verifique a conexão com a API.'+error);
+            }
         } else {
             alert('Preencha os campos para continuar')
         }
@@ -255,7 +314,7 @@ const Folder = () => {
                 <CCardBody>
                     <CCardHeader>
                         <CButtonGroup>
-
+                            <CButton color="success" to={folder.parent_id ? folder.parent_id : '/dashboard'}>{folder.parent_id ? '< Voltar Pasta Anterior' : 'Voltar Para Home'}</CButton>
                             {isEditing ? (
                                 <CButton color="success" onClick={handleSave}>Salvar</CButton>
                             ) : (
@@ -375,21 +434,34 @@ const Folder = () => {
                         </CCardHeader>
 
                         <CCardBody>
-                            <CRow className="File-row">
+                            <CRow className="File-row justify-content-left ">
                                 {listFolders.map((item) => (
-                                    <CCol md="4" key={item.id}>
-                                        <div className="folder-item d-flex flex-column">
-                                            <img src={item.thumb} width={200} alt={item.title} className="img-fluid rounded m-2" style={{ width: '250px', height: '250px' }} />
-                                            <h3 className="flex-fill">{item.title}</h3>
-                                            <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
-                                        </div>
-                                        <CButtonGroup>
+                                    <CCol md="3" key={item.id} className="justify-content-left align-itens-left  text-center">
+                                        <Link to={`/Folders/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                                            <div className="file-item ">
+                                                <img
+                                                    src={item.thumb ? item.thumb : item.icon}
+                                                    width={200}
+                                                    height={250}
+                                                    alt={item.title}
+                                                    className="img-fluid rounded-circle"
+                                                    style={{ width: '200px', height: '200px' }} />
+
+
+                                                <h5 className="flex-fill m-0 p-0">{item.title}</h5>
+                                                <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
+                                            </div>
+                                        </Link>
+
+                                        <CButtonGroup className="mb-2">
                                             <CButton color="info" to={`/Folders/${item.id}`}>Acessar</CButton>
                                             <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
                                         </CButtonGroup>
                                     </CCol>
                                 ))}
                             </CRow>
+
                         </CCardBody>
 
                     </CCard>
@@ -403,7 +475,7 @@ const Folder = () => {
                     <CCard>
                         <CCardHeader>
                             <CButton
-                                onClick={handleAddButton}
+                                onClick={handleAddFileButton}
                                 color="primary"
 
                             >
@@ -452,7 +524,7 @@ const Folder = () => {
                             value={modalTitleField}
                             onChange={(e) => setModalTitleField(e.target.value)}
                         />
-                    </CFormGroup>                 
+                    </CFormGroup>
 
                     <CFormGroup>
                         <CLabel htmlFor="modal_Thumb">Imagem</CLabel>
@@ -487,6 +559,42 @@ const Folder = () => {
 
 
 
+                </CModalFooter>
+            </CModal>
+
+
+            <CModal show={showModalFile} onClose={handleCloseModalFile}>
+                <CModalHeader closeButton>Adicionar Arquivos </CModalHeader>
+                <CModalBody>
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_title">Titulo</CLabel>
+                        <CInput
+                            type="text"
+                            id='modal_title'
+                            name="title"
+                            value={modalFileTitleField}
+                            onChange={(e) => setModalFileTitleField(e.target.value)}
+                        />
+                    </CFormGroup>
+
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_file">Selecione os Arquivo</CLabel>
+                        <CInput
+                            type="file"
+                            id='modal_Thumb'
+                            name="file"
+                            placeholder="Escolha um Arquivo"
+                            onChange={(e) => setModalFileField(e.target.files[0])}
+                            multiple
+                            accept=".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx" // Aceitar imagens, PDFs, documentos do Word, planilhas do Excel e apresentações do PowerPoint
+ 
+                        />
+                    </CFormGroup>
+
+                </CModalBody>
+                <CModalFooter className="mt-5">
+                    <CButton disabled={modalLoading} onClick={handleAddFile} color="primary">{modalLoading ? 'Carregando' : 'Salvar'}</CButton>
+                    <CButton disabled={modalLoading} onClick={handleCloseModalFile} color="secondary">Cancelar</CButton>
                 </CModalFooter>
             </CModal>
         </>
