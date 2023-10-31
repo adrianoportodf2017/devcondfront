@@ -59,6 +59,7 @@ const Folder = () => {
 
 
     // modal para criar nova arquivo dentro de uma pasta
+    const [uploadProgress, setUploadProgress] = useState(0);
     const [showModalFile, setShowModalFile] = useState(false);
     const [modalFileTitleField, setModalFileTitleField] = useState('');
     const [modalFileField, setModalFileField] = useState('');
@@ -118,37 +119,31 @@ const Folder = () => {
     ///função para enviar dados para api back end e salvar  arquuvi banco de dados
 
     const handleAddFile = async () => {
-
         if (modalFileField) {
-            setModalLoading(true);
-            let result;
-            let data = {
-                title: modalFileTitleField,
-                file: modalFileField,
-                id: id
-            };
-            // Chame a API para criar a nova pasta
-            try {
-                const result = await api.addFiles(data);
-
-                if (result.error === '' || result.error === undefined) {
-                    setModalLoading(false);
-                    setShowModalFile(false);
-                    getFolder();
-
-                } else {
-                    alert(result.error)
-                }
-            } catch (error) {
-                setModalLoading(false);
-
-                alert('Erro ao criar a pasta. Verifique a conexão com a API.'+error);
-            }
+          setModalLoading(true);
+          const data = {
+            title: modalFileTitleField,
+            file: modalFileField,
+            id: id
+          };
+      
+          try {
+            await api.addFiles(data, (percentCompleted) => {
+              setUploadProgress(percentCompleted);
+            });
+      
+            setModalLoading(false);
+            setShowModalFile(false);
+            getFolder();
+          } catch (error) {
+            setModalLoading(false);
+            alert('Erro ao criar a pasta. Verifique a conexão com a API.' + error);
+          }
         } else {
-            alert('Preencha os campos para continuar')
+          setModalLoading(false);
+          alert('Preencha os campos para continuar');
         }
-
-    };
+      };
 
     ///Função para criar nova pasta
     const handleAddButton = () => {
@@ -198,7 +193,7 @@ const Folder = () => {
             } catch (error) {
                 setModalLoading(false);
 
-                alert('Erro ao criar a pasta. Verifique a conexão com a API.'+error);
+                alert('Erro ao criar a pasta. Verifique a conexão com a API.' + error);
             }
         } else {
             alert('Preencha os campos para continuar')
@@ -561,10 +556,8 @@ const Folder = () => {
 
                 </CModalFooter>
             </CModal>
-
-
             <CModal show={showModalFile} onClose={handleCloseModalFile}>
-                <CModalHeader closeButton>Adicionar Arquivos </CModalHeader>
+                <CModalHeader closeButton>Adicionar Arquivos</CModalHeader>
                 <CModalBody>
                     <CFormGroup>
                         <CLabel htmlFor="modal_title">Titulo</CLabel>
@@ -578,25 +571,40 @@ const Folder = () => {
                     </CFormGroup>
 
                     <CFormGroup>
-                        <CLabel htmlFor="modal_file">Selecione os Arquivo</CLabel>
+                        <CLabel htmlFor="modal_file">Selecione os Arquivos</CLabel>
                         <CInput
                             type="file"
                             id='modal_Thumb'
                             name="file"
-                            placeholder="Escolha um Arquivo"
-                            onChange={(e) => setModalFileField(e.target.files[0])}
+                            placeholder="Escolha um ou mais Arquivos"
+                            onChange={(e) => setModalFileField([...e.target.files])}
                             multiple
-                            accept=".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx" // Aceitar imagens, PDFs, documentos do Word, planilhas do Excel e apresentações do PowerPoint
- 
+                            accept=".jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
                         />
                     </CFormGroup>
 
+                    {modalLoading && (
+                        <div>
+                            <p>Progresso de Upload: {uploadProgress}%</p>
+                            <div className="progress">
+                                <div
+                                    className="progress-bar"
+                                    role="progressbar"
+                                    style={{ width: `${uploadProgress}%` }}
+                                    aria-valuenow={uploadProgress}
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                ></div>
+                            </div>
+                        </div>
+                    )}
                 </CModalBody>
                 <CModalFooter className="mt-5">
                     <CButton disabled={modalLoading} onClick={handleAddFile} color="primary">{modalLoading ? 'Carregando' : 'Salvar'}</CButton>
                     <CButton disabled={modalLoading} onClick={handleCloseModalFile} color="secondary">Cancelar</CButton>
                 </CModalFooter>
             </CModal>
+
         </>
     );
 };
