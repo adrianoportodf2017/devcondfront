@@ -121,30 +121,30 @@ const Folder = () => {
 
     const handleAddFile = async () => {
         if (modalFileField) {
-          setModalLoading(true);
-          const data = {
-            title: modalFileTitleField,
-            file: modalFileField,
-            id: id
-          };
-      
-          try {
-            await api.addFiles(data, (percentCompleted) => {
-              setUploadProgress(percentCompleted);
-            });
-      
-            setModalLoading(false);
-            setShowModalFile(false);
-            getFolder();
-          } catch (error) {
-            setModalLoading(false);
-            alert('Erro ao criar a pasta. Verifique a conexão com a API.' + error);
-          }
+            setModalLoading(true);
+            const data = {
+                title: modalFileTitleField,
+                file: modalFileField,
+                id: id
+            };
+
+            try {
+                await api.addFiles(data, (percentCompleted) => {
+                    setUploadProgress(percentCompleted);
+                });
+
+                setModalLoading(false);
+                setShowModalFile(false);
+                getFolder();
+            } catch (error) {
+                setModalLoading(false);
+                alert('Erro ao criar a pasta. Verifique a conexão com a API.' + error);
+            }
         } else {
-          setModalLoading(false);
-          alert('Preencha os campos para continuar');
+            setModalLoading(false);
+            alert('Preencha os campos para continuar');
         }
-      };
+    };
 
     ///Função para criar nova pasta
     const handleAddButton = () => {
@@ -204,15 +204,15 @@ const Folder = () => {
 
     const handleDelButton = async () => {
 
-         // Chame a API para criar a nova pasta
-         try {
+        // Chame a API para criar a nova pasta
+        try {
             const result = await api.removeFolder(id);
 
             if (result.error === '' || result.error === undefined) {
                 //console.log(result.list.id);
                 window.location.href = `/ListFolders/0`;
                 // Você pode adicionar redirecionamento ou outras ações aqui após o sucesso
-               // setFolder(result.list);
+                // setFolder(result.list);
                 setIsEditing(false);
 
             } else {
@@ -221,9 +221,73 @@ const Folder = () => {
             }
         } catch (error) {
             setIsEditing(false);
-            alert('Erro ao criar a pasta. Verifique a conexão com a API.'+error);
+            alert('Erro ao criar a pasta. Verifique a conexão com a API.' + error);
         }
     };
+
+    const handleDelFolder = async (id_folder) => {
+
+        // Pergunte ao usuário se ele deseja realmente excluir a pasta
+        const confirm = await window.confirm(
+            'Tem certeza de que deseja excluir esta pasta?' +
+                '\n\n ATENÇÃO: Todos os dados, arquivos e subpastas serão apagados permanentemente.',
+                
+        );
+    
+        if (confirm) {
+            // Chame a API para excluir a pasta
+            try {
+                const result = await api.removeFolder(id_folder);
+    
+                if (result.error === '' || result.error === undefined) {
+                    getFolder();
+                    setIsEditing(false);
+                    alert('Pasta Deletada com Sucesso!');
+
+    
+                } else {
+                    setIsEditing(false);
+                    alert(result.error);
+                }
+            } catch (error) {
+                setIsEditing(false);
+                alert('Erro ao excluir a pasta. Verifique a conexão com a API.' + error);
+            }
+        }
+    };
+
+
+    const handleDelFile = async (id_file) => {
+
+        // Pergunte ao usuário se ele deseja realmente excluir a pasta
+        const confirm = await window.confirm(
+            'Tem certeza de que deseja excluir este arquivo?' +
+                '\n\n ATENÇÃO: Arquivo apagado permanentemente.',
+                
+        );
+    
+        if (confirm) {
+            // Chame a API para excluir a pasta
+            try {
+                const result = await api.removeFile(id_file);
+    
+                if (result.error === '' || result.error === undefined) {
+                    getFolder();
+                    setIsEditing(false);
+                    alert('Arquivo Deletado com Sucesso!');
+
+    
+                } else {
+                    setIsEditing(false);
+                    alert(result.error);
+                }
+            } catch (error) {
+                setIsEditing(false);
+                alert('Erro ao excluir a pasta. Verifique a conexão com a API.' + error);
+            }
+        }
+    };
+    
 
 
 
@@ -332,7 +396,7 @@ const Folder = () => {
                         <CButtonGroup>
                             <CButton color="success" to={folder.parent_id ? folder.parent_id : '/ListFolders/0'}>{folder.parent_id ? '< Voltar Pasta Anterior' : 'Voltar Para Home'}</CButton>
                             {isEditing ? (
-                                <CButton color="success" onClick={handleSave}>Salvar</CButton>
+                                <CButton color="primary" onClick={handleSave}>Salvar</CButton>
                             ) : (
                                 <CButton color="primary" onClick={handleEdit}>Editar</CButton>
                             )}
@@ -411,11 +475,11 @@ const Folder = () => {
 
                                 {isEditing ? (
                                     <ReactQuill
-                                    style={{ height: '300px' }}
-                                    theme="snow"
-                                    value={content}
-                                    onChange={(value) => setContent(value)}
-                                />
+                                        style={{ height: '300px' }}
+                                        theme="snow"
+                                        value={content}
+                                        onChange={(value) => setContent(value)}
+                                    />
                                 ) : (
                                     <div dangerouslySetInnerHTML={{ __html: folder.content }} />
                                 )}
@@ -435,23 +499,18 @@ const Folder = () => {
             </CCard>
             <CRow>
                 <CCol>
-                    <h2>Pastas </h2>
-
                     <CCard>
                         <CCardHeader>
-                            <CButton
-                                onClick={handleAddButton}
-                                color="primary"
-
-                            >
-                                <CIcon name="cil-check" /> Nova Pasta
-                            </CButton>
+                            <CButtonGroup>
+                                <CButton onClick={handleAddButton} color="primary" > <CIcon name="cil-plus" />+ Nova Pasta  </CButton>
+                                <CButton onClick={handleAddFileButton} color="warning"  > <CIcon name="cil-plus" />+ Adicionar Arquivo</CButton>
+                            </CButtonGroup>
                         </CCardHeader>
 
                         <CCardBody>
                             <CRow className="File-row justify-content-left ">
                                 {listFolders.map((item) => (
-                                    <CCol md="3" key={item.id} className="justify-content-left align-itens-left  text-center">
+                                    <CCol md="2" key={item.id} className="justify-content-left align-itens-left  text-center">
                                         <Link to={`/Folders/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
                                             <div className="file-item ">
@@ -471,44 +530,28 @@ const Folder = () => {
 
                                         <CButtonGroup className="mb-2">
                                             <CButton color="info" to={`/Folders/${item.id}`}>Acessar</CButton>
-                                            <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                            <CButton color="danger" onClick={() => handleDelFolder(item.id)}>Excluir</CButton>
                                         </CButtonGroup>
                                     </CCol>
                                 ))}
-                            </CRow>
-
-                        </CCardBody>
-
-                    </CCard>
-                </CCol>
-            </CRow>
-
-            <CRow>
-                <CCol>
-                    <h2>Arquivos </h2>
-
-                    <CCard>
-                        <CCardHeader>
-                            <CButton
-                                onClick={handleAddFileButton}
-                                color="primary"
-
-                            >
-                                <CIcon name="cil-check" /> Novo Arquivo
-                            </CButton>
-                        </CCardHeader>
-                        <CCardBody>
-                            <CRow className="File-row">
                                 {listFiles.map((item) => (
                                     <CCol md="2" key={item.id}>
                                         <div className="file-item " onClick={() => handleFileClick(item)} style={{ cursor: "pointer" }} >
-                                            <img src={item.icon} alt={item.title} className="img-fluid rounded-circle"  />
-                                            <h6>{item.title}</h6>
+                                            <img
+                                                src={item.thumb ? item.thumb : item.icon}
+                                                width={200}
+                                                height={250}
+                                                alt={item.title}
+                                                className="img-fluid rounded-circle"
+                                                style={{ width: '200px', height: '200px' }} />
+                                            <h5 className="flex-fill m-0 p-0">{item.title}</h5>
                                             <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
+                                            </div>
                                             <CButtonGroup>
-                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                                <CButton color="info" onClick={() => handleDelButton(item.id)}>Editar</CButton>
+                                                <CButton color="danger" onClick={() => handleDelFile(item.id)}>Excluir</CButton>
                                             </CButtonGroup>
-                                        </div>
+                                     
                                     </CCol>
                                 ))}
                             </CRow>

@@ -361,6 +361,11 @@ export default () => {
       let json = await request('delete', `/folder/${id}`, {}, token);
       return json;
     },
+    removeFile: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/file/${id}`, {}, token);
+      return json;
+    },
 
     /********************************************************************************/
     /******************************--__-- Reservations --__--***********************************/

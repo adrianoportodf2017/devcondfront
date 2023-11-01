@@ -42,62 +42,63 @@ const Folder = () => {
     const [showIframeModal, setShowIframeModal] = useState(false);
     const [iframeUrl, setIframeUrl] = useState(false);
 
-     // Inicialize os estados para coletar os dados para editar os dados da pasta
-     const [modalLoading, setModalLoading] = useState(false);
-     const [title, setTitle] = useState('');
-     const [status, setStatus] = useState('1'); // Defina o valor padrão desejado
-     const [content, setContent] = useState('');
-     const [thumb, setThumb] = useState(null); // Use null para o input type="file"
+    // Inicialize os estados para coletar os dados para editar os dados da pasta
+    const [modalLoading, setModalLoading] = useState(false);
+    const [title, setTitle] = useState('');
+    const [status, setStatus] = useState('1'); // Defina o valor padrão desejado
+    const [content, setContent] = useState('');
+    const [thumb, setThumb] = useState(null); // Use null para o input type="file"
 
-  
+
     useEffect(() => {
         getFolder();
     }, [id]);
 
     const getFolder = async () => {
         setLoading(true);
-       if(id == '0'){
-        const result = await api.getFolders();
-        console.log(result['0']);
-        if(result['0']){
-        if (result.error === '' || result.error === undefined) {
-            setFolder(result['0']);
-            setTitle(result['0'].title);
-            setStatus(result['0'].status);
-            setContent(result['0'].content);
-            setThumb(result['0'].thumb);
-            setListFolders(result);
+        if (id == '0') {
+            const result = await api.getFolders();
+            console.log(result['0']);
+            if (result['0']) {
+                if (result.error === '' || result.error === undefined) {
+                    setFolder(result['0']);
+                    setTitle(result['0'].title);
+                    setStatus(result['0'].status);
+                    setContent(result['0'].content);
+                    setThumb(result['0'].thumb);
+                    setListFolders(result);
 
-        
-        } else {
-            alert(result.error);
-        }}
-       }
-       else{
-        const result = await api.getFolderById(id);
-        if (result.error === '' || result.error === undefined) {
-            setFolder(result);
-            setTitle(result.title);
-            setStatus(result.status);
-            setContent(result.content);
-            //  setThumb(result.thumb);
-            setListFolders(result.children);
-            setListFiles(result.midias);
-        } else {
-            setLoading(false);
-            alert(result.error);
+
+                } else {
+                    alert(result.error);
+                }
+            }
         }
+        else {
+            const result = await api.getFolderById(id);
+            if (result.error === '' || result.error === undefined) {
+                setFolder(result);
+                setTitle(result.title);
+                setStatus(result.status);
+                setContent(result.content);
+                //  setThumb(result.thumb);
+                setListFolders(result.children);
+                setListFiles(result.midias);
+            } else {
+                setLoading(false);
+                alert(result.error);
+            }
 
-       } 
+        }
         setLoading(false);
 
-     
+
     };
 
 
-     /**
- * 
- * Função para abrir modal do documento
+    /**
+* 
+* Função para abrir modal do documento
 */
     const openIframeModal = (url) => {
         setIframeUrl(url);
@@ -130,84 +131,10 @@ const Folder = () => {
     return (
         <>  {id == '0' ? (
             <> <CRow>
-            <CCol>
-
-                <CCard>
-                    <CCardHeader>                        
-                    </CCardHeader>
-
-                    <CCardBody>
-                        <CRow className="File-row justify-content-left ">
-                            {listFolders.map((item) => (
-                                <CCol md="3" key={item.id} className="justify-content-left align-itens-left  text-center">
-                                    <Link to={`/ListFolders/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <div className="file-item ">
-                                            <img
-                                                src={item.thumb ? item.thumb : item.icon}
-                                                width={200}
-                                                height={250}
-                                                alt={item.title}
-                                                className="img-fluid rounded-circle"
-                                                style={{ width: '200px', height: '200px' }} />
-                                            <h5 className="flex-fill m-0 p-0">{item.title}</h5>
-                                            <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
-                                        </div>
-                                    </Link>                                      
-                                </CCol>
-                            ))}
-                        </CRow>
-
-                    </CCardBody>
-               
-
-                </CCard>
-            </CCol>
-        </CRow></>
-        ) : (   
-            <>  
-            <CCard>
-                
-                <IframeModal iframeUrl={iframeUrl} onClose={() => setShowIframeModal(false)} className="modal-lg w-100" style={{ height: '500px' }} />
-                <CCardBody>
-                    <CCardHeader>
-                        <CButtonGroup>
-                        {id == '0' ? (
-                                <></>
-                            ) : (
-                                <CButton color="success" to={folder.parent_id ?  `/ListFolders/${folder.parent_id}` : '/ListFolders/0'}>{folder.parent_id ? '< Voltar Pasta Anterior' : 'Voltar Para Listagem'}</CButton>                   
-                                )}
-                        </CButtonGroup>
-
-                    </CCardHeader>
-                                          
-                    <CRow>
-
-                        <CCol md="12">
-                            <CFormGroup>
-                                    <h3>{folder.title}</h3>           
-                            </CFormGroup>
-                        </CCol>
-                    </CRow>
-                    <CRow className="mb-5">
-                        <CCol md="6">
-                            <CFormGroup>                               
-                                    <div><img src={folder.thumb} width={300} /></div>                            
-                            </CFormGroup>
-                        </CCol>
-                        <CCol md="12" className="mb-5">
-                            <CFormGroup >                              
-                                    <div dangerouslySetInnerHTML={{ __html: folder.content }} />                          
-                            </CFormGroup>
-                        </CCol>
-                    </CRow> 
-                              
-                </CCardBody>
-            </CCard>
-            <CRow>
                 <CCol>
 
                     <CCard>
-                        <CCardHeader>                        
+                        <CCardHeader>
                         </CCardHeader>
 
                         <CCardBody>
@@ -226,42 +153,93 @@ const Folder = () => {
                                                 <h5 className="flex-fill m-0 p-0">{item.title}</h5>
                                                 <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
                                             </div>
-                                        </Link>                                      
+                                        </Link>
                                     </CCol>
                                 ))}
                             </CRow>
 
                         </CCardBody>
-                   
+
 
                     </CCard>
                 </CCol>
-            </CRow>
+            </CRow></>
+        ) : (
+            <>
+                <CCard>
 
-            <CRow>
-                <CCol>
+                    <IframeModal iframeUrl={iframeUrl} onClose={() => setShowIframeModal(false)} className="modal-lg w-100" style={{ height: '500px' }} />
+                    <CCardBody>
+                        <CCardHeader>
+                            <CButtonGroup>
+                                {id == '0' ? (
+                                    <></>
+                                ) : (
+                                    <CButton color="success" to={folder.parent_id ? `/ListFolders/${folder.parent_id}` : '/ListFolders/0'}>{folder.parent_id ? '< Voltar Pasta Anterior' : 'Voltar Para Listagem'}</CButton>
+                                )}
+                            </CButtonGroup>
 
-                    <CCard>
-                        <CCardHeader>                      
                         </CCardHeader>
-                        <CCardBody>
-                            <CRow className="File-row">
-                                {listFiles.map((item) => (
-                                    <CCol md="2" key={item.id}>
-                                        <div className="file-item " onClick={() => handleFileClick(item)} style={{ cursor: "pointer" }} >
-                                            <img src={item.icon} alt={item.title} className="img-fluid rounded-circle" style={{ width: '200px', height: '200px' }} />
-                                            <h3>{item.title}</h3>
-                                            <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>                                  
-                                        </div>
-                                    </CCol>
-                                ))}
-                            </CRow>
-                        </CCardBody>
 
-                    </CCard>
-                </CCol>
-            </CRow>
-            </>     )}  
+                        <CRow>
+
+                            <CCol md="12">
+                                <CFormGroup>
+                                    <h3>{folder.title}</h3>
+                                </CFormGroup>
+                            </CCol>
+                        </CRow>
+                        <CRow className="mb-5">
+                            <CCol md="6">
+                                <CFormGroup>
+                                    <div><img src={folder.thumb} width={300} /></div>
+                                </CFormGroup>
+                            </CCol>
+                            <CCol md="12" className="mb-5">
+                                <CFormGroup >
+                                    <div dangerouslySetInnerHTML={{ __html: folder.content }} />
+                                </CFormGroup>
+                            </CCol>
+                        </CRow>
+
+
+                        <div className="row ">
+                            {listFolders.map((item) => (
+                                <div className="col-lg-2 justify-content-left align-itens-left  text-center">
+                                <Link to={`/ListFolders/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <div className="file-item ">
+                                            <img
+                                                src={item.thumb ? item.thumb : item.icon}
+                                                width={200}
+                                                height={250}
+                                                alt={item.title}
+                                                className="img-fluid rounded-circle"
+                                                style={{ width: '200px', height: '200px' }} />
+                                            <h5 className="flex-fill m-0 p-0">{item.title}</h5>
+                                            <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            ))}
+                            {listFiles.map((item) => (
+                                <div className="col-lg-2 justify-content-left align-itens-left  text-center">
+                                    <div className="file-item " onClick={() => handleFileClick(item)} style={{ cursor: "pointer" }} >
+                                        <img
+                                            src={item.thumb ? item.thumb : item.icon}
+                                            width={200}
+                                            height={250}
+                                            alt={item.title}
+                                            className="img-fluid rounded-circle"
+                                            style={{ width: '200px', height: '200px' }} />
+                                        <h5 className="flex-fill m-0 p-0">{item.title}</h5>
+                                        <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </CCardBody>
+                </CCard>
+            </>)}
         </>
     );
 };
