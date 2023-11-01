@@ -5,6 +5,8 @@ const Condominios = React.lazy(() => import('./views/Condominios'));
 const Assembleias = React.lazy(() => import('./views/Assembleias'));
 const AssembleiaDocumentos = React.lazy(() => import('./views/AssembleiaDocumentos'));
 const Folders = React.lazy(() => import('./views/Folders'));
+const ListFolder = React.lazy(() => import('./views/ListFolder'));
+
 const NewFolder = React.lazy(() => import('./views/NewFolder'));
 
 
@@ -31,6 +33,7 @@ const routes = [
   { path: '/assembleias', name: 'Lista de Assembleias', component: Assembleias },
   { path: '/AssembleiaDocumentos/:id', name: 'Lista de Documentos', component: AssembleiaDocumentos },
   { path: '/Folders/:id', name: 'Pasta', component: Folders },
+  { path: '/ListFolders/:id', name: 'Pasta', component: ListFolder },
   { path: '/newFolder/:id', name: 'Pasta', component: NewFolder },
   { path: '/logout', name: 'Logout', component: Logout },
   { path: '/wall', name: 'Wall', component: Wall },

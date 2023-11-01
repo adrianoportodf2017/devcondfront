@@ -91,6 +91,7 @@ const loadMenu = async () => {
             to: '/newFolder/0', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
           },
+         
           ...dynamicMenu.map((item) => {
             return {
               ...item,
@@ -103,8 +104,8 @@ const loadMenu = async () => {
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Assembleias',
-        to: '/assembleias',
+        name: 'Visualizar Pastas',
+        to: '/ListFolders/0', // Defina a rota apropriada
         icon: <CIcon content={freeSet.cilShortText} customClasses="c-sidebar-nav-icon" />,
       },
       {
@@ -112,13 +113,7 @@ const loadMenu = async () => {
         name: 'Avisos',
         to: '/wall',
         icon: 'cil-warning',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Documentos',
-        to: '/documents',
-        icon: 'cil-file',
-      },
+      },    
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Notícias', // Nome da categoria
@@ -152,14 +147,14 @@ const loadMenu = async () => {
           {
             _tag: 'CSidebarNavItem',
             name: 'Classificados',
-            to: '/news/news-1',
+            to: '/classifield/news-1',
             icon: <CIcon content={freeSet.cilCart} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
-            to: '/news/news-2',
+            to: '/classifield/news-2',
             icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 

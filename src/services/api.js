@@ -356,9 +356,9 @@ export default () => {
       let json = await req.json();
       return json;
     },
-    removeDocument: async (id) => {
+    removeFolder: async (id) => {
       let token = localStorage.getItem('token');
-      let json = await request('delete', `/doc/${id}`, {}, token);
+      let json = await request('delete', `/folder/${id}`, {}, token);
       return json;
     },
 
