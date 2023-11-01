@@ -231,11 +231,12 @@ const Folder = () => {
                     setFolder(result.list);
                     setIsEditing(false);
 
-
                 } else {
+                    setIsEditing(false);
                     alert(result.error);
                 }
             } catch (error) {
+                setIsEditing(false);
                 alert('Erro ao criar a pasta. Verifique a conexão com a API.');
             }
         } else {
@@ -393,8 +394,8 @@ const Folder = () => {
                                         style={{ height: '300px' }} // Defina a altura desejada aqui
                                         theme="snow"
                                         modules={modules}
-                                        value={folder.content}
-                                    //  onChange={(e) => setFolder({ ...folder, content: e.target.value })}
+                                        value={content}
+                                        onChange={(e) => setContent(e.target.value)}
                                     />
                                 ) : (
                                     <div dangerouslySetInnerHTML={{ __html: folder.content }} />
