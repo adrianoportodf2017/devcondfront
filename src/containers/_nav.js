@@ -249,6 +249,54 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavTitle',
         _children: ['Configurações']
       },
+
+      {
+        _tag: 'CSidebarNavDropdown',
+        name: 'Sistema',
+        to: '',
+        icon: <CIcon content={freeSet.cilSettings} customClasses="c-sidebar-nav-icon" />,
+        _children: [
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Logs',
+            to: '/logs',
+            icon: <CIcon content={freeSet.cilList} customClasses="c-sidebar-nav-icon" />,
+            className: 'ml-3',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Permissões',
+            to: '/roles',
+            icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
+            className: 'ml-3',
+
+          }, {
+            _tag: 'CSidebarNavDropdown',
+            name: 'Convênios/Parceiros',
+            to: '/classifield',
+            icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+            _children: [
+              {
+                _tag: 'CSidebarNavItem',
+                name: 'Convênios/Parceiros',
+                to: '/news/news-1',
+                icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+                className: 'ml-3',
+              },
+              {
+                _tag: 'CSidebarNavItem',
+                name: 'Configurações Gerais',
+                to: '/news/news-2',
+                icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
+                className: 'ml-3',
+    
+              },
+              // Adicione mais notícias conforme necessário
+            ],
+          }
+          // Adicione mais notícias conforme necessário
+        ],
+      },
       {
         _tag: 'CSidebarNavItem',
         name: 'Meu Perfil',
