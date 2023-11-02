@@ -25,9 +25,7 @@ import useApi from '../services/api';
 
 const fields = [
   { label: 'Nome', key: 'name' },
-  { label: 'CPF', key: 'cpf' },
-  { label: 'EMAIL', key: 'email' },
-  { label: 'CELULAR', key: 'phone' },
+  
 
   { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
 ];
