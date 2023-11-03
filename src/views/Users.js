@@ -17,7 +17,8 @@ import {
   CTextarea,
   CInput,
   CAlert,
-  CInputFile
+  CInputFile,
+  CSelect
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
@@ -26,6 +27,7 @@ import useApi from '../services/api';
 const fields = [
   { label: 'Nome', key: 'name' },
   { label: 'CPF', key: 'cpf' },
+  { label: 'Perfil', key: 'profile_name' },
   { label: 'EMAIL', key: 'email' },
   { label: 'CELULAR', key: 'phone' },
 
@@ -36,6 +38,8 @@ export default () => {
   const api = useApi()
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
+  const [profile, setProfile] = useState([])
+  const [selectedProfile, setSelectedProfile] = useState('');
   const [showModal, setShowModal] = useState(false)
   const [loadingModal, setLoadingModal] = useState(false)
   const [modalId, setModalId] = useState('')
@@ -45,17 +49,21 @@ export default () => {
   const [modalCPFField, setModalCPFField] = useState('')
   const [modalEmailField, setModalEmailField] = useState('')
   const [modalPhoneField, setModalPhoneField] = useState('')
+  const [modalProfileField, setModalProfileField] = useState('')
+
 
   const [modalPasswordField, setModalPasswordField] = useState('')
   const [modalPasswordConfirmField, setModalPasswordConfirmField] = useState('')
 
   const getList = async () => {
     setLoading(true)
-    const result = await api.getUsers()
+    const result = await api.getUsers();
+    const profiles = await api.getProfiles();
     setLoading(false)
 
     if (result.error === '') {
-      setList(result.list)
+      setList(result.list);
+      setProfile(profiles.list);
     } else {
       setLoading(false)
       alert(result.error)
@@ -92,6 +100,7 @@ export default () => {
     setModalCPFField(list[index]['cpf'])
     setModalEmailField(list[index]['email'])
     setModalPhoneField(list[index]['phone'])
+    setModalProfileField(list[index]['profile'])
     setModalPasswordField('')
     setModalPasswordConfirmField('')
     setShowModal(true)
@@ -105,6 +114,7 @@ export default () => {
         name: modalNameField,
         email: modalEmailField,
         phone: modalPhoneField,
+        profile: modalProfileField,
         cpf: modalCPFField
       }
 
@@ -139,7 +149,7 @@ export default () => {
 
   const handleRemoveButton = async (id: string) => {
     if (window.confirm('Tem certeza que deseja excluirr?')) {
-      const result = await api.removeUsers(id)
+      const result = await api.removeUser(id)
 
       if (result.error === '') {
         getList()
@@ -248,6 +258,25 @@ export default () => {
           </CFormGroup>
 
           <CFormGroup>
+  <CLabel htmlFor="modal-profile">Perfil de Usuário</CLabel>
+  <CSelect
+    id="modal-profile"
+    value={modalProfileField}
+    onChange={(e) => setModalProfileField(e.target.value)}
+    disabled={loading}
+  >
+    <option value="">Selecione um perfil</option>
+    
+    {profile.map((item) => (
+      <option key={item.id} value={item.id} selected={item.id === modalProfileField}>
+        {item.name}
+      </option>
+    ))}
+  </CSelect>
+</CFormGroup>
+
+
+          <CFormGroup>
             <CLabel htmlFor="modal-password">Nova Senha</CLabel>
             <CInput
               type="password"
@@ -284,6 +313,6 @@ export default () => {
         </CModalFooter>
       </CModal>
     </>
- 
+
   );
 }

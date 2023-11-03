@@ -1,6 +1,6 @@
 
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -298,24 +298,24 @@ export default () => {
         const token = localStorage.getItem('token');
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
-    
+
         formData.append('title', data.title);
         formData.append('id', data.id);
-    
+
         for (let i = 0; i < data.file.length; i++) {
           formData.append('file[]', data.file[i]);
         }
-    
+
         xhr.open('POST', `${baseUrl}/folder/file/${data.id}`, true);
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-    
+
         xhr.upload.onprogress = (event) => {
           if (event.lengthComputable) {
             const percentCompleted = Math.round((event.loaded / event.total) * 100);
             onProgress(percentCompleted);
           }
         };
-    
+
         xhr.onload = () => {
           if (xhr.status === 200) {
             try {
@@ -328,14 +328,14 @@ export default () => {
             reject(new Error('Erro na requisição'));
           }
         };
-    
+
         xhr.onerror = () => {
           reject(new Error('Erro na requisição'));
         };
-    
+
         xhr.send(formData);
       });
-    },    
+    },
     updateFolder: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
@@ -608,6 +608,113 @@ export default () => {
     searchUser: async (query) => {
       let token = localStorage.getItem('token');
       let json = await request('get', `/users/search`, { q: query }, token);
+      return json;
+    },
+
+
+    /********************************************************************************/
+    /******************************--__-- Perfils/profiles --__--***********************************/
+    /********************************************************************************/
+    getProfiles: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/profiles`, {}, token);
+      return json;
+    },
+    addProfile: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/profile`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateProfile: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/profile/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateProfileStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/profile/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeProfile: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/profile/${id}`, {}, token);
+      return json;
+    },
+
+        /********************************************************************************/
+    /******************************--__-- Category --__--***********************************/
+    /********************************************************************************/
+    getCategories: async (type = null) => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/categories/${type}`, {}, token);
+      return json;
+    },
+    addCategory: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/category`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateCategory: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/category/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateCategoryStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/category/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeCategory: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/category/${id}`, {}, token);
       return json;
     },
   }

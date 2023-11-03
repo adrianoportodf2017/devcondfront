@@ -6,17 +6,16 @@ const Assembleias = React.lazy(() => import('./views/Assembleias'));
 const AssembleiaDocumentos = React.lazy(() => import('./views/AssembleiaDocumentos'));
 const Folders = React.lazy(() => import('./views/Folders'));
 const ListFolder = React.lazy(() => import('./views/ListFolder'));
-
 const NewFolder = React.lazy(() => import('./views/NewFolder'));
-
-
-
 
 const Logout = React.lazy(() => import('./views/logout'));
 const Wall = React.lazy(() => import('./views/Wall'));
+const Category = React.lazy(() => import('./views/Category'));
+
 const Documents = React.lazy(() => import('./views/Documents'));
 const Reservations = React.lazy(() => import('./views/Reservations'));
 const Users = React.lazy(() => import('./views/Users'));
+const Profiles = React.lazy(() => import('./views/Profiles'));
 const Commonareas= React.lazy(() => import('./views/Commonareas'));
 const Units= React.lazy(() => import('./views/Units'));
 const RecoveryPassword = React.lazy(() => import('./views/RecoveryPassword'));
@@ -43,7 +42,13 @@ const routes = [
   { path: '/units', name: 'Unidades', component: Units },
 
   { path: '/users', name: 'Users', component: Users },
+  { path: '/profiles', name: 'Perfils de ACesso', component: Profiles },
+
   { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
+  { path: '/categorias/:type', name: 'Categorias', component: Category },
+  { path: '/categorias/', name: 'Categorias', component: Category },
+
+
 
 
 

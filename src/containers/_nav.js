@@ -130,7 +130,7 @@ const loadMenu = async () => {
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
-            to: '/news/news-2',
+            to: '/categorias/noticias',
             icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
@@ -184,7 +184,7 @@ const loadMenu = async () => {
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
-            to: '/news/news-2',
+            to: '/categories/noticias',
             icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
@@ -266,7 +266,7 @@ const loadMenu = async () => {
           {
             _tag: 'CSidebarNavItem',
             name: 'Permissões',
-            to: '/roles',
+            to: '/profiles',
             icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
