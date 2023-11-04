@@ -10,6 +10,8 @@ const NewFolder = React.lazy(() => import('./views/NewFolder'));
 
 const Logout = React.lazy(() => import('./views/logout'));
 const Wall = React.lazy(() => import('./views/Wall'));
+const News = React.lazy(() => import('./views/News'));
+
 const Category = React.lazy(() => import('./views/Category'));
 
 const Documents = React.lazy(() => import('./views/Documents'));
@@ -36,14 +38,13 @@ const routes = [
   { path: '/newFolder/:id', name: 'Pasta', component: NewFolder },
   { path: '/logout', name: 'Logout', component: Logout },
   { path: '/wall', name: 'Wall', component: Wall },
+  { path: '/noticias', name: 'Notícias', component: News },
   { path: '/documents', name: 'Documents', component: Documents },
   { path: '/reservations', name: 'Reservations', component: Reservations },
   { path: '/commonareas', name: 'Áreas Comuns', component: Commonareas },
   { path: '/units', name: 'Unidades', component: Units },
-
   { path: '/users', name: 'Users', component: Users },
   { path: '/profiles', name: 'Perfils de Acesso', component: Profiles },
-
   { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
   { path: '/categorias/:type', name: 'Categorias', component: Category },
   { path: '/categorias/', name: 'Categorias', component: Category },

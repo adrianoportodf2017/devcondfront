@@ -123,7 +123,7 @@ const loadMenu = async () => {
           {
             _tag: 'CSidebarNavItem',
             name: 'Notícias',
-            to: '/news/news-1',
+            to: '/noticias',
             icon: 'cil-notes',
             className: 'ml-3',
           },

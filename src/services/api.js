@@ -717,5 +717,58 @@ export default () => {
       let json = await request('delete', `/category/${id}`, {}, token);
       return json;
     },
+
+       /********************************************************************************/
+    /******************************--__-- News/Noticias --__--***********************************/
+    /********************************************************************************/
+    getNews: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/news`, {}, token);
+      return json;
+    },
+    addNew: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/new`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateNew: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/new/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateNewStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/new/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeNew: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/new/${id}`, {}, token);
+      return json;
+    },
   }
 }
