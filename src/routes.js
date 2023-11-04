@@ -42,7 +42,7 @@ const routes = [
   { path: '/units', name: 'Unidades', component: Units },
 
   { path: '/users', name: 'Users', component: Users },
-  { path: '/profiles', name: 'Perfils de ACesso', component: Profiles },
+  { path: '/profiles', name: 'Perfils de Acesso', component: Profiles },
 
   { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
   { path: '/categorias/:type', name: 'Categorias', component: Category },
