@@ -548,7 +548,7 @@ const Folder = () => {
                                             <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
                                             </div>
                                             <CButtonGroup>
-                                                <CButton color="info" onClick={() => handleDelButton(item.id)}>Editar</CButton>
+                                                <CButton color="info">Editar</CButton>
                                                 <CButton color="danger" onClick={() => handleDelFile(item.id)}>Excluir</CButton>
                                             </CButtonGroup>
                                      

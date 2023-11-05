@@ -11,9 +11,8 @@ const NewFolder = React.lazy(() => import('./views/NewFolder'));
 const Logout = React.lazy(() => import('./views/logout'));
 const Wall = React.lazy(() => import('./views/Wall'));
 const News = React.lazy(() => import('./views/News'));
-
+const Classified = React.lazy(() => import('./views/Classified'));
 const Category = React.lazy(() => import('./views/Category'));
-
 const Documents = React.lazy(() => import('./views/Documents'));
 const Reservations = React.lazy(() => import('./views/Reservations'));
 const Users = React.lazy(() => import('./views/Users'));
@@ -39,6 +38,8 @@ const routes = [
   { path: '/logout', name: 'Logout', component: Logout },
   { path: '/wall', name: 'Wall', component: Wall },
   { path: '/noticias', name: 'Notícias', component: News },
+  { path: '/classificados', name: 'Classificados', component: Classified },
+
   { path: '/documents', name: 'Documents', component: Documents },
   { path: '/reservations', name: 'Reservations', component: Reservations },
   { path: '/commonareas', name: 'Áreas Comuns', component: Commonareas },

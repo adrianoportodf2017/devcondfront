@@ -147,14 +147,14 @@ const loadMenu = async () => {
           {
             _tag: 'CSidebarNavItem',
             name: 'Classificados',
-            to: '/classifield/news-1',
+            to: '/classificados/',
             icon: <CIcon content={freeSet.cilCart} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
-            to: '/classifield/news-2',
+            to: '/categorias/classificados',
             icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
@@ -168,7 +168,7 @@ const loadMenu = async () => {
         to: '/classifield',
         icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
       },
-      {
+      /*{
         _tag: 'CSidebarNavDropdown',
         name: 'Convênios/Parceiros',
         to: '/classifield',
@@ -197,19 +197,19 @@ const loadMenu = async () => {
         name: 'Enquetes',
         to: '/classifield',
         icon: 'cil-list',
-      },
+      },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Reservas',
         to: '/reservations',
         icon: 'cil-calendar',
       },
-      {
+    /*  {
         _tag: 'CSidebarNavItem',
         name: 'Prestores de Serviços',
         to: '/reservations',
         icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
-      },
+      },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Ocorrências',

@@ -770,5 +770,57 @@ export default () => {
       let json = await request('delete', `/new/${id}`, {}, token);
       return json;
     },
+     /********************************************************************************/
+    /******************************--__-- Classificados --__--***********************************/
+    /********************************************************************************/
+    getClassifieds: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/classifieds`, {}, token);
+      return json;
+    },
+    addClassified: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/classified`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateClassified: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/classified/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateClassifiedStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/classified/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeClassified: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/classified/${id}`, {}, token);
+      return json;
+    },
   }
 }

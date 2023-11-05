@@ -50,8 +50,10 @@ const Login = () => {
       setLoading(false);
       if (result.error === "") {
         localStorage.setItem('token', result.token);
+        localStorage.setItem('userId', result.user.id);
+        alert(result.user.id);
        // alert(result.token);
-       history.push('/');
+      // history.push('/');
       } else {
         setError(result.error);
       }
@@ -113,7 +115,8 @@ const Login = () => {
 
       if (result.error === '') {
         localStorage.setItem('token', result.token);
-        history.push('/');
+        localStorage.setItem('userId', result.user.id);
+       // history.push('/');
       } else {
         setError(result.error);
         setSuccess('');

@@ -1,1 +1,16 @@
 // Here you can add other styles
+/* CSS personalizado para igualar a altura das colunas e alinhar os botões na parte inferior */
+.file-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .file-column .file-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .file-column .align-bottom {
+    margin-top: auto;
+  }
