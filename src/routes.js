@@ -17,6 +17,8 @@ const Documents = React.lazy(() => import('./views/Documents'));
 const Reservations = React.lazy(() => import('./views/Reservations'));
 const Users = React.lazy(() => import('./views/Users'));
 const Profiles = React.lazy(() => import('./views/Profiles'));
+const Resete = React.lazy(() => import('./views/ReseteBanco'));
+
 const Commonareas= React.lazy(() => import('./views/Commonareas'));
 const Units= React.lazy(() => import('./views/Units'));
 const RecoveryPassword = React.lazy(() => import('./views/RecoveryPassword'));
@@ -46,6 +48,8 @@ const routes = [
   { path: '/units', name: 'Unidades', component: Units },
   { path: '/users', name: 'Users', component: Users },
   { path: '/profiles', name: 'Perfils de Acesso', component: Profiles },
+  { path: '/resetarbanco', name: 'Perfils de Acesso', component: Resete },
+
   { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
   { path: '/categorias/:type', name: 'Categorias', component: Category },
   { path: '/categorias/', name: 'Categorias', component: Category },

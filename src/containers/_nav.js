@@ -270,7 +270,15 @@ const loadMenu = async () => {
             icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
-          },             
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Resetar Banco de Dados',
+            to: '/resetarbanco',
+            icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
+            className: 'ml-3',
+
+          },              
             ],
           },      
        {

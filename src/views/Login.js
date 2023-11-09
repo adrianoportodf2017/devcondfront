@@ -116,7 +116,7 @@ const Login = () => {
       if (result.error === '') {
         localStorage.setItem('token', result.token);
         localStorage.setItem('userId', result.user.id);
-       // history.push('/');
+        history.push('/');
       } else {
         setError(result.error);
         setSuccess('');

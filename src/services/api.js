@@ -65,6 +65,11 @@ export default () => {
       let json = await request('post', '/auth/reset-password', { password, password_confirmation, email, token });
       return json
     },
+    resetarBanco: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', `/migrate/`, {}, token);
+      return json;
+    },
     /********************************************************************************/
     /******************************--__-- Condominios --__--***********************************/
     /********************************************************************************/
