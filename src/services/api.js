@@ -1,6 +1,6 @@
 
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
-//const baseUrl = 'http://localhost:8000/api/admin'
+//const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/api/admin'
+const baseUrl = 'http://localhost:8000/api/admin'
 //const baseUrl = 'https://api.b7web.com.br/devcond/api/admin'
 
 const request = async (method, endpoint, params, token = null) => {
@@ -670,7 +670,7 @@ export default () => {
       return json;
     },
 
-        /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Category --__--***********************************/
     /********************************************************************************/
     getCategories: async (type = null) => {
@@ -723,7 +723,7 @@ export default () => {
       return json;
     },
 
-       /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- News/Noticias --__--***********************************/
     /********************************************************************************/
     getNews: async () => {
@@ -775,7 +775,7 @@ export default () => {
       let json = await request('delete', `/new/${id}`, {}, token);
       return json;
     },
-     /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Classificados --__--***********************************/
     /********************************************************************************/
     getClassifieds: async () => {
@@ -798,6 +798,141 @@ export default () => {
           body: formData
         });
       let json = req.json();
+      return json;
+    },
+    addFileClassified: (data, onProgress) => {
+      return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('id', data.id);
+        formData.append('file[]', data.file);
+
+        xhr.open('POST', `${baseUrl}/classified/midia/${data.id}`, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentCompleted = Math.round((event.loaded / event.total) * 100);
+            onProgress(percentCompleted);
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          } else {
+            reject(new Error('Erro na requisição'));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error('Erro na requisição'));
+        };
+
+        xhr.send(formData);
+      });
+    },
+    removeFileClassified: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/classified/midia/${id}`, {}, token);
+      return json;
+    },
+    updateClassified: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/classified/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateClassifiedStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/classified/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeClassified: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/classified/${id}`, {}, token);
+      return json;
+    },
+
+   /********************************************************************************/
+    /******************************--__-- Classificados --__--***********************************/
+    /********************************************************************************/
+    getClassifieds: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/classifieds`, {}, token);
+      return json;
+    },
+    addClassified: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/classified`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    addFileClassified: (data, onProgress) => {
+      return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('id', data.id);
+        formData.append('file[]', data.file);
+
+        xhr.open('POST', `${baseUrl}/classified/midia/${data.id}`, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentCompleted = Math.round((event.loaded / event.total) * 100);
+            onProgress(percentCompleted);
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          } else {
+            reject(new Error('Erro na requisição'));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error('Erro na requisição'));
+        };
+
+        xhr.send(formData);
+      });
+    },
+    removeFileClassified: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/classified/midia/${id}`, {}, token);
       return json;
     },
     updateClassified: async (id, data) => {
