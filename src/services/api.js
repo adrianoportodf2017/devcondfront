@@ -870,22 +870,22 @@ export default () => {
     },
 
    /********************************************************************************/
-    /******************************--__-- Classificados --__--***********************************/
+    /******************************--__-- Galeria de Fotos --__--***********************************/
     /********************************************************************************/
-    getClassifieds: async () => {
+    getGalleries: async () => {
       let token = localStorage.getItem('token');
       console.log(token);
-      let json = await request('get', `/classifieds`, {}, token);
+      let json = await request('get', `/galleries`, {}, token);
       return json;
     },
-    addClassified: async (data) => {
+    addGallery: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       for (let i in data) {
         formData.append(i, data[i])
       }
       let req = await fetch(
-        `${baseUrl}/classified`,
+        `${baseUrl}/gallery`,
         {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
@@ -894,15 +894,18 @@ export default () => {
       let json = req.json();
       return json;
     },
-    addFileClassified: (data, onProgress) => {
+    addFileGallery: (data, onProgress) => {
       return new Promise((resolve, reject) => {
         const token = localStorage.getItem('token');
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append('id', data.id);
-        formData.append('file[]', data.file);
+         for (let i = 0; i < data.file.length; i++) {
+          formData.append('file[]', data.file[i]);
+        }
 
-        xhr.open('POST', `${baseUrl}/classified/midia/${data.id}`, true);
+
+        xhr.open('POST', `${baseUrl}/gallery/midia/${data.id}`, true);
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
         xhr.upload.onprogress = (event) => {
           if (event.lengthComputable) {
@@ -918,7 +921,16 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          } else {
+          } 
+          
+          if (xhr.status === 400) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          }else {
             reject(new Error('Erro na requisição'));
           }
         };
@@ -930,12 +942,12 @@ export default () => {
         xhr.send(formData);
       });
     },
-    removeFileClassified: async (id) => {
+    removeFileGallery: async (id) => {
       let token = localStorage.getItem('token');
-      let json = await request('delete', `/classified/midia/${id}`, {}, token);
+      let json = await request('delete', `/gallery/midia/${id}`, {}, token);
       return json;
     },
-    updateClassified: async (id, data) => {
+    updateGallery: async (id, data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       for (let i in data) {
@@ -943,7 +955,7 @@ export default () => {
       }
       console.log(formData);
       let req = await fetch(
-        `${baseUrl}/classified/${id}`,
+        `${baseUrl}/gallery/${id}`,
         {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
@@ -952,14 +964,119 @@ export default () => {
       let json = req.json();
       return json;
     },
-    updateClassifiedStatus: async (id, dataStatus) => {
+    updateGalleryStatus: async (id, dataStatus) => {
       let token = localStorage.getItem('token');
-      let json = await request('post', `/classified/${id}/status`, dataStatus, token);
+      let json = await request('post', `/gallery/${id}/status`, dataStatus, token);
       return json;
     },
-    removeClassified: async (id) => {
+    removeGallery: async (id) => {
       let token = localStorage.getItem('token');
-      let json = await request('delete', `/classified/${id}`, {}, token);
+      let json = await request('delete', `/gallery/${id}`, {}, token);
+      return json;
+    },
+     /********************************************************************************/
+    /******************************--__-- Livro de Ocorrências --__--***********************************/
+    /********************************************************************************/
+    getWarnings: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/warnings`, {}, token);
+      return json;
+    },
+    addWarning: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/warning`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    addFileWarning: (data, onProgress) => {
+      return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('id', data.id);
+         for (let i = 0; i < data.file.length; i++) {
+          formData.append('file[]', data.file[i]);
+        }
+
+
+        xhr.open('POST', `${baseUrl}/warning/midia/${data.id}`, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentCompleted = Math.round((event.loaded / event.total) * 100);
+            onProgress(percentCompleted);
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          } 
+          
+          if (xhr.status === 400) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          }else {
+            reject(new Error('Erro na requisição'));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error('Erro na requisição'));
+        };
+
+        xhr.send(formData);
+      });
+    },
+    removeFileWarning: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/warning/midia/${id}`, {}, token);
+      return json;
+    },
+    updateWarning: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/warning/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateWarningStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/warning/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeWarning: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/warning/${id}`, {}, token);
       return json;
     },
   }

@@ -165,7 +165,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Galeria de Fotos',
-        to: '/classifield',
+        to: '/galeria',
         icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
       },
       /*{
@@ -213,7 +213,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Ocorrências',
-        to: '/warnnings',
+        to: '/ocorrencias',
         icon: <CIcon content={freeSet.cilBellExclamation} customClasses="c-sidebar-nav-icon" />,
       },
       {
