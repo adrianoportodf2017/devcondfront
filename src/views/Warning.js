@@ -323,7 +323,7 @@ const Galerias = () => {
                                                     {item.content.length > 30 ? '...' : ''}
                                                 </span>
                                             ) : null}
-                                        </td>
+                                         </td>
                                     ),
 
                                     'owner_id': (item) => (

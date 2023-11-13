@@ -57,7 +57,7 @@ const Galerias = () => {
 
 
 
-    const fields = [
+    const  fields = [
         { label: 'Capa', key: 'Thumb', sorter: false, filter: false },
         { label: 'Título', key: 'title' },
         { label: 'Descrição', key: 'content' },
