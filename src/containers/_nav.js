@@ -219,7 +219,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Achados e Perdidos',
-        to: '/foundandlost',
+        to: '/achados-e-perdidos',
         icon: 'cil-lock-locked',
       },
       {

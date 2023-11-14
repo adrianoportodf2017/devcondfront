@@ -32,7 +32,7 @@ import useApi from '../services/api'
 
 
 
-const Ocorrencia = () => {
+const Achados = () => {
     const api = useApi();
 
     const [loading, setLoading] = useState(true);
@@ -79,7 +79,7 @@ const Ocorrencia = () => {
 
     const getList = async () => {
         setLoading(true);
-        const result = await api.getWarnings();
+        const result = await api.getLostAndFound();
         const category = await api.getCategories('ocorrencias');
         const users = await api.getUsers();
 
@@ -134,9 +134,9 @@ const Ocorrencia = () => {
 
 
             if (modalId === '') {
-                result = await api.addWarning(data)
+                result = await api.addLostAndFound(data)
             } else {
-                result = await api.updateWarning(modalId, data);
+                result = await api.updateLostAndFound(modalId, data);
             }
 
             setModalLoading(false)
@@ -174,7 +174,7 @@ const Ocorrencia = () => {
     }
     const handleDelButton = async (id) => {
         if (window.confirm('Tem certeza que deseja excluir?')) {
-            const result = await api.removeWarning(id);
+            const result = await api.removeLostAndFound(id);
             if (result.error === '' || result.error === undefined) {
                 // Remova o item da lista atual de arquivos
                 getList();
@@ -195,7 +195,7 @@ const Ocorrencia = () => {
 
         if (confirm) {
             // Chame a API para excluir o arquivo
-            const result = await api.removeFileWarning(id_file);
+            const result = await api.removeFileLostAndFound(id_file);
             if (result.error === '' || result.error === undefined) {
                 // Atualize listFiles para remover o arquivo excluído
                 setListFiles((currentFiles) => currentFiles.filter((file) => file.id !== id_file));
@@ -203,29 +203,6 @@ const Ocorrencia = () => {
             } else {
                 alert(result.error);
             }
-        }
-    };
-
-    const handleAddFile = async () => {
-        if (modalFileField) {
-            setModalLoading(true);
-            const data = {
-                file: modalFileField,
-                id: modalId
-            };
-            const result = await api.addFileWarning(data, (percentCompleted) => {
-                setUploadProgress(percentCompleted);
-            });
-            setModalLoading(false);
-            if (result.error === '' || result.error === undefined) {
-                // Atualize listFiles para remover o arquivo excluído
-                setListFiles(result['list']['midias']);
-            } else {
-                alert(result.error);
-            }
-        } else {
-            setModalLoading(false);
-            alert('Preencha os campos para continuar');
         }
     };
 
@@ -248,29 +225,11 @@ const Ocorrencia = () => {
         ],
     };
 
-    const handleModalSwitchClick = () => {
-        setModalStatusField(modalStatusField == '1' ? '0' : '1');
-    }
-
-    const getOwnerInfo = (ownerId) => {
-        const owner = usersField.find(usersField => usersField.id === ownerId);
-        return owner
-            ? {
-                name: owner.name,
-                email: owner.email,
-                phone: owner.phone,
-            }
-            : {
-                name: 'Usuário não encontrado',
-                email: '',
-                phone: '',
-            };
-    };
     return (
         <>
             <CRow>
                 <CCol>
-                    <h2>Livro de Ocorrências </h2>
+                    <h2>Achados e Perdidos </h2>
 
                     <CCard>
                         <CCardHeader>
@@ -278,7 +237,7 @@ const Ocorrencia = () => {
                             <CButton
                                 onClick={handleAddButton}
                                 color="primary"                            >
-                                <CIcon name="cil-check" /> Registar Nova Ocorrência
+                                <CIcon name="cil-check" /> Registar Novo item
                             </CButton>
                         </CCardHeader>
 
@@ -299,16 +258,10 @@ const Ocorrencia = () => {
 
                                     'status': (item) => (
                                         <td>
-                                            {item.status === '1' ? (
-                                                <span className="badge badge-success">Registrado</span>
-                                            ) : item.status === '2' ? (
-                                                <span className="badge badge-warning">Em Andamento</span>
-                                            ) : item.status === '3' ? (
-                                                <span className="badge badge-info">Finalizado</span>
-                                            ) : item.status === '4' ? (
-                                                <span className="badge badge-danger">Cancelado</span>
+                                            {item.status == '1' ? (
+                                                <span className="badge badge-danger">Registado  - Não Devolvido</span>
                                             ) : (
-                                                <span className="badge badge-success">Registrado</span>
+                                                <span className="badge badge-primary">Registado  - Devolvido</span>
                                             )}
                                         </td>
                                     ),
@@ -374,7 +327,7 @@ const Ocorrencia = () => {
             </CRow>
 
             <CModal show={showModal} onClose={handleCloseModal} size="lg">
-                <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Nova'}   - Ocorrência
+                <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Nova'}   - Item
 
                 </CModalHeader>
                 <CModalBody>
@@ -396,17 +349,10 @@ const Ocorrencia = () => {
                                 >
                                     <option value="">Status</option>
                                     <option value="1" selected={"1" == modalStatusField}>
-                                        Registrado
+                                     Registrado -  Não Devolvido
                                     </option>
                                     <option value="2" selected={"2" == modalStatusField}>
-                                        Em Andamento
-                                    </option>
-                                    <option value="3" selected={"3" == modalStatusField}>
-                                        Finalizado
-                                    </option>
-                                    <option value="4" selected={"4" == modalStatusField}>
-                                        Cancelado
-                                    </option>
+                                    Registrado -  Devolvido                                  </option>                                 
                                     {/* Adicione outras opções conforme necessário */}
                                 </CSelect>
                             </CFormGroup>
@@ -540,4 +486,4 @@ const Ocorrencia = () => {
 
 
 };
-export default Ocorrencia;
+export default Achados;

@@ -14,6 +14,8 @@ const News = React.lazy(() => import('./views/News'));
 const Classified = React.lazy(() => import('./views/Classified'));
 const Gallery = React.lazy(() => import('./views/Gallery'));
 const Warning = React.lazy(() => import('./views/Warning'));
+const LostAndFound = React.lazy(() => import('./views/LostAndFound'));
+
 
 const Category = React.lazy(() => import('./views/Category'));
 const Documents = React.lazy(() => import('./views/Documents'));
@@ -45,6 +47,8 @@ const routes = [
   { path: '/noticias', name: 'Notícias', component: News },
   { path: '/classificados', name: 'Classificados', component: Classified },
   { path: '/galeria', name: 'Galeria de Fotos', component: Gallery },
+  { path: '/achados-e-perdidos', name: 'Achados e Perdidos', component: LostAndFound },
+
   { path: '/ocorrencias', name: 'Ocorrências', component: Warning },
 
   { path: '/documents', name: 'Documents', component: Documents },
