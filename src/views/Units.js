@@ -59,7 +59,7 @@ const Units = () => {
     }, []);
 
     useEffect(() => {
-        if (modalOwnerSearchField.length === 11) {
+        if (modalOwnerSearchField.length === 5) {
             searchUser();
         }
     }, [modalOwnerSearchField]);
@@ -68,8 +68,8 @@ const Units = () => {
         if (modalOwnerSearchField !== '') {
             const result = await api.searchUser(modalOwnerSearchField);
             if (result.error === '' || result.error === null) {
-                setModalOwnerField(result.list);
-                // setModalOwnerList(result.list)
+               // setModalOwnerField(result.list);
+                 setModalOwnerList(result.list)
             } else {
                 alert(result.error)
             }

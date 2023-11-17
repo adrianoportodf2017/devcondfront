@@ -80,7 +80,7 @@ const Achados = () => {
     const getList = async () => {
         setLoading(true);
         const result = await api.getLostAndFound();
-        const category = await api.getCategories('ocorrencias');
+        const category = await api.getCategories('achados');
         const users = await api.getUsers();
 
         console.log(result);
@@ -101,7 +101,7 @@ const Achados = () => {
     const handleAddButton = () => {
         setModalId('');
         setModalTitleField('');
-        setModalStatusField('0');
+        setModalStatusField('');
         setModalThumbField('');
         setModalContentField('');
         setModalNotesField('');

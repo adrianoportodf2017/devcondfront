@@ -610,9 +610,9 @@ export default () => {
       let json = await request('delete', `/user/${id}`, {}, token);
       return json;
     },
-    searchUser: async (query) => {
+    searchUser: async (cpf) => {
       let token = localStorage.getItem('token');
-      let json = await request('get', `/users/search`, { q: query }, token);
+      let json = await request('get', `/users/cpf/${cpf}`, {} , token);
       return json;
     },
 
@@ -1182,7 +1182,7 @@ export default () => {
       }
       console.log(formData);
       let req = await fetch(
-        `${baseUrl}/warning/${id}`,
+        `${baseUrl}/lost-and-found/${id}`,
         {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
