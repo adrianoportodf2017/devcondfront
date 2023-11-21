@@ -20,6 +20,7 @@ import {
     CModalHeader,
     CRow,
     CSwitch,
+    CSelect
 
 } from '@coreui/react';
 import CIcon from "@coreui/icons-react";
@@ -37,6 +38,7 @@ const Avisos = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalId, setModalId] = useState('');
     const [modalTitleField, setModalTitleField] = useState('');
+    const [modalTypeField, setModalTypeField] = useState('');
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalContentField, setModalContentField] = useState('');
     const [modalStatusField, setModalStatusField] = useState('');
@@ -77,6 +79,7 @@ const Avisos = () => {
         setModalTitleField('');
         setModalStatusField('1');
         setModalThumbField('');
+        setModalTypeField('');
         setModalContentField('');
         setShowModal(true);
     };
@@ -94,6 +97,7 @@ const Avisos = () => {
             let data = {
                 status: modalStatusField,
                 title: modalTitleField,
+                type: modalTypeField,
                 content: modalContentField,
             };
 
@@ -129,6 +133,8 @@ const Avisos = () => {
         setModalStatusField(list[index]['status']);
         setModalThumbField('');
         setModalTitleField(list[index]['title']);
+        setModalTypeField(list[index]['type']);
+
 
         setModalContentField(list[index]['content']);
         setShowModal(true);
@@ -160,22 +166,22 @@ const Avisos = () => {
 
     const modules = {
         toolbar: [
-          [{ header: '1' }, { header: '2' }],
-          ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
-          [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
-          ['link', 'image'], // Inserção de links e imagens
-          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-          [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        
-          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-        
+            [{ header: '1' }, { header: '2' }],
+            ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
+            [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
+            ['link', 'image'], // Inserção de links e imagens
+            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-          ['clean'], // Remoção de formatação
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+
+            ['clean'], // Remoção de formatação
         ],
-      };
+    };
 
 
 
@@ -266,29 +272,63 @@ const Avisos = () => {
                 </CCol>
             </CRow>
 
-            <CModal show={showModal} onClose={handleCloseModal}>
+            <CModal show={showModal} onClose={handleCloseModal} size="xl">
                 <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Nova'} Aviso </CModalHeader>
                 <CModalBody>
                     <CFormGroup>
-                        <CLabel htmlFor="modal_status">Ativo</CLabel><br />
-                       <CSwitch
-                            color="success"
-                            checked={modalStatusField == '0' ? '' : 'true'}
-                            onChange={handleModalSwitchClick}
-                        />
+
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <CFormGroup>
+                                    <CLabel htmlFor="modal-status">Status</CLabel>
+                                    <CSelect
+                                        id="modal-status"
+                                        value={modalStatusField}
+                                        onChange={(e) => setModalStatusField(e.target.value)}
+                                        disabled={loading}
+                                    >
+                                        <option value="">Status</option>
+                                        <option value="0" selected={"0" == modalStatusField}>
+                                            Desativar                                    </option>
+                                        <option value="1" selected={"1" == modalStatusField}>
+                                            Ativar
+                                        </option>
+                                    </CSelect>
+                                </CFormGroup>
+                            </div>
+                            <div className="col-sm-6">
+                                <CFormGroup>
+                                    <CLabel htmlFor="modal-type">Restrição de Aviso</CLabel>
+                                    <CSelect
+                                        id="modal-type"
+                                        value={modalTypeField}
+                                        onChange={(e) => setModalTypeField(e.target.value)}
+                                        disabled={loading}
+                                    >
+                                        <option value="0" selected={modalTypeField === "0"}>
+                                            Público
+                                        </option>
+                                        <option value="1" selected={modalTypeField === "1"}>
+                                            Restrito - Apenas para Usuários Logados
+                                        </option>
+                                    </CSelect>
+                                </CFormGroup>
+                            </div>
+
+                            <div className="col-xl-6">
+                                <CFormGroup>
+                                    <CLabel htmlFor="modal_title">Titulo</CLabel>
+                                    <CInput
+                                        type="text"
+                                        id='modal_title'
+                                        name="title"
+                                        value={modalTitleField}
+                                        onChange={(e) => setModalTitleField(e.target.value)}
+                                    />
+                                </CFormGroup>
+                            </div>
+                        </div>
                     </CFormGroup>
-
-                    <CFormGroup>
-                        <CLabel htmlFor="modal_title">Titulo</CLabel>
-                        <CInput
-                            type="text"
-                            id='modal_title'
-                            name="title"
-                            value={modalTitleField}
-                            onChange={(e) => setModalTitleField(e.target.value)}
-                        />
-                    </CFormGroup>                  
-
                     <CFormGroup>
                         <CLabel htmlFor="modal_Thumb">Capa</CLabel>
                         <CInput
@@ -299,18 +339,16 @@ const Avisos = () => {
                             onChange={(e) => setModalThumbField(e.target.files[0])}
                         />
                     </CFormGroup>
-
-
-                        <CFormGroup className="mb-5">
-                            <CLabel htmlFor="modal_Content">Descrição</CLabel>
-                            <ReactQuill
-                                style={{ height: '300px' }} // Defina a altura desejada aqui
-                                theme="snow"                             
-                                modules={modules}                                                  
-                                value={modalContentField}
-                                onChange={(content) => setModalContentField(content)}
-                            />
-                        </CFormGroup>
+                    <CFormGroup className="mb-5">
+                        <CLabel htmlFor="modal_Content">Descrição</CLabel>
+                        <ReactQuill
+                            style={{ height: '300px' }} // Defina a altura desejada aqui
+                            theme="snow"
+                            modules={modules}
+                            value={modalContentField}
+                            onChange={(content) => setModalContentField(content)}
+                        />
+                    </CFormGroup>
 
 
                 </CModalBody>
