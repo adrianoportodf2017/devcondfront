@@ -67,7 +67,7 @@ export default () => {
     },
     resetarBanco: async () => {
       let token = localStorage.getItem('token');
-      let json = await request('get', `/migrate/`, {}, token);
+      let json = await request('get', `/migrate`, {}, token);
       return json;
     },
     /********************************************************************************/
