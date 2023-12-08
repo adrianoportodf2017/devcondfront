@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
+import { htmlEditButton } from 'quill-html-edit-button';
 import 'react-quill/dist/quill.snow.css';
 import { Link } from "react-router-dom";
 import {
@@ -65,6 +66,39 @@ const Folder = () => {
     const [modalFileField, setModalFileField] = useState('');
 
 
+    Quill.register('modules/htmlEditButton', htmlEditButton);
+
+
+    const modules = {
+        toolbar: [
+            [{ header: '1' }, { header: '2' }],
+            ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
+            [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
+            ['link', 'image'], // Inserção de links e imagens
+            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+
+            ['clean'], // Remoção de formatação
+        ],
+        htmlEditButton: {
+            debug: true, // logging, default:false
+            msg: "Edit the content in HTML format", //Custom message to display in the editor, default: Edit HTML here, when you click "OK" the quill editor's contents will be replaced
+            okText: "Ok", // Text to display in the OK button, default: Ok,
+            cancelText: "Cancel", // Text to display in the cancel button, default: Cancel
+            buttonHTML: "&lt;&gt;", // Text to display in the toolbar button, default: <>
+            buttonTitle: "Show HTML source", // Text to display as the tooltip for the toolbar button, default: Show HTML source
+            syntax: false, // Show the HTML with syntax highlighting. Requires highlightjs on window.hljs (similar to Quill itself), default: false
+            prependSelector: 'div#myelement', // a string used to select where you want to insert the overlayContainer, default: null (appends to body),
+            editorModules: {} // The default mod
+          }
+
+    };
 
     const fieldsListFolder = [
         { label: 'Capa', key: 'Thumb', sorter: false, filter: false },
@@ -371,21 +405,7 @@ const Folder = () => {
         }
     };
 
-    const modules = {
-        toolbar: [
-            [{ header: '1' }, { header: '2' }],
-            ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
-            [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
-            ['link', 'image'], // Inserção de links e imagens
-            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-            ['clean'], // Remoção de formatação
-        ],
-    };
+ 
 
     return (
         <>
@@ -478,6 +498,7 @@ const Folder = () => {
                                         style={{ height: '300px' }}
                                         theme="snow"
                                         value={content}
+                                        modules={modules}
                                         onChange={(value) => setContent(value)}
                                     />
                                 ) : (
