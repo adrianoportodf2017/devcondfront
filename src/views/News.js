@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
+import { htmlEditButton } from 'quill-html-edit-button';
 import 'react-quill/dist/quill.snow.css';
 
 import {
@@ -41,6 +42,8 @@ const Noticias = () => {
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalContentField, setModalContentField] = useState('');
     const [modalStatusField, setModalStatusField] = useState('');
+    const [modalStatusThumbField, setModalStatusThumbField] = useState('');
+
     const [category, setCategory] = useState([]);
     const [modalCategoryField, setModalCategoryField] = useState('')
 
@@ -86,6 +89,7 @@ const Noticias = () => {
         setModalId('');
         setModalTitleField('');
         setModalStatusField('1');
+        setModalStatusThumbField('1');
         setModalThumbField('');
         setModalContentField('');
         setShowModal(true);
@@ -103,13 +107,14 @@ const Noticias = () => {
             let result;
             let data = {
                 status: modalStatusField,
+                status_thumb: modalStatusThumbField,
                 title: modalTitleField,
                 content: modalContentField,
                 category_id: modalCategoryField,
 
             };
 
-            if (modalThumbField ) {
+            if (modalThumbField) {
                 data.thumb = modalThumbField;
             };
 
@@ -139,6 +144,7 @@ const Noticias = () => {
         let index = list.findIndex(v => v.id == id)
         setModalId(list[index]['id']);
         setModalStatusField(list[index]['status']);
+        setModalStatusThumbField(list[index]['status_thumb']);
         setModalThumbField('');
         setModalTitleField(list[index]['title']);
         setModalCategoryField(list[index]['category_id']);
@@ -170,6 +176,18 @@ const Noticias = () => {
         }
     }
 
+
+    const handleModalSwitchClick = () => {
+        setModalStatusField(modalStatusField == '1' ? '0' : '1');
+    }
+    const handleModalSwitchThumbClick = () => {
+        setModalStatusThumbField(modalStatusThumbField == '1' ? '0' : '1');
+    }
+
+
+    Quill.register('modules/htmlEditButton', htmlEditButton);
+
+
     const modules = {
         toolbar: [
             [{ header: '1' }, { header: '2' }],
@@ -187,15 +205,25 @@ const Noticias = () => {
 
             ['clean'], // Remoção de formatação
         ],
+        htmlEditButton: {
+            debug: true, // logging, default:false
+            msg: "Edit the content in HTML format", //Custom message to display in the editor, default: Edit HTML here, when you click "OK" the quill editor's contents will be replaced
+            okText: "Ok", // Text to display in the OK button, default: Ok,
+            cancelText: "Cancel", // Text to display in the cancel button, default: Cancel
+            buttonHTML: "&lt;&gt;", // Text to display in the toolbar button, default: <>
+            buttonTitle: "Show HTML source", // Text to display as the tooltip for the toolbar button, default: Show HTML source
+            syntax: false, // Show the HTML with syntax highlighting. Requires highlightjs on window.hljs (similar to Quill itself), default: false
+            prependSelector: 'div#myelement', // a string used to select where you want to insert the overlayContainer, default: null (appends to body),
+            editorModules: {} // The default mod
+        }
+
     };
 
 
 
 
 
-    const handleModalSwitchClick = () => {
-        setModalStatusField(modalStatusField == '1' ? '0' : '1');
-    }
+
     return (
         <>
             <CRow>
@@ -288,7 +316,7 @@ const Noticias = () => {
                 </CCol>
             </CRow>
 
-            <CModal show={showModal} onClose={handleCloseModal}>
+            <CModal show={showModal} onClose={handleCloseModal} size="lg">
                 <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Nova'} Noticia </CModalHeader>
                 <CModalBody>
                     <CFormGroup>
@@ -312,6 +340,12 @@ const Noticias = () => {
                     </CFormGroup>
 
                     <CFormGroup>
+                        <CLabel htmlFor="modal_status">Colocar Imagem no Topo da Notícia?</CLabel><br />
+                        <CSwitch
+                            color="success"
+                            checked={modalStatusThumbField == '0' ? '' : 'true'}
+                            onChange={handleModalSwitchThumbClick}
+                        /><br />
                         <CLabel htmlFor="modal_Thumb">Capa</CLabel>
                         <CInput
                             type="file"
