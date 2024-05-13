@@ -28,10 +28,18 @@ const Commonareas= React.lazy(() => import('./views/Commonareas'));
 const Units= React.lazy(() => import('./views/Units'));
 const RecoveryPassword = React.lazy(() => import('./views/RecoveryPassword'));
 
+/***
+ * 
+ * site
+ */
+
+const Paginas = React.lazy(() => import('./Paginas'));
+const Editor = React.lazy(() => import('./Editor'));
 
 
 
 
+/**** */
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -62,6 +70,13 @@ const routes = [
   { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
   { path: '/categorias/:type', name: 'Categorias', component: Category },
   { path: '/categorias/', name: 'Categorias', component: Category },
+
+  /***site */
+
+
+  { path: '/editor', name: 'Editor', component: Editor },
+  { path: '/paginas', name: 'Páginas', component: Paginas },
+
 
 
 
