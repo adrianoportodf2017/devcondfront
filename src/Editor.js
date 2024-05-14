@@ -1,54 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { API_HOST } from "./api_utils";
+import { useSelector } from "react-redux";
 import Sidebar from "./components/Sidebar";
 import TopNav from "./components/TopNav";
 import geditorConfig from "./api_utils/geditor_config";
 import PageSection from "./components/PageSection";
-import { useSelector, useDispatch } from "react-redux";
-import { createPage } from "./redux/actions/pageAction";
-
-import {
-    CButton,
-    CButtonGroup,
-    CCard,
-    CCardBody,
-    CCardHeader,
-    CCol,
-    CDataTable,
-    CFormGroup,
-    CInput,
-    CInputCheckbox,
-    CLabel,
-    CModal,
-    CModalBody,
-    CModalFooter,
-    CModalHeader,
-    CRow,
-    CSwitch,
-    CSelect
-
-} from '@coreui/react';
-import CIcon from "@coreui/icons-react";
-
-import useApi from './services/api'
-
-
+import { getAssetsFromLocalStorage, getFromLocalStorage, getByPageById } from "./api_utils/storageUtils";
 
 const Editor = () => {
   const [editor, setEditor] = useState(null);
   const [assets, setAssets] = useState([]);
+  const [pageData, setPageData] = useState(null);
+
   const { pageId } = useParams();
 
-  const [pages, setList] = useState([]);
-
+  const { pageStore } = useSelector((state) => state);
+  const { pages } = pageStore;
 
   useEffect(() => {
     async function getAllAssets() {
       try {
-        const response = await axios.get(`${API_HOST}assets/`);
-        setAssets(response.data);
+        const assets = getAssetsFromLocalStorage();
+        setAssets(assets);
       } catch (error) {
         setAssets(error.message);
       }
@@ -58,9 +31,23 @@ const Editor = () => {
   }, []);
 
   useEffect(() => {
-    const editor = geditorConfig(assets, pageId);
+    // Carregar os dados da página do localStorage
+    const loadPageData = () => {
+      const data = getByPageById(`${pageId}`);
+      console.log(data);
+      if (data) {
+        setPageData(data);
+      }
+    };
+
+    loadPageData();
+  }, [pageId]);
+
+  useEffect(() => {
+    const editor = geditorConfig(assets, pageId, pageData);
     setEditor(editor);
-  }, [pageId, assets]);
+  }, [pageId, assets, pageData]);
+
   return (
     <div className="App">
       <div
@@ -72,7 +59,6 @@ const Editor = () => {
             <span className="navbar-brand mb-0 h3 logo">Code Dexterous</span>
           </div>
         </nav>
-        <PageSection pages={pages} />
         <Sidebar />
       </div>
       <div

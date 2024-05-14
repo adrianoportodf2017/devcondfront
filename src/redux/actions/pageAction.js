@@ -1,5 +1,9 @@
-import axios from "axios";
-import { API_HOST } from "../../api_utils";
+import { 
+  saveToLocalStorage, 
+  getFromLocalStorage, 
+  getAllPages, 
+  addPage 
+} from "../../api_utils/storageUtils";
 
 export const TYPES = {
   LIST_PAGE_REQUEST_SEND: "LIST_PAGE_REQUEST_SEND",
@@ -14,8 +18,8 @@ export const TYPES = {
 export const pageLoad = () => async (dispatch) => {
   dispatch({ type: TYPES.LIST_PAGE_REQUEST_SEND });
   try {
-    const response = await axios.get(`${API_HOST}pages/`);
-    dispatch({ type: TYPES.LIST_PAGE_REQUEST_SUCCESS, data: response.data });
+    const pages = getAllPages();
+    dispatch({ type: TYPES.LIST_PAGE_REQUEST_SUCCESS, data: pages });
   } catch (error) {
     dispatch({ type: TYPES.LIST_PAGE_REQUEST_ERROR, error: error });
   }
@@ -24,9 +28,9 @@ export const pageLoad = () => async (dispatch) => {
 export const createPage = (name) => async (dispatch) => {
   dispatch({ type: TYPES.CREATE_PAGE_REQUEST });
   try {
-    const response = await axios.post(`${API_HOST}pages/`, { name });
-    dispatch({ type: TYPES.CREATE_PAGE_SUCCESS, data: response.data });
+    const newPage = addPage(name);
+    dispatch({ type: TYPES.CREATE_PAGE_SUCCESS, data: newPage });
   } catch (error) {
-    dispatch({ type: TYPES.CREATE_PAGE_ERROR, data: error });
+    dispatch({ type: TYPES.CREATE_PAGE_ERROR, error: error });
   }
 };

@@ -1,4 +1,5 @@
 import { API_HOST } from ".";
+import { saveToLocalStorage, getFromLocalStorage } from "./storageUtils";
 
 export const styleManager = {
   appendTo: "#styles-container",
@@ -494,8 +495,7 @@ export const deviceManager = {
   ],
 };
 
-export const addEditorCommand = (editor) => {
-  // Commands
+export const addEditorCommand = (editor, pageId) => {  // Commands
   editor.Commands.add("set-device-desktop", {
     run: (editor) => editor.setDevice("Desktop"),
   });
@@ -504,13 +504,15 @@ export const addEditorCommand = (editor) => {
   });
 
   // Save Button
+  // Save Button
   editor.Commands.add("saveDb", {
     run: (editor, sender) => {
       sender && sender.set("active");
-      editor.store();
+      const data = editor.store();
+      console.log(pageId);
+      saveToLocalStorage(`${pageId}`, data);
     },
   });
-
   //Clear Button
   editor.Commands.add("cmd-clear", {
     run: (editor) => {
@@ -546,13 +548,7 @@ export const storageSetting = (pageId) => {
     storeComponents: true,
     storeStyles: true,
     storeHtml: true,
-    storeCss: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    id: "mycustom-",
-    urlStore: `${API_HOST}pages/${pageId}/content`,
-    urlLoad: `${API_HOST}pages/${pageId}/content`,
+    storeCss: true,   
   };
 };
 

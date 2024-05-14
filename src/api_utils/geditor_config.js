@@ -5,6 +5,7 @@ import grapesjsBlockBootstrap from "grapesjs-blocks-bootstrap4";
 import grapesjsPluginExport from "grapesjs-plugin-export";
 import grapesjsStyleBg from "grapesjs-style-bg";
 
+
 import {
   addEditorCommand,
   deviceManager,
@@ -15,14 +16,13 @@ import {
   storageSetting,
   styleManager,
   styles,
-  toggleSidebar,
   traitManager,
 } from "./geditor_utils";
 import tailwindComponent from "../plugins/tailwind";
 import swiperComponent from "../plugins/swiper";
 import chartLibComponent from "../plugins/charts";
 
-const geditorConfig = (assets, pageId) => {
+const geditorConfig = (assets, pageId, pageData) => {
   $(".panel__devices").html("");
   $(".panel__basic-actions").html("");
   $(".panel__editor").html("");
@@ -36,6 +36,8 @@ const geditorConfig = (assets, pageId) => {
   const mainContent = $("#main-content");
   const panelTopBar = $("#main-content > .navbar-light");
 
+
+
   const editor = grapesjs.init({
     container: "#editor",
     blockManager: {
@@ -47,7 +49,7 @@ const geditorConfig = (assets, pageId) => {
     selectorManager: selectorManager,
     panels: panels,
     deviceManager: deviceManager,
-    assetManager: { assets: assets, upload: false },
+    assetManager: { assets: assets, upload: true },
     storageManager: storageSetting(pageId),
     canvas: {
       styles: styles,
@@ -73,7 +75,12 @@ const geditorConfig = (assets, pageId) => {
     },
   });
 
-  addEditorCommand(editor);
+     // Carregar dados da página no editor
+     if (pageData) {
+      editor.loadData(pageData);
+    }
+
+  addEditorCommand(editor, pageId);
   editor.on("run:preview", () => {
     console.log("It will trigger when we click on preview icon");
     // This will be used to hide border
