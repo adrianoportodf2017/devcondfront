@@ -73,7 +73,7 @@
     "react-scripts": "^4.0.3"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
      "build": "react-scripts build",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
@@ -102,7 +102,7 @@
     ]
   },
   "engines": {
-    "node": "20.x",
+    "node": "16.x",
     "npm": ">=6"
   }
 }
