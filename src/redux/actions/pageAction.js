@@ -3,7 +3,7 @@ import {
   getFromLocalStorage, 
   getAllPages, 
   addPage 
-} from "../../api_utils/storageUtils";
+} from "../../editor/api_utils/storageUtils";
 
 export const TYPES = {
   LIST_PAGE_REQUEST_SEND: "LIST_PAGE_REQUEST_SEND",
@@ -18,8 +18,8 @@ export const TYPES = {
 export const pageLoad = () => async (dispatch) => {
   dispatch({ type: TYPES.LIST_PAGE_REQUEST_SEND });
   try {
-    const pages = getAllPages();
-    dispatch({ type: TYPES.LIST_PAGE_REQUEST_SUCCESS, data: pages });
+   // const pages = getAllPages();
+    //dispatch({ type: TYPES.LIST_PAGE_REQUEST_SUCCESS, data: pages });
   } catch (error) {
     dispatch({ type: TYPES.LIST_PAGE_REQUEST_ERROR, error: error });
   }
@@ -28,8 +28,8 @@ export const pageLoad = () => async (dispatch) => {
 export const createPage = (name) => async (dispatch) => {
   dispatch({ type: TYPES.CREATE_PAGE_REQUEST });
   try {
-    const newPage = addPage(name);
-    dispatch({ type: TYPES.CREATE_PAGE_SUCCESS, data: newPage });
+    //const newPage = addPage(name);
+   // dispatch({ type: TYPES.CREATE_PAGE_SUCCESS, data: newPage });
   } catch (error) {
     dispatch({ type: TYPES.CREATE_PAGE_ERROR, error: error });
   }

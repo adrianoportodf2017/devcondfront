@@ -4,7 +4,6 @@ import './scss/style.scss';
 import { useDispatch } from "react-redux";
 
 import { pageLoad } from "./redux/actions/pageAction";
-import Editor from "./Editor";
 
 
 const loading = (

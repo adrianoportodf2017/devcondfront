@@ -1,5 +1,7 @@
 import { API_HOST } from ".";
-import { saveToLocalStorage, getFromLocalStorage } from "./storageUtils";
+import { updatePageById } from "./storageUtils";
+import apiService from '../../services/api';
+
 
 export const styleManager = {
   appendTo: "#styles-container",
@@ -510,7 +512,7 @@ export const addEditorCommand = (editor, pageId) => {  // Commands
       sender && sender.set("active");
       const data = editor.store();
       console.log(pageId);
-      saveToLocalStorage(`${pageId}`, data);
+      updatePageById(`${pageId}`, data);
     },
   });
   //Clear Button
@@ -541,6 +543,7 @@ export const addEditorCommand = (editor, pageId) => {  // Commands
 };
 
 export const storageSetting = (pageId) => {
+  ;
   return {
     type: "remote",
     stepsBeforeSave: 3,
@@ -548,7 +551,17 @@ export const storageSetting = (pageId) => {
     storeComponents: true,
     storeStyles: true,
     storeHtml: true,
-    storeCss: true,   
+    storeCss: true,  
+    headers: {
+      "Content-Type": "application/json",
+    },
+    id: pageId,
+    urlStore: (data) => {
+      updatePageById(data);
+    },
+   /* urlLoad: () => {
+     // return getFromLocalStorage(`page-${pageId}-content`);
+    }, */
   };
 };
 

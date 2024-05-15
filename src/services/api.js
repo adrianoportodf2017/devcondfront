@@ -70,6 +70,65 @@ export default () => {
       let json = await request('get', `/migrate`, {}, token);
       return json;
     },
+
+       /********************************************************************************/
+    /******************************--__-- Pages/Paginas --__--***********************************/
+    /********************************************************************************/
+    getPages: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/pages`, {}, token);
+      return json;
+    },
+    getPageById: async (id) => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/page/${id}`, {}, token);
+      return json;
+    },
+    addPage: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/page`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updatePage: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/page/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updatePageStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/page/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removePage: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/page/${id}`, {}, token);
+      return json;
+    },
     /********************************************************************************/
     /******************************--__-- Condominios --__--***********************************/
     /********************************************************************************/
@@ -775,6 +834,8 @@ export default () => {
       let json = await request('delete', `/new/${id}`, {}, token);
       return json;
     },
+
+  
     /********************************************************************************/
     /******************************--__-- Classificados --__--***********************************/
     /********************************************************************************/

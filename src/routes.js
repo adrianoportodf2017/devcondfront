@@ -33,8 +33,8 @@ const RecoveryPassword = React.lazy(() => import('./views/RecoveryPassword'));
  * site
  */
 
-const Paginas = React.lazy(() => import('./Paginas'));
-const Editor = React.lazy(() => import('./Editor'));
+const Paginas = React.lazy(() => import('./views/Pages'));
+const Editor = React.lazy(() => import('./editor/Editor'));
 
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Sidebar from "./components/Sidebar";
 import TopNav from "./components/TopNav";
@@ -28,12 +28,16 @@ import {
 
 } from '@coreui/react';
 import CIcon from "@coreui/icons-react";
-import useApi from './services/api';
+import useApi from '../services/api';
+
 
 const Editor = () => {
+  const api = useApi();
   const [editor, setEditor] = useState(null);
   const [assets, setAssets] = useState([]);
   const [pageData, setPageData] = useState(null);
+  const navigate = useHistory();
+
 
   const { pageId } = useParams();
 
@@ -43,7 +47,7 @@ const Editor = () => {
   useEffect(() => {
     async function getAllAssets() {
       try {
-        const assets = getAssetsFromLocalStorage();
+       // const assets = getAssetsFromLocalStorage();
         setAssets(assets);
       } catch (error) {
         setAssets(error.message);
@@ -55,14 +59,15 @@ const Editor = () => {
 
   useEffect(() => {
     // Carregar os dados da página do localStorage
-    const loadPageData = () => {
-      const data = getByPageById(`${pageId}`);
-      console.log(data);
-      if (data) {
-        setPageData(data);
+    const loadPageData = async () => {
+      const result = await api.getPageById(`${pageId}`);
+      if (result.error === '' || result.error === undefined) {
+        setPageData(JSON.parse(result.list.content));
+        console.log(pageData);
+      } else {
+        alert(result.error)
       }
     };
-
     loadPageData();
   }, [pageId]);
 
@@ -75,16 +80,16 @@ const Editor = () => {
     <>
       <CRow>
         <CCol>
-          <h2>Noticias </h2>
+          <h2>Editor de Página </h2>
 
           <CCard>
             <CCardHeader>
-              <CButton
+              <a
+                href="/paginas"
                 color="primary"
-
               >
-                <CIcon name="cil-check" /> Editor de Páginas
-              </CButton>
+                <CIcon name="cil-check" /> Voltar a Lista de Páginas Páginas
+              </a>
             </CCardHeader>
 
             <CCardBody>
@@ -117,4 +122,3 @@ const Editor = () => {
 };
 
 export default Editor;
- 
