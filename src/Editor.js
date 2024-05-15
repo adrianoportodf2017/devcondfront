@@ -6,6 +6,29 @@ import TopNav from "./components/TopNav";
 import geditorConfig from "./api_utils/geditor_config";
 import PageSection from "./components/PageSection";
 import { getAssetsFromLocalStorage, getFromLocalStorage, getByPageById } from "./api_utils/storageUtils";
+import {
+  CButton,
+  CButtonGroup,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CDataTable,
+  CFormGroup,
+  CInput,
+  CInputCheckbox,
+  CLabel,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CRow,
+  CSwitch,
+  CSelect
+
+} from '@coreui/react';
+import CIcon from "@coreui/icons-react";
+import useApi from './services/api';
 
 const Editor = () => {
   const [editor, setEditor] = useState(null);
@@ -14,8 +37,8 @@ const Editor = () => {
 
   const { pageId } = useParams();
 
-  const { pageStore } = useSelector((state) => state);
-  const { pages } = pageStore;
+  const { pageStore } = [];
+  const { pages } = [];
 
   useEffect(() => {
     async function getAllAssets() {
@@ -49,27 +72,49 @@ const Editor = () => {
   }, [pageId, assets, pageData]);
 
   return (
-    <div className="App">
-      <div
-        id="navbar"
-        className="sidenav d-flex flex-column overflow-scroll position-fixed"
-      >
-        <nav className="navbar navbar-light">
-          <div className="container-fluid">
-            <span className="navbar-brand mb-0 h3 logo">Code Dexterous</span>
-          </div>
-        </nav>
-        <Sidebar />
-      </div>
-      <div
-        className="main-content position-relative w-85 start-15"
-        id="main-content"
-      >
-        <TopNav />
-        <div id="editor"></div>
-      </div>
-    </div>
+    <>
+      <CRow>
+        <CCol>
+          <h2>Noticias </h2>
+
+          <CCard>
+            <CCardHeader>
+              <CButton
+                color="primary"
+
+              >
+                <CIcon name="cil-check" /> Editor de Páginas
+              </CButton>
+            </CCardHeader>
+
+            <CCardBody>
+              <div className="row">
+                <div
+                  id="navbar"
+                  className="col-lg-3 sidenav  overflow-scroll "
+                >
+                  <nav className="navbar navbar-light">
+                    <div className="container-fluid">
+                    </div>
+                  </nav>
+                  <Sidebar />
+                </div>
+                <div
+                  className="col-lg-9 "
+                  id="main-content"
+                >                  <TopNav />
+
+                  <div id="editor"></div>
+                </div>
+              </div>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    </>
+
   );
 };
 
 export default Editor;
+ 

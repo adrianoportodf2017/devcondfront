@@ -74,7 +74,7 @@ const routes = [
   /***site */
 
 
-  { path: '/editor', name: 'Editor', component: Editor },
+  { path: '/editor/:pageId', name: 'Editor', component: Editor },
   { path: '/paginas', name: 'Páginas', component: Paginas },
 
 
