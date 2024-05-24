@@ -71,7 +71,7 @@ export default () => {
       return json;
     },
 
-       /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Pages/Paginas --__--***********************************/
     /********************************************************************************/
     getPages: async () => {
@@ -671,7 +671,7 @@ export default () => {
     },
     searchUser: async (cpf) => {
       let token = localStorage.getItem('token');
-      let json = await request('get', `/users/cpf/${cpf}`, {} , token);
+      let json = await request('get', `/users/cpf/${cpf}`, {}, token);
       return json;
     },
 
@@ -835,7 +835,7 @@ export default () => {
       return json;
     },
 
-  
+
     /********************************************************************************/
     /******************************--__-- Classificados --__--***********************************/
     /********************************************************************************/
@@ -930,7 +930,7 @@ export default () => {
       return json;
     },
 
-   /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Galeria de Fotos --__--***********************************/
     /********************************************************************************/
     getGalleries: async () => {
@@ -961,7 +961,7 @@ export default () => {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append('id', data.id);
-         for (let i = 0; i < data.file.length; i++) {
+        for (let i = 0; i < data.file.length; i++) {
           formData.append('file[]', data.file[i]);
         }
 
@@ -982,8 +982,8 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          } 
-          
+          }
+
           if (xhr.status === 400) {
             try {
               const jsonResponse = JSON.parse(xhr.responseText);
@@ -991,7 +991,7 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          }else {
+          } else {
             reject(new Error('Erro na requisição'));
           }
         };
@@ -1035,7 +1035,7 @@ export default () => {
       let json = await request('delete', `/gallery/${id}`, {}, token);
       return json;
     },
-     /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Livro de Ocorrências --__--***********************************/
     /********************************************************************************/
     getWarnings: async () => {
@@ -1047,7 +1047,7 @@ export default () => {
     addWarning: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
-    
+
       for (let i in data) {
         formData.append(i, data[i])
       }
@@ -1071,7 +1071,7 @@ export default () => {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append('id', data.id);
-         for (let i = 0; i < data.file.length; i++) {
+        for (let i = 0; i < data.file.length; i++) {
           formData.append('file[]', data.file[i]);
         }
 
@@ -1092,8 +1092,8 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          } 
-          
+          }
+
           if (xhr.status === 400) {
             try {
               const jsonResponse = JSON.parse(xhr.responseText);
@@ -1101,7 +1101,7 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          }else {
+          } else {
             reject(new Error('Erro na requisição'));
           }
         };
@@ -1149,7 +1149,7 @@ export default () => {
       return json;
     },
 
-      /********************************************************************************/
+    /********************************************************************************/
     /******************************--__-- Achados e Perdidos --__--***********************************/
     /********************************************************************************/
     getLostAndFound: async () => {
@@ -1161,7 +1161,7 @@ export default () => {
     addLostAndFound: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
-    
+
       for (let i in data) {
         formData.append(i, data[i])
       }
@@ -1185,7 +1185,7 @@ export default () => {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
         formData.append('id', data.id);
-         for (let i = 0; i < data.file.length; i++) {
+        for (let i = 0; i < data.file.length; i++) {
           formData.append('file[]', data.file[i]);
         }
 
@@ -1206,8 +1206,8 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          } 
-          
+          }
+
           if (xhr.status === 400) {
             try {
               const jsonResponse = JSON.parse(xhr.responseText);
@@ -1215,7 +1215,7 @@ export default () => {
             } catch (error) {
               reject(error);
             }
-          }else {
+          } else {
             reject(new Error('Erro na requisição'));
           }
         };
@@ -1262,5 +1262,60 @@ export default () => {
       let json = await request('delete', `/lost-and-found/${id}`, {}, token);
       return json;
     },
+
+    /********************************************************************************/
+    /******************************--__-- Parceiros/Benefícios --__--***********************************/
+    /********************************************************************************/
+    getBenefits: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/benefits`, {}, token);
+      return json;
+    },
+    addBenefit: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/benefit`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateBenefit: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/benefit/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateBenefitStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/benefit/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeBenefit: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/benefit/${id}`, {}, token);
+      return json;
+    },
+
+
   }
 }

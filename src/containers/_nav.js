@@ -91,7 +91,7 @@ const loadMenu = async () => {
             to: '/newFolder/0', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
           },
-         
+
           ...dynamicMenu.map((item) => {
             return {
               ...item,
@@ -113,7 +113,7 @@ const loadMenu = async () => {
         name: 'Avisos',
         to: '/wall',
         icon: 'cil-warning',
-      },    
+      },
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Notícias', // Nome da categoria
@@ -168,6 +168,12 @@ const loadMenu = async () => {
         to: '/galeria',
         icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
       },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Convênios/Benefícios',
+        to: '/beneficios',
+        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+      },
       /*{
         _tag: 'CSidebarNavDropdown',
         name: 'Convênios/Parceiros',
@@ -204,12 +210,12 @@ const loadMenu = async () => {
         to: '/reservations',
         icon: 'cil-calendar',
       },
-    /*  {
-        _tag: 'CSidebarNavItem',
-        name: 'Prestores de Serviços',
-        to: '/reservations',
-        icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
-      },*/
+      /*  {
+          _tag: 'CSidebarNavItem',
+          name: 'Prestores de Serviços',
+          to: '/reservations',
+          icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
+        },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Ocorrências',
@@ -309,17 +315,17 @@ const loadMenu = async () => {
             name: 'Utilidades',
             to: '/contatos', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilTags} customClasses="c-sidebar-nav-icon" />,
-          },         
+          },
           {
             _tag: 'CSidebarNavItem',
             name: 'Configurações do Site',
             to: '/contatos', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilPhone} customClasses="c-sidebar-nav-icon" />,
           },
-        
+
         ],
 
-      }  ,
+      },
 
       {
         _tag: 'CSidebarNavDropdown',
@@ -342,18 +348,18 @@ const loadMenu = async () => {
             className: 'ml-3',
 
           },
-         {
+          {
             _tag: 'CSidebarNavItem',
             name: 'Resetar Banco de Dados',
             to: '/resetarbanco',
             icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
-          }, 
-               
-            ],
-          },      
-       {
+          },
+
+        ],
+      },
+      {
         _tag: 'CSidebarNavItem',
         name: 'Meu Perfil',
         to: '/profile',
