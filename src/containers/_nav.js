@@ -91,7 +91,7 @@ const loadMenu = async () => {
             to: '/newFolder/0', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
           },
-         
+
           ...dynamicMenu.map((item) => {
             return {
               ...item,
@@ -113,7 +113,7 @@ const loadMenu = async () => {
         name: 'Avisos',
         to: '/wall',
         icon: 'cil-warning',
-      },    
+      },
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Notícias', // Nome da categoria
@@ -168,48 +168,34 @@ const loadMenu = async () => {
         to: '/galeria',
         icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
       },
-      /*{
-        _tag: 'CSidebarNavDropdown',
-        name: 'Convênios/Parceiros',
-        to: '/classifield',
-        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
-        _children: [
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Convênios/Parceiros',
-            to: '/news/news-1',
-            icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
-            className: 'ml-3',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Categorias',
-            to: '/categories/noticias',
-            icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
-            className: 'ml-3',
+      {
 
-          },
-          // Adicione mais notícias conforme necessário
-        ],
+
+        _tag: 'CSidebarNavItem',
+        name: 'Convênios/Parceiros',
+        to: '/news/news-1',
+        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+        className: 'ml-3',
       },
+
       {
         _tag: 'CSidebarNavItem',
         name: 'Enquetes',
         to: '/classifield',
         icon: 'cil-list',
-      },*/
+      },
       {
         _tag: 'CSidebarNavItem',
         name: 'Reservas',
         to: '/reservations',
         icon: 'cil-calendar',
       },
-    /*  {
-        _tag: 'CSidebarNavItem',
-        name: 'Prestores de Serviços',
-        to: '/reservations',
-        icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
-      },*/
+      /*  {
+          _tag: 'CSidebarNavItem',
+          name: 'Prestores de Serviços',
+          to: '/reservations',
+          icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
+        },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Ocorrências',
@@ -278,10 +264,10 @@ const loadMenu = async () => {
             icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
             className: 'ml-3',
 
-          },              
-            ],
-          },      
-       {
+          },
+        ],
+      },
+      {
         _tag: 'CSidebarNavItem',
         name: 'Meu Perfil',
         to: '/profile',
