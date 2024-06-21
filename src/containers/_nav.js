@@ -170,6 +170,15 @@ const loadMenu = async () => {
       },
       {
         _tag: 'CSidebarNavItem',
+<<<<<<< HEAD
+=======
+        name: 'Convênios/Benefícios',
+        to: '/beneficios',
+        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+      },
+      /*{
+        _tag: 'CSidebarNavDropdown',
+>>>>>>> 3b7bf0b9fb58ad7c32e3cda055b0f0d77cbbdffb
         name: 'Convênios/Parceiros',
         to: '/benefits',
         icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
@@ -292,17 +301,17 @@ const loadMenu = async () => {
             name: 'Utilidades',
             to: '/contatos', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilTags} customClasses="c-sidebar-nav-icon" />,
-          },         
+          },
           {
             _tag: 'CSidebarNavItem',
             name: 'Configurações do Site',
             to: '/contatos', // Defina a rota apropriada
             icon: <CIcon content={freeSet.cilPhone} customClasses="c-sidebar-nav-icon" />,
           },
-        
+
         ],
 
-      }  ,
+      },
 
       {
         _tag: 'CSidebarNavDropdown',
@@ -325,7 +334,7 @@ const loadMenu = async () => {
             className: 'ml-3',
 
           },
-         {
+          {
             _tag: 'CSidebarNavItem',
             name: 'Resetar Banco de Dados',
             to: '/resetarbanco',

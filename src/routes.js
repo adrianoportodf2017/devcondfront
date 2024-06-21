@@ -11,6 +11,8 @@ const NewFolder = React.lazy(() => import('./views/NewFolder'));
 const Logout = React.lazy(() => import('./views/logout'));
 const Wall = React.lazy(() => import('./views/Wall'));
 const News = React.lazy(() => import('./views/News'));
+const Benefits = React.lazy(() => import('./views/Benefits'));
+
 const Classified = React.lazy(() => import('./views/Classified'));
 const Gallery = React.lazy(() => import('./views/Gallery'));
 const Warning = React.lazy(() => import('./views/Warning'));
@@ -53,6 +55,8 @@ const routes = [
   { path: '/logout', name: 'Logout', component: Logout },
   { path: '/wall', name: 'Wall', component: Wall },
   { path: '/noticias', name: 'Notícias', component: News },
+  { path: '/beneficios', name: 'Benefícios', component: Benefits },
+
   { path: '/classificados', name: 'Classificados', component: Classified },
   { path: '/galeria', name: 'Galeria de Fotos', component: Gallery },
   { path: '/achados-e-perdidos', name: 'Achados e Perdidos', component: LostAndFound },
