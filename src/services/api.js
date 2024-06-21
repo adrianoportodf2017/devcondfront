@@ -122,10 +122,15 @@ export default () => {
     updatePageById: async (id, data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
-      formData.append('title', 'teste edicao');
-      formData.append('content', JSON.stringify(data));
-      formData.append('status', '1');
-  
+      formData.append('title', data.title);
+      formData.append('content', JSON.stringify({ html: data.html, css: data.css }));
+      formData.append('status', data.status);
+      formData.append('thumb', data.thumb);
+      formData.append('mainMenu', data.mainMenu);
+      formData.append('restrictedArea', data.restrictedArea);
+      formData.append('publicArea', data.publicArea);
+      formData.append('tags', data.tags); // Adicione as tags ao FormData
+    
       let req = await fetch(
         `${baseUrl}/page/${id}`,
         {
