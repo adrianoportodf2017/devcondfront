@@ -219,7 +219,7 @@ const DocumentosAssembleia = () => {
                                     </div>
                                 </CButton>
                                 <CButton onClick={handleAddButton} color="primary">
-                                    <CIcon name="cil-check" /> Novo Documento
+                                    <CIcon icon="cil-check" className="small-icon" /> Novo Documento
                                 </CButton>
                             </CButtonGroup>
                         </CCardHeader>

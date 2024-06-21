@@ -175,7 +175,7 @@ export default () => {
           <CCard>
             <CCardHeader>
               <CButton color="primary" onClick={handleNewButton}>
-                <CIcon name="cil-check" /> Novo Condomínio
+                <CIcon icon="cil-check" className="small-icon" /> Novo Condomínio
               </CButton>
             </CCardHeader>
             <CCardBody>

@@ -58,16 +58,31 @@ const Editor = () => {
   }, []);
 
   useEffect(() => {
+    // Função para verificar se uma string é JSON válida
+    const isValidJSON = (str) => {
+      try {
+        JSON.parse(str);
+      } catch (e) {
+        return false;
+      }
+      return true;
+    };
+  
     // Carregar os dados da página do localStorage
     const loadPageData = async () => {
       const result = await api.getPageById(`${pageId}`);
       if (result.error === '' || result.error === undefined) {
-        setPageData(JSON.parse(result.list.content));
-        console.log(pageData);
+        if (isValidJSON(result.list.content)) {
+          setPageData(JSON.parse(result.list.content));
+          console.log(pageData);
+        } else {
+          console.error("Invalid JSON content:", result.list.content);
+        }
       } else {
-        alert(result.error)
+        alert(result.error);
       }
     };
+  
     loadPageData();
   }, [pageId]);
 
@@ -88,7 +103,7 @@ const Editor = () => {
                 href="/paginas"
                 color="primary"
               >
-                <CIcon name="cil-check" /> Voltar a Lista de Páginas Páginas
+                <CIcon icon="cil-check" className="small-icon" /> Voltar a Lista de Páginas Páginas
               </a>
             </CCardHeader>
 

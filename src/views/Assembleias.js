@@ -203,7 +203,7 @@ const Assembleias = () => {
                                 color="primary"
 
                             >
-                                <CIcon name="cil-check" /> Nova Assembleia
+                                <CIcon icon="cil-check" className="small-icon" /> Nova Assembleia
                             </CButton>
                         </CCardHeader>
 

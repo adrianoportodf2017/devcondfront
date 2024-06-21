@@ -288,7 +288,7 @@ const Classificados = () => {
                             <CButton
                                 onClick={handleAddButton}
                                 color="primary"                            >
-                                <CIcon name="cil-check" /> Novo Classificado
+                                <CIcon icon="cil-check" className="small-icon" /> Novo Classificado
                             </CButton>
                         </CCardHeader>
 

@@ -331,7 +331,7 @@ const getOwnerInfo = (ownerId) => {
                             <CButton
                                 onClick={handleAddButton}
                                 color="primary"                            >
-                                <CIcon name="cil-check" /> Registar Nova Ocorrência
+                                <CIcon icon="cil-check" className="small-icon" /> Registar Nova Ocorrência
                             </CButton>
                         </CCardHeader>
 

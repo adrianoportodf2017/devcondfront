@@ -194,7 +194,7 @@ const CommonAreas = ()=>{
                                 color="primary"
                                 
                                 >
-                                <CIcon name="cil-check"/> Nova Área Comum
+                                <CIcon icon="cil-check" className="small-icon"/> Nova Área Comum
                             </CButton>
                         </CCardHeader>
 

@@ -203,7 +203,7 @@ const Avisos = () => {
                                 color="primary"
 
                             >
-                                <CIcon name="cil-check" /> Novo Aviso
+                                <CIcon icon="cil-check" className="small-icon" /> Novo Aviso
                             </CButton>
                         </CCardHeader>
 

@@ -237,7 +237,7 @@ const Noticias = () => {
                                 color="primary"
 
                             >
-                                <CIcon name="cil-check" /> Novo Noticia
+                                <CIcon icon="cil-check" className="small-icon" /> Novo Noticia
                             </CButton>
                         </CCardHeader>
 

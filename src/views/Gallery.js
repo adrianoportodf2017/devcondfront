@@ -259,7 +259,7 @@ const Galerias = () => {
                             <CButton
                                 onClick={handleAddButton}
                                 color="primary"                            >
-                                <CIcon name="cil-check" /> Nova Galeria
+                                <CIcon icon="cil-check" className="small-icon" /> Nova Galeria
                             </CButton>
                         </CCardHeader>
 

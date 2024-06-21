@@ -213,7 +213,7 @@ const Reservation = () => {
                 color="primary"
                 disabled={modalUnitList.length === 0 || modalAreaList === 0}
               >
-                <CIcon name="cil-check" /> Nova Reserva
+                <CIcon icon="cil-check" className="small-icon" /> Nova Reserva
               </CButton>
             </CCardHeader>
 

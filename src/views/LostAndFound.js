@@ -237,7 +237,7 @@ const Achados = () => {
                             <CButton
                                 onClick={handleAddButton}
                                 color="primary"                            >
-                                <CIcon name="cil-check" /> Registar Novo item
+                                <CIcon icon="cil-check" className="small-icon" /> Registar Novo item
                             </CButton>
                         </CCardHeader>
 

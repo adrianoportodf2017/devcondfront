@@ -432,7 +432,7 @@ export const panels = {
       buttons: [
         {
           id: "saveDb",
-          className: "fa fa-paper-plane btn-save",
+          className: "fa fa-save btn-save",
           command: "saveDb",
         },
         {
@@ -512,7 +512,14 @@ export const addEditorCommand = (editor, pageId) => {  // Commands
       sender && sender.set("active");
       const data = editor.store();
       console.log(pageId);
-      updatePageById(`${pageId}`, data);
+      const result = updatePageById(`${pageId}`, data);
+        if (result.error === '' || result.error === undefined) {
+            //getList();
+            alert('Salvo com sucesso')
+        } else {
+            alert(result.error);
+        }
+      
     },
   });
   //Clear Button
@@ -545,7 +552,7 @@ export const addEditorCommand = (editor, pageId) => {  // Commands
 export const storageSetting = (pageId) => {
   ;
   return {
-    type: "remote",
+    type: "local",
     stepsBeforeSave: 3,
     contentTypeJson: true,
     storeComponents: true,

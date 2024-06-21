@@ -221,7 +221,7 @@ const Beneficios = () => {
                                 onClick={handleAddButton}
                                 color="primary"
                             >
-                                <CIcon name="cil-check" /> Novo Benefício
+                                <CIcon icon="cil-check" className="small-icon" /> Novo Benefício
                             </CButton>
                         </CCardHeader>
                         <CCardBody>

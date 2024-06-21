@@ -200,7 +200,7 @@ const Units = () => {
                                 onClick={handleAddButton}
                                 color="primary"
                             >
-                                <CIcon name="cil-check" /> Nova Unidade
+                                <CIcon icon="cil-check" className="small-icon" /> Nova Unidade
                             </CButton>
                         </CCardHeader>
 

@@ -203,7 +203,7 @@ const Categorias = () => {
                                 color="primary"
 
                             >
-                                <CIcon name="cil-check" /> Nova Categoria
+                                <CIcon icon="cil-check" className="small-icon" /> Nova Categoria
                             </CButton>
                         </CCardHeader>
 

@@ -5,45 +5,6 @@ import Folders from '../services/api';
 import { useHistory, Link } from 'react-router-dom';
 
 const api = Folders();
-// Inicialize a variável novaPastaAdded como false
-let novaPastaAdded = false;
-
-// Em algum lugar do seu código, chame generateMenu apenas uma vez:
-
-// ...
-
-const generateMenu = (jsonData) => {
-  return jsonData.map((item) => {
-    const menuItem = {
-      _tag: 'CSidebarNavItem',
-      name: item.title,
-      to: '/Folders/' + item.id, // Defina a rota do item
-      customClasses: 'text-left',
-    };
-
-    menuItem.name = (
-      <span style={{ whiteSpace: 'normal' }}>{item.title}</span>
-    );
-
-    if (item.children && item.children.length > 0) {
-      menuItem._tag = 'CSidebarNavDropdown';
-      menuItem.route = '/Folders/' + item.id; // Defina a rota do dropdown
-      menuItem._children = generateMenu(item.children);
-
-      // Adicione redirecionamento para sublinks em todos os níveis
-      menuItem._children.forEach((child) => {
-        child.name = (
-          <RedirectionLink to={child.to}>{child.name}</RedirectionLink>
-        );
-      });
-    }
-    return menuItem;
-  });
-}
-
-
-
-
 
 const RedirectionLink = ({ to, children }) => {
   const history = useHistory();
@@ -59,6 +20,34 @@ const RedirectionLink = ({ to, children }) => {
   );
 };
 
+const generateMenu = (jsonData) => {
+  return jsonData.map((item) => {
+    const menuItem = {
+      _tag: 'CSidebarNavItem',
+      name: item.title,
+      to: '/Folders/' + item.id,
+      customClasses: 'text-left',
+    };
+
+    menuItem.name = (
+      <span style={{ whiteSpace: 'normal' }}>{item.title}</span>
+    );
+
+    if (item.children && item.children.length > 0) {
+      menuItem._tag = 'CSidebarNavDropdown';
+      menuItem.route = '/Folders/' + item.id;
+      menuItem._children = generateMenu(item.children);
+
+      menuItem._children.forEach((child) => {
+        child.name = (
+          <RedirectionLink to={child.to}>{child.name}</RedirectionLink>
+        );
+      });
+    }
+    return menuItem;
+  });
+};
+
 const loadMenu = async () => {
   try {
     const jsonData = await api.getFolders();
@@ -69,7 +58,7 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavItem',
         name: 'Dashboard',
         to: '/dashboard',
-        icon: <CIcon content={freeSet.cilApplications} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon="cil-home" className="small-icon" />,
         badge: {
           color: 'info',
           text: 'NEW',
@@ -82,16 +71,15 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Pastas',
-        route: '/Folders/1', // Substitua :id pelo ID da pasta
-        icon: <CIcon content={freeSet.cilFolder} customClasses="c-sidebar-nav-icon" />,
+        route: '/Folders/1',
+        icon: <CIcon icon={freeSet.cilWindow} className="small-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Adicionar Nova Pasta',
-            to: '/newFolder/0', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilPlus} customClasses="c-sidebar-nav-icon" />,
+            to: '/newFolder/0',
+            icon: <CIcon icon={freeSet.cilPlus} className="small-icon" />,
           },
-
           ...dynamicMenu.map((item) => {
             return {
               ...item,
@@ -105,233 +93,215 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Visualizar Pastas',
-        to: '/ListFolders/0', // Defina a rota apropriada
-        icon: <CIcon content={freeSet.cilShortText} customClasses="c-sidebar-nav-icon" />,
+        to: '/ListFolders/0',
+        icon: <CIcon icon={freeSet.cilShortText} className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Avisos',
         to: '/wall',
-        icon: 'cil-warning',
+        icon: <CIcon icon="cil-warning" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavDropdown',
-        name: 'Notícias', // Nome da categoria
-        route: '/news', // Rota da categoria
-        icon: 'cil-notes', // Ícone da categoria
+        name: 'Notícias',
+        route: '/news',
+        icon: <CIcon icon="cil-notes" className="small-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Notícias',
             to: '/noticias',
-            icon: 'cil-notes',
+            icon: <CIcon icon="cil-notes" className="small-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
             to: '/categorias/noticias',
-            icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
+            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
             className: 'ml-3',
-
           },
-          // Adicione mais notícias conforme necessário
         ],
       },
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Classificados',
         to: '/classifield',
-        icon: <CIcon content={freeSet.cilCart} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Classificados',
             to: '/classificados/',
-            icon: <CIcon content={freeSet.cilCart} customClasses="c-sidebar-nav-icon" />,
+            icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Categorias',
             to: '/categorias/classificados',
-            icon: <CIcon content={freeSet.cilLayers} customClasses="c-sidebar-nav-icon" />,
+            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
             className: 'ml-3',
-
           },
-          // Adicione mais notícias conforme necessário
         ],
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Galeria de Fotos',
         to: '/galeria',
-        icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon={freeSet.cilImage} className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Convênios/Parceiros',
         to: '/benefits',
-        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon={freeSet.cilTouchApp} className="small-icon" />,
       },
-
       {
         _tag: 'CSidebarNavItem',
         name: 'Enquetes',
         to: '/classifield',
-        icon: 'cil-list',
+        icon: <CIcon icon="cil-list" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Reservas',
         to: '/reservations',
-        icon: 'cil-calendar',
+        icon: <CIcon icon="cil-calendar" className="small-icon" />,
       },
-      /*  {
-          _tag: 'CSidebarNavItem',
-          name: 'Prestores de Serviços',
-          to: '/reservations',
-          icon: <CIcon content={freeSet.cilPaint} customClasses="c-sidebar-nav-icon" />,
-        },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Ocorrências',
         to: '/ocorrencias',
-        icon: <CIcon content={freeSet.cilBellExclamation} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon={freeSet.cilBellExclamation} className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Achados e Perdidos',
         to: '/achados-e-perdidos',
-        icon: 'cil-lock-locked',
+        icon: <CIcon icon="cil-lock-locked" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavTitle',
         _children: ['Dados']
       },
-
       {
         _tag: 'CSidebarNavItem',
         name: 'Usuários',
         to: '/users',
-        icon: 'cil-people',
+        icon: <CIcon icon="cil-people" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Unidades',
         to: '/units',
-        icon: 'cil-home',
+        icon: <CIcon icon="cil-home" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Áreas Comuns',
         to: '/commonareas',
-        icon: 'cil-paperclip',
+        icon: <CIcon icon="cil-paperclip" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavTitle',
         _children: ['Configurações']
       },
-
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Site',
         to: '',
-        icon: <CIcon content={freeSet.cilBrowser} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon={freeSet.cilBrowser} className="small-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Páginas',
-            to: '/paginas', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilFindInPage} customClasses="c-sidebar-nav-icon" />,
+            to: '/paginas',
+            icon: <CIcon icon={freeSet.cilFindInPage} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Slider',
-            to: '/slider', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilLibrary} customClasses="c-sidebar-nav-icon" />,
+            to: '/slider',
+            icon: <CIcon icon={freeSet.cilLibrary} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Dados de Contatos',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilPhone} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilPhone} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Serviços',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilBriefcase} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilBriefcase} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Time',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilGroup} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilGroup} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Sobre Nos',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilAddressBook} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilAddressBook} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Acesso Rápido',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilTouchApp} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Rodapé',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilInfo} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilInfo} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Utilidades',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilTags} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilTags} className="small-icon" />,
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Configurações do Site',
-            to: '/contatos', // Defina a rota apropriada
-            icon: <CIcon content={freeSet.cilPhone} customClasses="c-sidebar-nav-icon" />,
+            to: '/contatos',
+            icon: <CIcon icon={freeSet.cilPhone} className="small-icon" />,
           },
-
         ],
-
       },
-
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Sistema',
         to: '',
-        icon: <CIcon content={freeSet.cilSettings} customClasses="c-sidebar-nav-icon" />,
+        icon: <CIcon icon={freeSet.cilSettings} className="small-icon" />,
         _children: [
           {
             _tag: 'CSidebarNavItem',
             name: 'Logs',
             to: '/logs',
-            icon: <CIcon content={freeSet.cilList} customClasses="c-sidebar-nav-icon" />,
+            icon: <CIcon icon={freeSet.cilList} className="small-icon" />,
             className: 'ml-3',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Permissões',
             to: '/profiles',
-            icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
+            icon: <CIcon icon={freeSet.cilCheck} className="small-icon" />,
             className: 'ml-3',
-
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Resetar Banco de Dados',
             to: '/resetarbanco',
-            icon: <CIcon content={freeSet.cilCheck} customClasses="c-sidebar-nav-icon" />,
+            icon: <CIcon icon={freeSet.cilCheck} className="small-icon" />,
             className: 'ml-3',
-
           },
         ],
       },
@@ -339,16 +309,15 @@ const loadMenu = async () => {
         _tag: 'CSidebarNavItem',
         name: 'Meu Perfil',
         to: '/profile',
-        icon: 'cil-user',
+        icon: <CIcon icon="cil-user" className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'sair',
+        name: 'Sair',
         to: '/logout',
-        icon: 'cil-drop',
+        icon: <CIcon icon="cil-drop" className="small-icon" />,
       },
-
-    ]
+    ];
 
     return _nav;
   } catch (error) {
