@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import ReactQuill from 'react-quill';
+import { Link } from "react-router-dom";
+import ReactQuill, { Quill } from 'react-quill';
+import { htmlEditButton } from 'quill-html-edit-button';
 import 'react-quill/dist/quill.snow.css';
 
 import {
@@ -29,7 +31,7 @@ import useApi from '../services/api'
 
 
 
-const Avisos = () => {
+const Noticias = () => {
     const api = useApi();
 
     const [loading, setLoading] = useState(true);
@@ -38,10 +40,15 @@ const Avisos = () => {
     const [showModal, setShowModal] = useState(false);
     const [modalId, setModalId] = useState('');
     const [modalTitleField, setModalTitleField] = useState('');
-    const [modalTypeField, setModalTypeField] = useState('');
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalContentField, setModalContentField] = useState('');
     const [modalStatusField, setModalStatusField] = useState('');
+    const [modalStatusThumbField, setModalStatusThumbField] = useState('');
+
+    const [category, setCategory] = useState([]);
+    const [modalCategoryField, setModalCategoryField] = useState('')
+
+
 
 
 
@@ -50,6 +57,7 @@ const Avisos = () => {
         { label: 'Capa', key: 'Thumb', sorter: false, filter: false },
         { label: 'Título', key: 'title' },
         { label: 'Descrição', key: 'content' },
+        { label: 'Relatório', key: 'likes_count', sorter: false, filter: false },
         { label: 'Data da publicação', key: 'created_at' },
         { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
     ]
@@ -63,12 +71,16 @@ const Avisos = () => {
 
     const getList = async () => {
         setLoading(true);
-        const result = await api.getWall();
+        const result = await api.getPages();
+        const category = await api.getCategories('paginas');
+
         console.log(result);
         setLoading(false);
 
         if (result.error === '' || result.error === undefined) {
             setList(result.list);
+            if (category) { setCategory(category.list); }
+
         } else {
             alert(result.error)
         }
@@ -78,8 +90,8 @@ const Avisos = () => {
         setModalId('');
         setModalTitleField('');
         setModalStatusField('1');
+        setModalStatusThumbField('1');
         setModalThumbField('');
-        setModalTypeField('');
         setModalContentField('');
         setShowModal(true);
     };
@@ -96,9 +108,11 @@ const Avisos = () => {
             let result;
             let data = {
                 status: modalStatusField,
+                status_thumb: modalStatusThumbField,
                 title: modalTitleField,
-                type: modalTypeField,
                 content: modalContentField,
+                category_id: modalCategoryField,
+
             };
 
             if (modalThumbField) {
@@ -107,9 +121,9 @@ const Avisos = () => {
 
 
             if (modalId === '') {
-                result = await api.addWall(data)
+                result = await api.addPage(data)
             } else {
-                result = await api.updateWall(modalId, data);
+                result = await api.updatePage(modalId, data);
             }
 
             setModalLoading(false)
@@ -131,11 +145,10 @@ const Avisos = () => {
         let index = list.findIndex(v => v.id == id)
         setModalId(list[index]['id']);
         setModalStatusField(list[index]['status']);
+        setModalStatusThumbField(list[index]['status_thumb']);
         setModalThumbField('');
         setModalTitleField(list[index]['title']);
-        setModalTypeField(list[index]['type']);
-
-
+        setModalCategoryField(list[index]['category_id']);
         setModalContentField(list[index]['content']);
         setShowModal(true);
 
@@ -143,7 +156,7 @@ const Avisos = () => {
 
     const handleDelButton = async (id) => {
         if (window.confirm('Tem certeza que deseja excluir?')) {
-            const result = await api.removeWall(id);
+            const result = await api.removePage(id);
             if (result.error === '' || result.erro === undefined) {
                 getList();
             } else {
@@ -155,7 +168,7 @@ const Avisos = () => {
     const handleSwitchClick = async (item) => {
         setLoading(true);
         const dataStatus = item.status == '1' ? '0' : '1'; // Troca o status entre 1 e 0
-        const result = await api.updateWallStatus(item.id, { 'status': dataStatus }); // Envie o novo status para a API
+        const result = await api.updatePageStatus(item.id, { 'status': dataStatus }); // Envie o novo status para a API
         setLoading(false);
         if (result.error === '' || result.error === undefined) {
             getList();
@@ -163,6 +176,18 @@ const Avisos = () => {
             alert(result.error);
         }
     }
+
+
+    const handleModalSwitchClick = () => {
+        setModalStatusField(modalStatusField == '1' ? '0' : '1');
+    }
+    const handleModalSwitchThumbClick = () => {
+        setModalStatusThumbField(modalStatusThumbField == '1' ? '0' : '1');
+    }
+
+
+    Quill.register('modules/htmlEditButton', htmlEditButton);
+
 
     const modules = {
         toolbar: [
@@ -181,20 +206,30 @@ const Avisos = () => {
 
             ['clean'], // Remoção de formatação
         ],
+        htmlEditButton: {
+            debug: true, // logging, default:false
+            msg: "Edit the content in HTML format", //Custom message to display in the editor, default: Edit HTML here, when you click "OK" the quill editor's contents will be replaced
+            okText: "Ok", // Text to display in the OK button, default: Ok,
+            cancelText: "Cancel", // Text to display in the cancel button, default: Cancel
+            buttonHTML: "&lt;&gt;", // Text to display in the toolbar button, default: <>
+            buttonTitle: "Show HTML source", // Text to display as the tooltip for the toolbar button, default: Show HTML source
+            syntax: false, // Show the HTML with syntax highlighting. Requires highlightjs on window.hljs (similar to Quill itself), default: false
+            prependSelector: 'div#myelement', // a string used to select where you want to insert the overlayContainer, default: null (appends to body),
+            editorModules: {} // The default mod
+        }
+
     };
 
 
 
 
 
-    const handleModalSwitchClick = () => {
-        setModalStatusField(modalStatusField == '1' ? '0' : '1');
-    }
+
     return (
         <>
             <CRow>
                 <CCol>
-                    <h2>Avisos </h2>
+                    <h2>Noticias </h2>
 
                     <CCard>
                         <CCardHeader>
@@ -203,7 +238,7 @@ const Avisos = () => {
                                 color="primary"
 
                             >
-                                <CIcon name="cil-check" /> Novo Aviso
+                                <CIcon name="cil-check" /> Novo Noticia
                             </CButton>
                         </CCardHeader>
 
@@ -243,8 +278,18 @@ const Avisos = () => {
 
                                     'content': (item) => (
                                         <td>
-                                            {item.content.replace(/<[^>]*>/g, '').substring(0, 150)}
-                                            {item.content.length > 150 ? '...' : ''}
+                                            {item.content.replace(/<[^>]*>/g, '').substring(0, 30)}
+                                            {item.content.length > 30 ? '...' : ''}
+                                        </td>
+                                    ),
+
+                                    'likes_count': (item) => (
+                                        <td>
+                                            <tr>Curtidas: {item.likes_count}</tr>
+                                            <tr>Visualizaçoes: {item.views_count}</tr>
+                                            <tr>Comentários: {item.comments_count}</tr>
+
+
                                         </td>
                                     ),
 
@@ -257,9 +302,9 @@ const Avisos = () => {
                                     'actions': (item, index) => (
                                         <td>
                                             <CButtonGroup>
-                                                <CButton color="info" onClick={() => handleEditButton(item.id)} >
+                                            <Link to={`/editor/${item.id}`} className="btn btn-info text-white">
                                                     Editar
-                                                </CButton>
+                                                </Link>
                                                 <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
@@ -272,64 +317,36 @@ const Avisos = () => {
                 </CCol>
             </CRow>
 
-            <CModal show={showModal} onClose={handleCloseModal} size="xl">
-                <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Nova'} Aviso </CModalHeader>
+            <CModal show={showModal} onClose={handleCloseModal} size="lg">
+                <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Nova'} Noticia </CModalHeader>
                 <CModalBody>
                     <CFormGroup>
-
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <CFormGroup>
-                                    <CLabel htmlFor="modal-status">Status</CLabel>
-                                    <CSelect
-                                        id="modal-status"
-                                        value={modalStatusField}
-                                        onChange={(e) => setModalStatusField(e.target.value)}
-                                        disabled={loading}
-                                    >
-                                        <option value="">Status</option>
-                                        <option value="0" selected={"0" == modalStatusField}>
-                                            Desativar                                    </option>
-                                        <option value="1" selected={"1" == modalStatusField}>
-                                            Ativar
-                                        </option>
-                                    </CSelect>
-                                </CFormGroup>
-                            </div>
-                            <div className="col-sm-6">
-                                <CFormGroup>
-                                    <CLabel htmlFor="modal-type">Restrição de Aviso</CLabel>
-                                    <CSelect
-                                        id="modal-type"
-                                        value={modalTypeField}
-                                        onChange={(e) => setModalTypeField(e.target.value)}
-                                        disabled={loading}
-                                    >
-                                        <option value="0" selected={modalTypeField === "0"}>
-                                            Público
-                                        </option>
-                                        <option value="1" selected={modalTypeField === "1"}>
-                                            Restrito - Apenas para Usuários Logados
-                                        </option>
-                                    </CSelect>
-                                </CFormGroup>
-                            </div>
-
-                            <div className="col-xl-6">
-                                <CFormGroup>
-                                    <CLabel htmlFor="modal_title">Titulo</CLabel>
-                                    <CInput
-                                        type="text"
-                                        id='modal_title'
-                                        name="title"
-                                        value={modalTitleField}
-                                        onChange={(e) => setModalTitleField(e.target.value)}
-                                    />
-                                </CFormGroup>
-                            </div>
-                        </div>
+                        <CLabel htmlFor="modal_status">Ativo</CLabel><br />
+                        <CSwitch
+                            color="success"
+                            checked={modalStatusField == '0' ? '' : 'true'}
+                            onChange={handleModalSwitchClick}
+                        />
                     </CFormGroup>
+
                     <CFormGroup>
+                        <CLabel htmlFor="modal_title">Titulo</CLabel>
+                        <CInput
+                            type="text"
+                            id='modal_title'
+                            name="title"
+                            value={modalTitleField}
+                            onChange={(e) => setModalTitleField(e.target.value)}
+                        />
+                    </CFormGroup>
+
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_status">Colocar Imagem no Topo da Notícia?</CLabel><br />
+                        <CSwitch
+                            color="success"
+                            checked={modalStatusThumbField == '0' ? '' : 'true'}
+                            onChange={handleModalSwitchThumbClick}
+                        /><br />
                         <CLabel htmlFor="modal_Thumb">Capa</CLabel>
                         <CInput
                             type="file"
@@ -339,6 +356,25 @@ const Avisos = () => {
                             onChange={(e) => setModalThumbField(e.target.files[0])}
                         />
                     </CFormGroup>
+                    <CFormGroup>
+                        <CLabel htmlFor="modal-profile">Selecione Uma Categoria</CLabel>
+                        <CSelect
+                            id="modal-category"
+                            value={modalCategoryField}
+                            onChange={(e) => setModalCategoryField(e.target.value)}
+                            disabled={loading}
+                        >
+                            <option value="">Selecione uma Categoria</option>
+
+                            {category.map((item) => (
+                                <option key={item.id} value={item.id} selected={item.id === modalCategoryField}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </CSelect>
+                    </CFormGroup>
+
+
                     <CFormGroup className="mb-5">
                         <CLabel htmlFor="modal_Content">Descrição</CLabel>
                         <ReactQuill
@@ -365,4 +401,4 @@ const Avisos = () => {
 
 
 };
-export default Avisos;
+export default Noticias;

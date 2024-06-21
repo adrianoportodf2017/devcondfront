@@ -6,11 +6,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import "grapesjs/dist/css/grapes.min.css";
+import "bootstrap";
+import "./styles/main.scss";
 
 import { icons } from './assets/icons'
 
 import { Provider } from 'react-redux'
 import store from './store'
+
 
 React.icons = icons
 

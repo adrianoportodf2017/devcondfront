@@ -169,13 +169,10 @@ const loadMenu = async () => {
         icon: <CIcon content={freeSet.cilImage} customClasses="c-sidebar-nav-icon" />,
       },
       {
-
-
         _tag: 'CSidebarNavItem',
         name: 'Convênios/Parceiros',
-        to: '/news/news-1',
+        to: '/benefits',
         icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
-        className: 'ml-3',
       },
 
       {
@@ -238,6 +235,77 @@ const loadMenu = async () => {
 
       {
         _tag: 'CSidebarNavDropdown',
+        name: 'Site',
+        to: '',
+        icon: <CIcon content={freeSet.cilBrowser} customClasses="c-sidebar-nav-icon" />,
+        _children: [
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Páginas',
+            to: '/paginas', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilFindInPage} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Slider',
+            to: '/slider', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilLibrary} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Dados de Contatos',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilPhone} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Serviços',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilBriefcase} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Time',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilGroup} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Sobre Nos',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilAddressBook} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Acesso Rápido',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Rodapé',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilInfo} customClasses="c-sidebar-nav-icon" />,
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Utilidades',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilTags} customClasses="c-sidebar-nav-icon" />,
+          },         
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Configurações do Site',
+            to: '/contatos', // Defina a rota apropriada
+            icon: <CIcon content={freeSet.cilPhone} customClasses="c-sidebar-nav-icon" />,
+          },
+        
+        ],
+
+      }  ,
+
+      {
+        _tag: 'CSidebarNavDropdown',
         name: 'Sistema',
         to: '',
         icon: <CIcon content={freeSet.cilSettings} customClasses="c-sidebar-nav-icon" />,
@@ -257,7 +325,7 @@ const loadMenu = async () => {
             className: 'ml-3',
 
           },
-          {
+         {
             _tag: 'CSidebarNavItem',
             name: 'Resetar Banco de Dados',
             to: '/resetarbanco',

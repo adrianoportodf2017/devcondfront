@@ -191,9 +191,7 @@ const Folder = () => {
                         </CRow>
                         <CRow className="mb-5">
                             <CCol md="6">
-                                <CFormGroup>
-                                    <div><img src={folder.thumb} width={300} /></div>
-                                </CFormGroup>
+                             
                             </CCol>
                             <CCol md="12" className="mb-5">
                                 <CFormGroup >
