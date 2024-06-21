@@ -170,15 +170,6 @@ const loadMenu = async () => {
       },
       {
         _tag: 'CSidebarNavItem',
-<<<<<<< HEAD
-=======
-        name: 'Convênios/Benefícios',
-        to: '/beneficios',
-        icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
-      },
-      /*{
-        _tag: 'CSidebarNavDropdown',
->>>>>>> 3b7bf0b9fb58ad7c32e3cda055b0f0d77cbbdffb
         name: 'Convênios/Parceiros',
         to: '/benefits',
         icon: <CIcon content={freeSet.cilTouchApp} customClasses="c-sidebar-nav-icon" />,
