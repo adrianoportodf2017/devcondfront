@@ -1,139 +1,116 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Sidebar from "./components/Sidebar";
-import TopNav from "./components/TopNav";
-import geditorConfig from "./api_utils/geditor_config";
-import PageSection from "./components/PageSection";
-import { getAssetsFromLocalStorage, getFromLocalStorage, getByPageById } from "./api_utils/storageUtils";
+import GjsEditor from '@grapesjs/react';
+import './style.css';
 import {
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CDataTable,
-  CFormGroup,
-  CInput,
-  CInputCheckbox,
-  CLabel,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CRow,
-  CSwitch,
-  CSelect
-
+  CButton
 } from '@coreui/react';
-import CIcon from "@coreui/icons-react";
 import useApi from '../services/api';
 
-
-const Editor = () => {
-  const api = useApi();
+export default function App() {
   const [editor, setEditor] = useState(null);
-  const [assets, setAssets] = useState([]);
-  const [pageData, setPageData] = useState(null);
-  const navigate = useHistory();
-
-
   const { pageId } = useParams();
+  const history = useHistory();
+  const api = useApi();
 
-  const { pageStore } = [];
-  const { pages } = [];
+  const onEditor = async (editor) => {
+    console.log('Editor loaded', { editor });
+    setEditor(editor);
 
-  useEffect(() => {
-    async function getAllAssets() {
-      try {
-       // const assets = getAssetsFromLocalStorage();
-        setAssets(assets);
-      } catch (error) {
-        setAssets(error.message);
-      }
-    }
+    // Open the blocks panel when the editor loads
+    editor.Panels.getButton('views', 'open-blocks').set('active', true);
 
-    getAllAssets();
-  }, []);
-
-  useEffect(() => {
-    // Função para verificar se uma string é JSON válida
-    const isValidJSON = (str) => {
-      try {
-        JSON.parse(str);
-      } catch (e) {
-        return false;
-      }
-      return true;
-    };
-  
-    // Carregar os dados da página do localStorage
-    const loadPageData = async () => {
-      const result = await api.getPageById(`${pageId}`);
+    try {
+      const result = await api.getPageById(pageId);
       if (result.error === '' || result.error === undefined) {
-        if (isValidJSON(result.list.content)) {
-          setPageData(JSON.parse(result.list.content));
-          console.log(pageData);
-        } else {
-          console.error("Invalid JSON content:", result.list.content);
-        }
+        const content = JSON.parse(result.list.content);
+        editor.setComponents(content.html);
+        editor.setStyle(content.css);
+        console.log(content);
       } else {
         alert(result.error);
       }
-    };
-  
-    loadPageData();
-  }, [pageId]);
+    } catch (error) {
+      console.error('Error loading page data:', error);
+    }
+  };
 
-  useEffect(() => {
-    const editor = geditorConfig(assets, pageId, pageData);
-    setEditor(editor);
-  }, [pageId, assets, pageData]);
+  const handleSave = async () => {
+    if (editor) {
+      const html = editor.getHtml();
+      const css = editor.getCss();
+      const newData = { html, css };
+      try {
+        const response = await api.updatePageById(pageId, newData);
+        console.log('Save response:', response);
+        // Handle response as needed
+      } catch (error) {
+        console.error('Save error:', error);
+      }
+    }
+  };
 
   return (
-    <>
-      <CRow>
-        <CCol>
-          <h2>Editor de Página </h2>
-
-          <CCard>
-            <CCardHeader>
-              <a
-                href="/paginas"
-                color="primary"
-              >
-                <CIcon icon="cil-check" className="small-icon" /> Voltar a Lista de Páginas Páginas
-              </a>
-            </CCardHeader>
-
-            <CCardBody>
-              <div className="row">
-                <div
-                  id="navbar"
-                  className="col-lg-3 sidenav  overflow-scroll "
-                >
-                  <nav className="navbar navbar-light">
-                    <div className="container-fluid">
-                    </div>
-                  </nav>
-                  <Sidebar />
-                </div>
-                <div
-                  className="col-lg-9 "
-                  id="main-content"
-                >                  <TopNav />
-
-                  <div id="editor"></div>
-                </div>
-              </div>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-    </>
-
+    <div>
+      <CButton color="primary" onClick={handleSave}>Save</CButton>
+      <GjsEditor
+        grapesjs="https://unpkg.com/grapesjs"
+        grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
+        options={{
+          height: '100vh',
+          storageManager: false,
+        }}
+        plugins={[
+          {
+            id: 'gjs-blocks-basic',
+            src: 'https://unpkg.com/grapesjs-blocks-basic',
+          },
+          {
+            id: 'gjs-preset-webpage',
+            src: 'https://unpkg.com/grapesjs-preset-webpage',
+          },
+          {
+            id: 'grapesjs-plugin-forms',
+            src: 'https://unpkg.com/grapesjs-plugin-forms',
+          },
+          {
+            id: 'grapesjs-custom-code',
+            src: 'https://unpkg.com/grapesjs-custom-code',
+          },
+          {
+            id: 'grapesjs-tooltip',
+            src: 'https://unpkg.com/grapesjs-tooltip',
+          },
+          {
+            id: 'grapesjs-tui-image-editor',
+            src: 'https://unpkg.com/grapesjs-tui-image-editor',
+          },
+          {
+            id: 'grapesjs-blocks-flexbox',
+            src: 'https://unpkg.com/grapesjs-blocks-flexbox',
+          },
+          {
+            id: 'grapesjs-navbar',
+            src: 'https://unpkg.com/grapesjs-navbar',
+          },
+          {
+            id: 'grapesjs-component-countdown',
+            src: 'https://unpkg.com/grapesjs-component-countdown',
+          },
+          {
+            id: 'grapesjs-style-gradient',
+            src: 'https://unpkg.com/grapesjs-style-gradient',
+          },
+          {
+            id: 'grapesjs-tabs',
+            src: 'https://unpkg.com/grapesjs-tabs',
+          },     {
+            id: 'grapesjs-blocks-bootstrap5',
+            src: 'https://cdn.jsdelivr.net/npm/grapesjs-blocks-bootstrap5',
+          },
+        ]}
+        onEditor={onEditor}
+      />
+    </div>
   );
-};
-
-export default Editor;
+}

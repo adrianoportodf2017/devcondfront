@@ -14,11 +14,13 @@ const RedirectionLink = ({ to, children }) => {
   };
 
   return (
-    <a to={to} onClick={handleClick}>
+    <div onClick={handleClick} style={{ cursor: 'pointer',   }}>
       {children}
-    </a>
+    </div>
   );
 };
+
+
 
 const generateMenu = (jsonData) => {
   return jsonData.map((item) => {

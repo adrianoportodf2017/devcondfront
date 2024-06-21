@@ -119,6 +119,23 @@ export default () => {
       let json = req.json();
       return json;
     },
+    updatePageById: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      formData.append('title', 'teste edicao');
+      formData.append('content', JSON.stringify(data));
+      formData.append('status', '1');
+  
+      let req = await fetch(
+        `${baseUrl}/page/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = await req.json();
+      return json;
+    },
     updatePageStatus: async (id, dataStatus) => {
       let token = localStorage.getItem('token');
       let json = await request('post', `/page/${id}/status`, dataStatus, token);
