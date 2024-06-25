@@ -26,7 +26,7 @@ import {
 
 } from '@coreui/react';
 import CIcon from "@coreui/icons-react";
-import { cibAtom, cilArrowCircleLeft, cilFile, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 
 import useApi from '../services/api';
@@ -484,7 +484,7 @@ const Folder = () => {
                                         />
                                     </div>
                                 ) : (
-                                    <div><img src={folder.thumb} width={300} /></div>
+                                    <></>
                                 )}
 
 
@@ -526,8 +526,8 @@ const Folder = () => {
                     <CCard>
                         <CCardHeader>
                             <CButtonGroup>
-                                <CButton onClick={handleAddButton} className="btn btn-secondary border border-3 border-dark border-rounded" > <CIcon icon={cilFolder}  className="small-icon"/> Nova Pasta  </CButton>
-                                <CButton onClick={handleAddFileButton} className="btn btn-secondary border border-3 border-dark border-rounded"  > <CIcon icon={cilFile}   className="small-icon"/> Adicionar Arquivo</CButton>
+                                <CButton onClick={handleAddButton} color="primary" > <CIcon icon={cilFolder}  className="small-icon"/> Nova Pasta  </CButton>
+                                <CButton onClick={handleAddFileButton} color="warning"  > <CIcon icon={cilPlus}   className="small-icon"/> Adicionar Arquivo</CButton>
                             </CButtonGroup>
                         </CCardHeader>
 
