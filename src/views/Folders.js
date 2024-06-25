@@ -526,8 +526,8 @@ const Folder = () => {
                     <CCard>
                         <CCardHeader>
                             <CButtonGroup>
-                                <CButton onClick={handleAddButton} color="primary" > <CIcon icon={cilFolder}  className="small-icon"/> Nova Pasta  </CButton>
-                                <CButton onClick={handleAddFileButton} color="warning"  > <CIcon icon={cilPlus}   className="small-icon"/> Adicionar Arquivo</CButton>
+                                <CButton onClick={handleAddButton} className="btn btn-secondary border border-3 border-dark border-rounded" > <CIcon icon={cilFolder}  className="small-icon"/> Nova Pasta  </CButton>
+                                <CButton onClick={handleAddFileButton} className="btn btn-secondary border border-3 border-dark border-rounded"  > <CIcon icon={cilPlus}   className="small-icon"/> Adicionar Arquivo</CButton>
                             </CButtonGroup>
                         </CCardHeader>
 
