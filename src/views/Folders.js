@@ -26,6 +26,7 @@ import {
 
 } from '@coreui/react';
 import CIcon from "@coreui/icons-react";
+import { cibAtom, cilArrowCircleLeft, cilFile, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 
 import useApi from '../services/api';
@@ -414,13 +415,13 @@ const Folder = () => {
                 <CCardBody>
                     <CCardHeader>
                         <CButtonGroup>
-                            <CButton color="success" to={folder.parent_id ? folder.parent_id : '/ListFolders/0'}>{folder.parent_id ? '< Voltar Pasta Anterior' : 'Voltar Para Home'}</CButton>
+                            <CButton className="btn btn-secondary border border-3 border-dark border-rounded"  to={folder.parent_id ? folder.parent_id : '/ListFolders/0'}><CIcon icon={cilArrowCircleLeft}  className="small-icon" />{folder.parent_id ? 'Voltar Pasta Anterior' : 'Voltar Para Home'}</CButton>
                             {isEditing ? (
-                                <CButton color="primary" onClick={handleSave}>Salvar</CButton>
+                                <CButton className="btn btn-secondary border border-3 border-dark border-rounded"  onClick={handleSave}><CIcon icon={cilSave}  className="small-icon" />Salvar</CButton>
                             ) : (
-                                <CButton color="primary" onClick={handleEdit}>Editar</CButton>
+                                <CButton className="btn btn-secondary border border-3 border-dark border-rounded"  onClick={handleEdit}><CIcon icon={cilPencil}  className="small-icon" />Editar</CButton>
                             )}
-                            <CButton color="danger" onClick={handleDelButton}>Excluir Pasta</CButton>
+                            <CButton className="btn btn-secondary border border-3 border-dark border-rounded"  onClick={handleDelButton}><CIcon icon={cilTrash}  className="small-icon" />Excluir Pasta</CButton>
                         </CButtonGroup>
 
                     </CCardHeader>
@@ -494,16 +495,18 @@ const Folder = () => {
                                 <CLabel htmlFor="modal_Content">Descrição</CLabel>
 
                                 {isEditing ? (
-                                    <ReactQuill
-                                        style={{ height: '300px' }}
-                                        theme="snow"
-                                        value={content}
-                                        modules={modules}
-                                        onChange={(value) => setContent(value)}
-                                    />
-                                ) : (
-                                    <div dangerouslySetInnerHTML={{ __html: folder.content }} />
-                                )}
+  <ReactQuill
+    style={{ height: '300px' }}
+    theme="snow"
+    value={content}
+    modules={modules}
+    onChange={(value) => setContent(value)}
+  />
+) : (
+    folder.content && folder.content !== "null" ? (
+        <div dangerouslySetInnerHTML={{ __html: folder.content }} />
+      ) : null
+)}
 
                             </CFormGroup>
                         </CCol>
@@ -523,8 +526,8 @@ const Folder = () => {
                     <CCard>
                         <CCardHeader>
                             <CButtonGroup>
-                                <CButton onClick={handleAddButton} color="primary" > <CIcon name="cil-plus" />+ Nova Pasta  </CButton>
-                                <CButton onClick={handleAddFileButton} color="warning"  > <CIcon name="cil-plus" />+ Adicionar Arquivo</CButton>
+                                <CButton onClick={handleAddButton} className="btn btn-secondary border border-3 border-dark border-rounded" > <CIcon icon={cilFolder}  className="small-icon"/> Nova Pasta  </CButton>
+                                <CButton onClick={handleAddFileButton} className="btn btn-secondary border border-3 border-dark border-rounded"  > <CIcon icon={cilFile}   className="small-icon"/> Adicionar Arquivo</CButton>
                             </CButtonGroup>
                         </CCardHeader>
 
