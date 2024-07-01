@@ -60,9 +60,7 @@ html {
     }
   }
 
-  #editor {
-    border: 2px solid rgba(0, 0, 0, 0.3);
-  }
+ 
 }
 
 .nav {
@@ -73,55 +71,6 @@ html {
   position: relative;
 }
 
-.gjs-cv-canvas {
-  width: 100%;
-  height: 100%;
-  top: 0;
-}
-
-.tab-content {
-  display: contents;
-}
-
-#block {
-  height: 100%;
-
-  #blocks {
-    height: 100%;
-
-    .gjs-blocks-c {
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gjs-block {
-      justify-content: center;
-    }
-  }
-}
-
-/* Theming */
-.gjs-one-bg {
-  background-color: #fcf6f5ff;
-}
-
-.gjs-two-color {
-  color: #990011ff;
-}
-
-.gjs-three-bg {
-  background-color: #990011ff;
-  color: #fcf6f5ff;
-}
-
-.gjs-four-color,
-.gjs-four-color-h:hover {
-  color: #990011ff;
-}
-
-.gjs-pn-btn {
-  border: 1px solid #990011ff;
-}
 
 // Customize Bootstrap CSS
 .btn,
@@ -166,13 +115,7 @@ html {
   }
 }
 
-/** Assets **/
-.gjs-am-meta,
-.gjs-am-close,
-.gjs-am-file-uploader,
-.gjs-am-assets-header {
-  display: none;
-}
+
 
 .gjs-am-assets-cont {
   width: 100%;

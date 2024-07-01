@@ -17,6 +17,9 @@ import grapesjsComponentCountdown from 'grapesjs-component-countdown';
 import grapesjsStyleGradient from 'grapesjs-style-gradient';
 import grapesjsTabs from 'grapesjs-tabs';
 import CIcon from '@coreui/icons-react'; // Importar o componente CIcon
+import BaseReactComponent from "./components/grapesjs-core/base-react-component";
+import ReactComponents from "./components/grapesjs-core/react-components";
+import Parser from "grapesjs-parser-postcss";
 
 
 import {
@@ -173,8 +176,13 @@ export default function App() {
           grapesjsNavbar,
           grapesjsComponentCountdown,
           grapesjsStyleGradient,
+          Parser,
+          ReactComponents,          
+          BaseReactComponent,
           grapesjsTabs
         ]}
+        canvasCss= {".gjs-plh-image {width:auto;height:auto;}"}
+
 
         onEditor={onEditor}
       />
