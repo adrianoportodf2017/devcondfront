@@ -235,10 +235,10 @@ const Noticias = () => {
                         <CCardHeader>
                             <CButton
                                 onClick={handleAddButton}
-                                color="primary"
+                                className="btn btn-secondary border border-3 border-dark border-rounded"
 
                             >
-                                <CIcon icon="cil-check" className="small-icon" /> Novo Noticia
+                                <CIcon icon="cil-check" className="small-icon" /> Nova Página
                             </CButton>
                         </CCardHeader>
 
@@ -302,10 +302,10 @@ const Noticias = () => {
                                     'actions': (item, index) => (
                                         <td>
                                             <CButtonGroup>
-                                            <Link to={`/editor/${item.id}`} className="btn btn-info text-white">
+                                            <Link to={`/editor/${item.id}`} className="btn btn-secondary border border-3 border-dark border-rounded">
                                                     Editar
                                                 </Link>
-                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                                <CButton className="btn btn-secondary border border-3 border-dark border-rounded" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
                                     )

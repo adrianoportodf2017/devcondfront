@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import GjsEditor from '@grapesjs/react';
+import grapesjs from 'grapesjs';
 import './style.css';
 import useApi from '../services/api';
 import PageDetails from '../components/PageDetails'; // Importar o componente com a capitalização correta
@@ -15,11 +16,13 @@ import grapesjsBlocksFlexbox from 'grapesjs-blocks-flexbox';
 import grapesjsNavbar from 'grapesjs-navbar';
 import grapesjsComponentCountdown from 'grapesjs-component-countdown';
 import grapesjsStyleGradient from 'grapesjs-style-gradient';
+import grapesjsTailwind from 'grapesjs-tailwind';
 import grapesjsTabs from 'grapesjs-tabs';
 import CIcon from '@coreui/icons-react'; // Importar o componente CIcon
 import BaseReactComponent from "./components/grapesjs-core/base-react-component";
 import ReactComponents from "./components/grapesjs-core/react-components";
 import Parser from "grapesjs-parser-postcss";
+
 
 
 import {
@@ -56,7 +59,9 @@ export default function App() {
   const [restrictedArea, setRestrictedArea] = useState(false);
   const [publicArea, setPublicArea] = useState(false);
   const [result, setResult] = useState(false);
-
+  const [htmlCode, setHtmlCode] = useState('');
+  const [cssCode, setCssCode] = useState('');
+  const [showCodeModal, setShowCodeModal] = useState(false);
   const { pageId } = useParams();
   const history = useHistory();
   const api = useApi();
@@ -64,10 +69,7 @@ export default function App() {
   const onEditor = async (editor) => {
     console.log('Editor loaded', { editor });
     setEditor(editor);
-
-    // Open the blocks panel when the editor loads
-    editor.Panels.getButton('views', 'open-blocks').set('active', true);
-
+  
     try {
       const result = await api.getPageById(pageId);
       if (result.error === '' || result.error === undefined) {
@@ -75,17 +77,33 @@ export default function App() {
         setModalStatusField(result.list.status);
         setModalTitleField(result.list.title);
         setModalThumbField(result.list.thumb);
-        setModalTagsField(result.list.tags); // Configurar as tags
+        setModalTagsField(result.list.tags);
+        setMainMenu(result.list.main_menu) 
+        setRestrictedArea(result.list.restricted_area) 
+        setPublicArea(result.list.public_area) 
+  
         editor.setComponents(content.html);
         editor.setStyle(content.css);
+        setHtmlCode(content.html);  // Atualizar estado do HTML
+        setCssCode(content.css);    // Atualizar estado do CSS
         setResult(result.list); // Atualize o estado com os dados da página
-
+  
         console.log(content);
       } else {
         alert(result.error);
       }
     } catch (error) {
       console.error('Error loading page data:', error);
+    }
+  };
+  
+  
+  const handleSaveCode = () => {
+    if (editor) {
+      editor.setComponents(htmlCode);
+      editor.setStyle(cssCode);
+      setShowCodeModal(false);
+      alert('Código salvo com sucesso!');
     }
   };
 
@@ -142,6 +160,7 @@ export default function App() {
 
   const gjsOptions = {
     height: '100vh',
+    
   };
 
   return (
@@ -156,17 +175,19 @@ export default function App() {
       <CButton color="secondary" onClick={handleEditButton}>
         <CIcon icon="cil-settings" className="small-icon" /> Abrir Configurações da Página
       </CButton>
+      <CButton color="secondary" onClick={() => setShowCodeModal(true)}>
+  <CIcon icon="cil-code" className="small-icon" /> Editar Código
+</CButton>
      
 
 
       <GjsEditor
-        grapesjs={"https://unpkg.com/grapesjs"}
-        grapesjsCss="style.css"
 
+        grapesjs={grapesjs}
         options={gjsOptions}
         plugins={[
           grapesjsBasicBlocks,
-          grapesjsPresetWebpage,
+         //grapesjsPresetWebpage,
           grapesjsPluginCkeditor,
           grapesjsTuiImageEditor,
           grapesjsPluginForms,
@@ -176,6 +197,7 @@ export default function App() {
           grapesjsNavbar,
           grapesjsComponentCountdown,
           grapesjsStyleGradient,
+          grapesjsTailwind,
           Parser,
           ReactComponents,          
           BaseReactComponent,
@@ -238,7 +260,8 @@ export default function App() {
               color="success"
               id="main_menu"
               name="main_menu"
-              checked={mainMenu}
+              checked={mainMenu == '0' ? '' : 'true'}
+
               onChange={handleModalSwitchClickMenu}
             />
           </CFormGroup>
@@ -249,7 +272,7 @@ export default function App() {
               color="success"
               id="restricted_area"
               name="restricted_area"
-              checked={restrictedArea}
+              checked={restrictedArea == '0' ? '' : 'true'}
               onChange={handleModalSwitchClickRestrict}
             />
           </CFormGroup>
@@ -260,16 +283,56 @@ export default function App() {
               color="success"
               id="public_area"
               name="public_area"
-              checked={publicArea}
+              checked={publicArea == '0' ? '' : 'true'}
               onChange={handleModalSwitchClickPublic}
             />
           </CFormGroup>
-        </CModalBody>
-        <CModalFooter className="mt-5">
+     
+  
+    </CModalBody>
+            <CModalFooter className="mt-5">
           <CButton disabled={modalLoading} onClick={handleSave} color="primary">{modalLoading ? 'Carregando' : 'Salvar'}</CButton>
           <CButton disabled={modalLoading} onClick={handleCloseModal} color="secondary">Cancelar</CButton>
         </CModalFooter>
       </CModal>
+
+
+      <CModal show={showCodeModal} onClose={() => setShowCodeModal(false)} size="xl">
+  <CModalHeader>Editar Código HTML/CSS</CModalHeader>
+  
+  <CModalBody>
+    <CFormGroup>
+      <CLabel htmlFor="html_code">HTML</CLabel>
+      <CInput
+        type="textarea"
+        id="html_code"
+        rows="10"
+        value={htmlCode}
+        onChange={(e) => setHtmlCode(e.target.value)}
+        className="text-dark"
+      />
+    </CFormGroup>
+    <CFormGroup>
+      <CLabel htmlFor="css_code">CSS</CLabel>
+      <CInput
+        type="textarea"
+        id="css_code"
+        rows="10"
+        value={cssCode}
+        onChange={(e) => setCssCode(e.target.value)}
+      />
+    </CFormGroup>
+  </CModalBody>
+  <CModalFooter>
+    <CButton color="primary" onClick={handleSaveCode}>
+      Salvar Código
+    </CButton>
+    <CButton color="secondary" onClick={() => setShowCodeModal(false)}>
+      Cancelar
+    </CButton>
+  </CModalFooter>
+</CModal>
+
     </div>
   );
 }
