@@ -428,6 +428,8 @@ export default () => {
       formData.append('title', data.title);
       formData.append('content', data.content);
       formData.append('status', data.status);
+      formData.append('order', data.order);
+
       if (data.thumb) {
         formData.append('thumb', data.thumb);
       }
