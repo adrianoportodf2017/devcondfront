@@ -41,14 +41,15 @@ const Avisos = () => {
     const [modalTypeField, setModalTypeField] = useState('');
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalContentField, setModalContentField] = useState('');
+    const [modalEventField, setModalEventField] = useState('');
+    const [modalUrlField, setModalUrlField] = useState('');
     const [modalStatusField, setModalStatusField] = useState('');
-
-
 
     const fields = [
         { label: 'Ativo', key: 'Status', sorter: false, filter: false },
         { label: 'Capa', key: 'Thumb', sorter: false, filter: false },
         { label: 'Título', key: 'title' },
+        { label: 'Data do Evento', key: 'date_event' },
         { label: 'Descrição', key: 'content' },
         { label: 'Data da publicação', key: 'created_at' },
         { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
@@ -81,6 +82,8 @@ const Avisos = () => {
         setModalThumbField('');
         setModalTypeField('');
         setModalContentField('');
+        setModalEventField('');
+        setModalUrlField('');
         setShowModal(true);
     };
 
@@ -99,6 +102,9 @@ const Avisos = () => {
                 title: modalTitleField,
                 type: modalTypeField,
                 content: modalContentField,
+                date_event: modalEventField,
+                url_externa: modalUrlField,
+
             };
 
             if (modalThumbField) {
@@ -134,8 +140,8 @@ const Avisos = () => {
         setModalThumbField('');
         setModalTitleField(list[index]['title']);
         setModalTypeField(list[index]['type']);
-
-
+        setModalEventField(list[index]['date_event']);
+        setModalUrlField(list[index]['url_externa']);
         setModalContentField(list[index]['content']);
         setShowModal(true);
 
@@ -195,14 +201,9 @@ const Avisos = () => {
             <CRow>
                 <CCol>
                     <h2>Avisos </h2>
-
                     <CCard>
                         <CCardHeader>
-                            <CButton
-                                onClick={handleAddButton}
-                                color="primary"
-
-                            >
+                            <CButton onClick={handleAddButton} color="primary">
                                 <CIcon icon="cil-check" className="small-icon" /> Novo Aviso
                             </CButton>
                         </CCardHeader>
@@ -237,10 +238,24 @@ const Avisos = () => {
 
                                     'Title': (item) => (
                                         <td>
-                                            {item.title}
+                                            {item.title}<br />
+                                            {item.date_event}
                                         </td>
                                     ),
-
+                                    'date_event': (item) => (
+                                        <td>
+                                            {item.date_event ?
+                                                new Date(item.date_event).toLocaleString('pt-BR', {
+                                                    day: '2-digit',
+                                                    month: '2-digit',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                })
+                                                : ''
+                                            }
+                                        </td>
+                                    ),
                                     'content': (item) => (
                                         <td>
                                             {item.content.replace(/<[^>]*>/g, '').substring(0, 150)}
@@ -324,6 +339,30 @@ const Avisos = () => {
                                         name="title"
                                         value={modalTitleField}
                                         onChange={(e) => setModalTitleField(e.target.value)}
+                                    />
+                                </CFormGroup>
+                            </div>
+                            <div className="col-xl-6">
+                                <CFormGroup>
+                                    <CLabel htmlFor="modal_title">Data do Evento</CLabel>
+                                    <CInput
+                                        type="datetime-local"
+                                        id='modal_event'
+                                        name="event"
+                                        value={modalEventField}
+                                        onChange={(e) => setModalEventField(e.target.value)}
+                                    />
+                                </CFormGroup>
+                            </div>
+                            <div className="col-xl-6">
+                                <CFormGroup>
+                                    <CLabel htmlFor="modal_title">Url para Acesso Externo</CLabel>
+                                    <CInput
+                                        type="text"
+                                        id='modal_url_externo'
+                                        name="Url"
+                                        value={modalUrlField}
+                                        onChange={(e) => setModalUrlField(e.target.value)}
                                     />
                                 </CFormGroup>
                             </div>
