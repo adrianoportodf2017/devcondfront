@@ -14,6 +14,7 @@ import { Provider } from 'react-redux'
 import store from './store'
 
 
+
 React.icons = icons
 
 ReactDOM.render(

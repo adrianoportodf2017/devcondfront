@@ -28,7 +28,6 @@ import CIcon from "@coreui/icons-react";
 import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 import useApi from '../services/api';
-import IframeModal from '../components/IframeModal';
 import FolderList from '../components/FolderList';
 import FileList from '../components/FileList';
 import AddFolderModal from '../components/AddFolderModal';
@@ -148,10 +147,65 @@ const Folder = () => {
         }
     };
 
-    const openIframeModal = (url) => {
-        setIframeUrl(url);
-        setShowIframeModal(true);
+    const handleDelFile = async (id_file) => {
+
+        // Pergunte ao usuário se ele deseja realmente excluir a pasta
+        const confirm = await window.confirm(
+            'Tem certeza de que deseja excluir este arquivo?' +
+                '\n\n ATENÇÃO: Arquivo apagado permanentemente.',
+                
+        );
+    
+        if (confirm) {
+            // Chame a API para excluir a pasta
+            try {
+                const result = await api.removeFile(id_file);
+    
+                if (result.error === '' || result.error === undefined) {
+                    getFolder();
+                    setIsEditing(false);
+                    alert('Arquivo Deletado com Sucesso!');
+
+    
+                } else {
+                    setIsEditing(false);
+                    alert(result.error);
+                }
+            } catch (error) {
+                setIsEditing(false);
+                alert('Erro ao excluir a pasta. Verifique a conexão com a API.' + error);
+            }
+        }
     };
+    
+
+
+      /**
+* 
+* Função para abrir modal do documento
+*/
+const openIframeModal = (url) => {
+    setIframeUrl(url);
+    setShowIframeModal(true);
+};
+
+
+const IframeModal = ({ iframeUrl, onClose }) => {
+    return (
+        <CModal show={showIframeModal} onClose={onClose} size="xl">
+            <CModalBody>
+                <div style={{ width: '100%', height: '800px' }}>
+                    <iframe src={iframeUrl} width="100%" height="100%" frameBorder="0"></iframe>
+                </div>
+            </CModalBody>
+            <CModalFooter>
+                <CButton onClick={onClose} color="secondary">Fechar</CButton>
+                <CButton color="primary" onClick={() => window.open(iframeUrl, "_blank")} >   Visualizar em Nova Guia </CButton>
+            </CModalFooter>
+        </CModal>
+    );
+};
+
 
     const handleFileClick = (item) => {
         if (item.type === 'imagem' || item.type === 'pdf') {
@@ -164,8 +218,8 @@ const Folder = () => {
     return (
         <>
             <CCard>
-                <IframeModal iframeUrl={iframeUrl} onClose={() => setShowIframeModal(false)} />
-                <CCardBody>
+            <IframeModal iframeUrl={iframeUrl} onClose={() => setShowIframeModal(false)} className="modal-lg w-100" style={{ height: '500px' }} />
+            <CCardBody>
                     <CCardHeader>
                         <CButtonGroup>
                             <CButton to={folder.parent_id ? `/Folders/${folder.parent_id}` : '/ListFolders/0'}>
@@ -280,7 +334,7 @@ const Folder = () => {
                         <CCardBody>
                             <CRow className="File-row justify-content-left">
                                 <FolderList listFolders={listFolders} handleDelFolder={handleDelButton} />
-                                <FileList listFiles={listFiles} handleFileClick={handleFileClick} handleDelFile={handleDelButton} />
+                                <FileList listFiles={listFiles} handleFileClick={handleFileClick} handleDelFile={handleDelFile} />
                             </CRow>
                         </CCardBody>
                     </CCard>

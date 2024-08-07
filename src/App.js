@@ -1,6 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useDispatch } from "react-redux";
 
 

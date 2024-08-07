@@ -55,10 +55,10 @@ export default function App() {
   const [getList, setGetlist] = useState('');
   const [modalStatusThumbField, setModalStatusThumbField] = useState('');
   const [modalThumbField, setModalThumbField] = useState('');
-  const [mainMenu, setMainMenu] = useState(false);
-  const [restrictedArea, setRestrictedArea] = useState(false);
-  const [publicArea, setPublicArea] = useState(false);
-  const [result, setResult] = useState(false);
+  const [mainMenu, setMainMenu] = useState('');
+  const [restrictedArea, setRestrictedArea] = useState('');
+  const [publicArea, setPublicArea] = useState('');
+  const [result, setResult] = useState('');
   const [htmlCode, setHtmlCode] = useState('');
   const [cssCode, setCssCode] = useState('');
   const [showCodeModal, setShowCodeModal] = useState(false);
@@ -68,36 +68,43 @@ export default function App() {
 
   const onEditor = async (editor) => {
     console.log('Editor loaded', { editor });
+    
     setEditor(editor);
-  
+
     try {
       const result = await api.getPageById(pageId);
       if (result.error === '' || result.error === undefined) {
-        const content = JSON.parse(result.list.content);
+        const content = result.list && result.list.content ? JSON.parse(result.list.content) : {};
         setModalStatusField(result.list.status);
         setModalTitleField(result.list.title);
         setModalThumbField(result.list.thumb);
-        setModalTagsField(result.list.tags);
-        setMainMenu(result.list.main_menu) 
-        setRestrictedArea(result.list.restricted_area) 
-        setPublicArea(result.list.public_area) 
-  
+        setModalTagsField(result.list && result.list.tags ? result.list.tags : []);
+        setMainMenu(result.list.main_menu);
+        setRestrictedArea(result.list.restricted_area);
+        setPublicArea(result.list.public_area);
         editor.setComponents(content.html);
         editor.setStyle(content.css);
         setHtmlCode(content.html);  // Atualizar estado do HTML
         setCssCode(content.css);    // Atualizar estado do CSS
         setResult(result.list); // Atualize o estado com os dados da página
-  
+
+        // Remove a estrutura do body automaticamente inserida
+        const wrapper = editor.getWrapper();
+        const body = wrapper.find('body')[0];
+        if (body) {
+          wrapper.remove(body);
+        }
+
         console.log(content);
       } else {
         alert(result.error);
       }
     } catch (error) {
-      console.error('Error loading page data:', error);
+      alert('Error loading page data:', error);
     }
   };
-  
-  
+
+
   const handleSaveCode = () => {
     if (editor) {
       editor.setComponents(htmlCode);
@@ -118,9 +125,9 @@ export default function App() {
         title: modalTitleField,
         thumb: modalThumbField,
         tags: modalTagsField, // Adicione as tags aqui
-        mainMenu: mainMenu ? '1' : '0',
-        restrictedArea: restrictedArea ? '1' : '0',
-        publicArea: publicArea ? '1' : '0',
+        mainMenu: mainMenu,
+        restrictedArea: restrictedArea,
+        publicArea: publicArea,
       };
       try {
         const response = await api.updatePageById(pageId, newData);
@@ -129,6 +136,7 @@ export default function App() {
         setShowModal(false);
         // Handle response as needed
       } catch (error) {
+        alert(error);
         console.error('Save error:', error);
       }
     }
@@ -146,13 +154,13 @@ export default function App() {
     setModalStatusField(modalStatusField == '1' ? '0' : '1');
   }
   const handleModalSwitchClickMenu = () => {
-    setMainMenu(!mainMenu);
+    setMainMenu(mainMenu == '1' ? '0' : '1');
   }
   const handleModalSwitchClickRestrict = () => {
-    setRestrictedArea(!restrictedArea);
+    setRestrictedArea(restrictedArea == '1' ? '0' : '1');
   }
   const handleModalSwitchClickPublic = () => {
-    setPublicArea(!publicArea);
+    setPublicArea(publicArea == '1' ? '0' : '1');
   }
   const handleModalSwitchThumbClick = () => {
     setModalStatusThumbField(modalStatusThumbField == '1' ? '0' : '1');
@@ -160,15 +168,17 @@ export default function App() {
 
   const gjsOptions = {
     height: '100vh',
-    
+    protectedCss: '', // Desativa a inserção automática de estilos padrão, incluindo body
+    wrapperIsBody: false, // Evita que o wrapper seja tratado como <body>
+
   };
 
   return (
     <div>
       {result && <PageDetails data={result} />} {/* Renderizar o componente PageDetails apenas se result não for null */}
       <CButton color="secondary" to="/paginas">
-              <CIcon icon={cilArrowCircleLeft}   className="small-icon"/>&nbsp;Voltar
-            </CButton>
+        <CIcon icon={cilArrowCircleLeft} className="small-icon" />&nbsp;Voltar
+      </CButton>
       <CButton color="secondary" onClick={handleSave}>
         <CIcon icon="cil-save" className="small-icon" /> Salvar Página
       </CButton>
@@ -176,9 +186,9 @@ export default function App() {
         <CIcon icon="cil-settings" className="small-icon" /> Abrir Configurações da Página
       </CButton>
       <CButton color="secondary" onClick={() => setShowCodeModal(true)}>
-  <CIcon icon="cil-code" className="small-icon" /> Editar Código
-</CButton>
-     
+        <CIcon icon="cil-code" className="small-icon" /> Editar Código
+      </CButton>
+
 
 
       <GjsEditor
@@ -187,7 +197,7 @@ export default function App() {
         options={gjsOptions}
         plugins={[
           grapesjsBasicBlocks,
-         //grapesjsPresetWebpage,
+          //grapesjsPresetWebpage,
           grapesjsPluginCkeditor,
           grapesjsTuiImageEditor,
           grapesjsPluginForms,
@@ -199,14 +209,14 @@ export default function App() {
           grapesjsStyleGradient,
           grapesjsTailwind,
           Parser,
-          ReactComponents,          
+          ReactComponents,
           BaseReactComponent,
           grapesjsTabs
-        ]}
-        canvasCss= {".gjs-plh-image {width:auto;height:auto;}"}
+        ]}  
 
-
+         
         onEditor={onEditor}
+
       />
 
       <CModal show={showModal} onClose={handleCloseModal} size="lg">
@@ -261,9 +271,9 @@ export default function App() {
               id="main_menu"
               name="main_menu"
               checked={mainMenu == '0' ? '' : 'true'}
-
               onChange={handleModalSwitchClickMenu}
             />
+
           </CFormGroup>
 
           <CFormGroup>
@@ -287,10 +297,10 @@ export default function App() {
               onChange={handleModalSwitchClickPublic}
             />
           </CFormGroup>
-     
-  
-    </CModalBody>
-            <CModalFooter className="mt-5">
+
+
+        </CModalBody>
+        <CModalFooter className="mt-5">
           <CButton disabled={modalLoading} onClick={handleSave} color="primary">{modalLoading ? 'Carregando' : 'Salvar'}</CButton>
           <CButton disabled={modalLoading} onClick={handleCloseModal} color="secondary">Cancelar</CButton>
         </CModalFooter>
@@ -298,40 +308,40 @@ export default function App() {
 
 
       <CModal show={showCodeModal} onClose={() => setShowCodeModal(false)} size="xl">
-  <CModalHeader>Editar Código HTML/CSS</CModalHeader>
-  
-  <CModalBody>
-    <CFormGroup>
-      <CLabel htmlFor="html_code">HTML</CLabel>
-      <CInput
-        type="textarea"
-        id="html_code"
-        rows="10"
-        value={htmlCode}
-        onChange={(e) => setHtmlCode(e.target.value)}
-        className="text-dark"
-      />
-    </CFormGroup>
-    <CFormGroup>
-      <CLabel htmlFor="css_code">CSS</CLabel>
-      <CInput
-        type="textarea"
-        id="css_code"
-        rows="10"
-        value={cssCode}
-        onChange={(e) => setCssCode(e.target.value)}
-      />
-    </CFormGroup>
-  </CModalBody>
-  <CModalFooter>
-    <CButton color="primary" onClick={handleSaveCode}>
-      Salvar Código
-    </CButton>
-    <CButton color="secondary" onClick={() => setShowCodeModal(false)}>
-      Cancelar
-    </CButton>
-  </CModalFooter>
-</CModal>
+        <CModalHeader>Editar Código HTML/CSS</CModalHeader>
+
+        <CModalBody>
+          <CFormGroup>
+            <CLabel htmlFor="html_code">HTML</CLabel>
+            <CInput
+              type="textarea"
+              id="html_code"
+              rows="10"
+              value={htmlCode}
+              onChange={(e) => setHtmlCode(e.target.value)}
+              className="text-dark"
+            />
+          </CFormGroup>
+          <CFormGroup>
+            <CLabel htmlFor="css_code">CSS</CLabel>
+            <CInput
+              type="textarea"
+              id="css_code"
+              rows="10"
+              value={cssCode}
+              onChange={(e) => setCssCode(e.target.value)}
+            />
+          </CFormGroup>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="primary" onClick={handleSaveCode}>
+            Salvar Código
+          </CButton>
+          <CButton color="secondary" onClick={() => setShowCodeModal(false)}>
+            Cancelar
+          </CButton>
+        </CModalFooter>
+      </CModal>
 
     </div>
   );

@@ -1,0 +1,21 @@
+.file-item {
+    position: relative;
+    padding: 10px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.file-item:hover {
+    border-color: #007bff;
+}
+
+.delete-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+}
+
+.file-item:hover .delete-button {
+    display: block;
+}

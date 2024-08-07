@@ -56,7 +56,6 @@ const Noticias = () => {
         { label: 'Ativo', key: 'Status', sorter: false, filter: false },
         { label: 'Capa', key: 'Thumb', sorter: false, filter: false },
         { label: 'Título', key: 'title' },
-        { label: 'Descrição', key: 'content' },
         { label: 'Relatório', key: 'likes_count', sorter: false, filter: false },
         { label: 'Data da publicação', key: 'created_at' },
         { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
@@ -110,7 +109,6 @@ const Noticias = () => {
                 status: modalStatusField,
                 status_thumb: modalStatusThumbField,
                 title: modalTitleField,
-                content: modalContentField,
                 category_id: modalCategoryField,
 
             };
@@ -274,14 +272,7 @@ const Noticias = () => {
                                         <td>
                                             {item.title}
                                         </td>
-                                    ),
-
-                                    'content': (item) => (
-                                        <td>
-                                            {item.content.replace(/<[^>]*>/g, '').substring(0, 30)}
-                                            {item.content.length > 30 ? '...' : ''}
-                                        </td>
-                                    ),
+                                    ) ,
 
                                     'likes_count': (item) => (
                                         <td>
@@ -374,17 +365,6 @@ const Noticias = () => {
                         </CSelect>
                     </CFormGroup>
 
-
-                    <CFormGroup className="mb-5">
-                        <CLabel htmlFor="modal_Content">Descrição</CLabel>
-                        <ReactQuill
-                            style={{ height: '300px' }} // Defina a altura desejada aqui
-                            theme="snow"
-                            modules={modules}
-                            value={modalContentField}
-                            onChange={(content) => setModalContentField(content)}
-                        />
-                    </CFormGroup>
 
 
                 </CModalBody>
