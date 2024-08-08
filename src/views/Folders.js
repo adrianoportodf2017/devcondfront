@@ -135,7 +135,7 @@ const Folder = () => {
         try {
             const result = await api.removeFolder(id);
             if (result.error === '' || result.error === undefined) {
-                window.location.href = `/ListFolders/0`;
+                //window.location.href = `/ListFolders/0`;
                 setIsEditing(false);
             } else {
                 setIsEditing(false);
@@ -222,14 +222,21 @@ const IframeModal = ({ iframeUrl, onClose }) => {
             <CCardBody>
                     <CCardHeader>
                         <CButtonGroup>
-                            <CButton to={folder.parent_id ? `/Folders/${folder.parent_id}` : '/ListFolders/0'}>
-                                <CIcon icon={cilArrowCircleLeft}  className="small-icon"/>{folder.parent_id ? 'Voltar Pasta Anterior' : 'Voltar Para Home'} </CButton>
+                            <CButton to={folder.parent_id ? `/Folders/${folder.parent_id}` : '/ListFolders/0'} style={{ display: 'flex', alignItems: 'center' }}>
+                                <CIcon icon={cilArrowCircleLeft}  className="small-icon me-2"/>{folder.parent_id ? 'Voltar Pasta Anterior' : 'Voltar Para Home'} 
+                            </CButton>
                             {isEditing ? (
-                                <CButton onClick={handleSave}><CIcon icon={cilSave} className="small-icon" />Salvar</CButton>
+                                <CButton onClick={handleSave} style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CIcon icon={cilSave} className="small-icon me-2" />Salvar
+                                </CButton>
                             ) : (
-                                <CButton onClick={handleEdit}><CIcon icon={cilPencil} className="small-icon" />Editar</CButton>
+                                <CButton onClick={handleEdit} style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CIcon icon={cilPencil} className="small-icon me-2" />Editar
+                                </CButton>
                             )}
-                            <CButton onClick={handleDelButton}><CIcon icon={cilTrash}  className="small-icon"/>Excluir Pasta</CButton>
+                            <CButton onClick={handleDelButton} style={{ display: 'flex', alignItems: 'center' }}>
+                                <CIcon icon={cilTrash}  className="small-icon me-2"/>Excluir Pasta
+                            </CButton>
                         </CButtonGroup>
                     </CCardHeader>
                     <CRow>
@@ -323,11 +330,11 @@ const IframeModal = ({ iframeUrl, onClose }) => {
                     <CCard>
                         <CCardHeader>
                             <CButtonGroup>
-                                <CButton onClick={() => setShowModal(true)}>
-                                    <CIcon icon={cilFolder} className="small-icon"  /> Nova Pasta
+                                <CButton onClick={() => setShowModal(true)} style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CIcon icon={cilFolder} className="small-icon me-2"  /> Nova Pasta
                                 </CButton>
-                                <CButton onClick={() => setShowModalFile(true)}>
-                                    <CIcon icon={cilPlus} className="small-icon" /> Adicionar Arquivo
+                                <CButton onClick={() => setShowModalFile(true)} style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CIcon icon={cilPlus} className="small-icon me-2" /> Adicionar Arquivo
                                 </CButton>
                             </CButtonGroup>
                         </CCardHeader>
