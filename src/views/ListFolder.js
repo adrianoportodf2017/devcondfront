@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CCol, CFormGroup, CRow, CModal, CModalBody, CModalFooter } from '@coreui/react';
 import useApi from '../services/api';
 import './ListFolder.css'; // Certifique-se de criar e importar o arquivo CSS
-
+import CIcon from "@coreui/icons-react";
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 const getFileIconClass = (fileType) => {
     switch (fileType) {
         case 'pdf':
@@ -121,8 +122,8 @@ const Folder = () => {
                         <CCardHeader>
                             <CButtonGroup>
                                 {id !== '0' && (
-                                    <CButton color="success" to={folder.parent_id ? `/ListFolders/${folder.parent_id}` : '/ListFolders/0'}>
-                                        {folder.parent_id ? '< Voltar Pasta Anterior' : 'Voltar Para Listagem'}
+                                    <CButton  to={folder.parent_id ? `/ListFolders/${folder.parent_id}` : '/ListFolders/0'}>
+                                       <CIcon icon={cilArrowCircleLeft}  className="small-icon"/> {folder.parent_id ? ' Voltar Pasta Anterior' : 'Voltar Para Listagem'}
                                     </CButton>
                                 )}
                             </CButtonGroup>
