@@ -24,7 +24,7 @@ const getFileIconClass = (fileType) => {
 
 const FileList = ({ listFiles, handleFileClick, handleDelFile }) => {
     return listFiles.map((item) => (
-        <CCol md="2" key={item.id}>
+        <CCol md="3" key={item.id}>
             <div className="file-item" >
                 <div onClick={() => handleFileClick(item)}>
                 <i className={`${getFileIconClass(item.type)} fa-4x`} style={{ width: '100%', height: 'auto' }}></i>

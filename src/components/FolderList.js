@@ -16,7 +16,7 @@ const getFolderIconClass = (folderType) => {
 
 const FolderList = ({ listFolders, handleDelFolder }) => {
     return listFolders.map((item) => (
-        <CCol md="2" key={item.id} className="text-center">
+        <div md="3" key={item.id} className="text-center col-md-3">
             <div className="file-item">
                 <Link to={`/Folders/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <i className={`${getFolderIconClass(item.type)} fa-4x`} style={{ width: '100%', height: 'auto' }}></i>
@@ -24,7 +24,7 @@ const FolderList = ({ listFolders, handleDelFolder }) => {
                     <p>Última modificação: {new Date(item.updated_at).toLocaleDateString('pt-BR')}</p>
                 </Link>               
             </div>
-        </CCol>
+        </div>
     ));
 };
 
