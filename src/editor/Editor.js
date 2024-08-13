@@ -25,6 +25,7 @@ import Parser from "grapesjs-parser-postcss";
 
 
 
+
 import {
   CButton,
   CCard,
@@ -168,9 +169,12 @@ export default function App() {
 
   const gjsOptions = {
     height: '100vh',
-    protectedCss: '', // Desativa a inserção automática de estilos padrão, incluindo body
-    wrapperIsBody: false, // Evita que o wrapper seja tratado como <body>
-
+    canvas: {
+      styles: [
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css'
+      ],
+      scripts: []
+    }
   };
 
   return (
@@ -197,7 +201,7 @@ export default function App() {
         options={gjsOptions}
         plugins={[
           grapesjsBasicBlocks,
-          //grapesjsPresetWebpage,
+          grapesjsPresetWebpage,
           grapesjsPluginCkeditor,
           grapesjsTuiImageEditor,
           grapesjsPluginForms,
