@@ -1059,6 +1059,113 @@ export default () => {
       let json = await request('delete', `/gallery/${id}`, {}, token);
       return json;
     },
+
+
+      /********************************************************************************/
+    /******************************--__-- Galeria de Fotos --__--***********************************/
+    /********************************************************************************/
+    getVideos: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/videos`, {}, token);
+      return json;
+    },
+    addVideo: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/video`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    addFileVideo: (data, onProgress) => {
+      return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token');
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('id', data.id);
+        for (let i = 0; i < data.file.length; i++) {
+          formData.append('file[]', data.file[i]);
+        }
+
+
+        xhr.open('POST', `${baseUrl}/video/midia/${data.id}`, true);
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentCompleted = Math.round((event.loaded / event.total) * 100);
+            onProgress(percentCompleted);
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          }
+
+          if (xhr.status === 400) {
+            try {
+              const jsonResponse = JSON.parse(xhr.responseText);
+              resolve(jsonResponse);
+            } catch (error) {
+              reject(error);
+            }
+          } else {
+            reject(new Error('Erro na requisição'));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error('Erro na requisição'));
+        };
+
+        xhr.send(formData);
+      });
+    },
+    removeFileVideo: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/video/midia/${id}`, {}, token);
+      return json;
+    },
+    updateVideo: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/video/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateVideoStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/video/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeVideo: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/video/${id}`, {}, token);
+      return json;
+    },
     /********************************************************************************/
     /******************************--__-- Livro de Ocorrências --__--***********************************/
     /********************************************************************************/

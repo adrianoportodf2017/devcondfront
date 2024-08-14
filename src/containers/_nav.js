@@ -156,6 +156,12 @@ const loadMenu = async () => {
       },
       {
         _tag: 'CSidebarNavItem',
+        name: 'Videos',
+        to: '/videos',
+        icon: <CIcon icon={freeSet.cilMovie} className="small-icon" />,
+      },
+      {
+        _tag: 'CSidebarNavItem',
         name: 'Convênios/Parceiros',
         to: '/benefits',
         icon: <CIcon icon={freeSet.cilTouchApp} className="small-icon" />,

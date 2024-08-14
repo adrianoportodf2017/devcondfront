@@ -15,6 +15,7 @@ const Benefits = React.lazy(() => import('./views/Benefits'));
 
 const Classified = React.lazy(() => import('./views/Classified'));
 const Gallery = React.lazy(() => import('./views/Gallery'));
+const Videos = React.lazy(() => import('./views/Videos'));
 const Warning = React.lazy(() => import('./views/Warning'));
 const LostAndFound = React.lazy(() => import('./views/LostAndFound'));
 
@@ -59,6 +60,8 @@ const routes = [
 
   { path: '/classificados', name: 'Classificados', component: Classified },
   { path: '/galeria', name: 'Galeria de Fotos', component: Gallery },
+  { path: '/videos', name: 'Lista de Videos', component: Videos },
+
   { path: '/achados-e-perdidos', name: 'Achados e Perdidos', component: LostAndFound },
 
   { path: '/ocorrencias', name: 'Ocorrências', component: Warning },
