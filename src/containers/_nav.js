@@ -100,6 +100,12 @@ const loadMenu = async () => {
       },
       {
         _tag: 'CSidebarNavItem',
+        name: 'Documentos',
+        to: '/documents',
+        icon: 'cil-file',
+      },
+      {
+        _tag: 'CSidebarNavItem',
         name: 'Avisos',
         to: '/wall',
         icon: <CIcon icon="cil-warning" className="small-icon" />,

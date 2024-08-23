@@ -19,8 +19,9 @@ import {
   CInputFile
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash, cilCloudDownload } from "@coreui/icons";
 import useApi from '../services/api';
+const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/storage/'
 
 export default () => {
   const api = useApi();
@@ -35,6 +36,10 @@ export default () => {
 
   const fields = [
     { label: 'Título', key: 'title' },
+    { label: 'Categoria', key: 'category_name' },
+    { label: 'Data', key: 'created_at' },
+    { label: 'Caminho', key: 'filename' },
+
     { label: 'Ações', key: 'actions', _style: { width: '1px' } }
   ];
 
@@ -77,7 +82,7 @@ export default () => {
 
 
   const handleDownloadButton = async (index) => {
-    window.open(list[index]['fileurl']);
+    window.open(list[index]['filename']);
   }
 
   const handleNewButton = () => {
@@ -134,8 +139,8 @@ export default () => {
           <h2>Documentos</h2>
           <CCard>
             <CCardHeader>
-              <CButton color="primary" onClick={handleNewButton}>
-                <CIcon icon="cil-check" className="small-icon" /> Novo Documento
+              <CButton onClick={handleNewButton} style={{ display: 'flex', alignItems: 'center' }}>
+                <CIcon icon={cilSave} className="small-icon me-2" />Novo Documento
               </CButton>
             </CCardHeader>
             <CCardBody>
@@ -153,9 +158,15 @@ export default () => {
                   'actions': (item, index) => (
                     <td>
                       <CButtonGroup>
-                        <CButton color='success' onClick={() => handleDownloadButton(index)}><CIcon name="cil-cloud-download" /></CButton>
-                        <CButton color="info" onClick={() => handleEditButton(index)}>Editar</CButton>
-                        <CButton color='danger' onClick={() => handleRemoveButton(index)}>Excluir</CButton>
+                        <CButton onClick={() => handleDownloadButton(index)} style={{ display: 'flex', alignItems: 'center' }}>
+                          <CIcon icon={cilCloudDownload} className="small-icon me-2" />
+                        </CButton>
+                        <CButton  onClick={() => handleEditButton(index)} style={{ display: 'flex', alignItems: 'center' }}>
+                          <CIcon icon={cilPencil} className="small-icon me-2" />
+                        </CButton>
+                        <CButton  onClick={() => handleRemoveButton(index)} style={{ display: 'flex', alignItems: 'center' }}>
+                          <CIcon icon={cilTrash} className="small-icon me-2" />
+                        </CButton>
                       </CButtonGroup>
                     </td>
 
