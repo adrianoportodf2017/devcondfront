@@ -46,7 +46,7 @@ const Folder = () => {
     const [iframeUrl, setIframeUrl] = useState('');
     const [title, setTitle] = useState('');
     const [order, setOrder] = useState('');
-    const [status, setStatus] = useState('1');
+    const [status, setStatus] = useState('');
     const [content, setContent] = useState('');
     const [thumb, setThumb] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -126,10 +126,10 @@ const Folder = () => {
         }
     };
 
-    const handleSwitchClick = async () => {
-        const dataStatus = status === '1' ? '0' : '1';
-        setStatus(dataStatus);
-    };
+
+    const handleSwitchClick = () => {
+        setStatus(status == '1' ? '0' : '1');
+    }
 
     const handleDelButton = async () => {
         try {
@@ -246,7 +246,7 @@ const IframeModal = ({ iframeUrl, onClose }) => {
                                 <CSwitch
                                     id="status"
                                     color="success"
-                                    checked={folder.status === '1'}
+                                    checked={status == '0' ? '' : 'true'}
                                     onChange={handleSwitchClick}
                                     disabled={!isEditing}
                                 />

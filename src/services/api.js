@@ -293,10 +293,17 @@ export default () => {
       let json = await request('get', '/docs', {}, token);
       return json;
     },
+    getDocumentsCategory: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/docs/category', {}, token);
+      return json;
+    },
     addDocument: async (data) => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('title', data.title);
+      formData.append('category_id', data.category_id);
+
       if (data.file) {
         formData.append('file', data.file);
       }
@@ -315,6 +322,8 @@ export default () => {
       let token = localStorage.getItem('token');
       let formData = new FormData();
       formData.append('title', data.title);
+      formData.append('category_id', data.category_id);
+
       if (data.file) {
         formData.append('file', data.file);
       }

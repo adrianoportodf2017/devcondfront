@@ -16,18 +16,19 @@ import {
   CLabel,
   CTextarea,
   CInput,
-  CInputFile
+  CInputFile,
+  CSelect
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash, cilCloudDownload } from "@coreui/icons";
 import useApi from '../services/api';
-const baseUrl = 'https://devcondbackend.agenciatecnet.com.br/public/storage/'
 
 export default () => {
   const api = useApi();
 
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
+  const [listCategory, setListCategory] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalTitleField, setModalTitleField] = useState('');
@@ -39,12 +40,12 @@ export default () => {
     { label: 'Categoria', key: 'category_name' },
     { label: 'Data', key: 'created_at' },
     { label: 'Caminho', key: 'filename' },
-
     { label: 'Ações', key: 'actions', _style: { width: '1px' } }
   ];
 
   useEffect(() => {
     getList();
+    getCategory();
   }, []);
 
   const getList = async () => {
@@ -53,6 +54,14 @@ export default () => {
     setLoading(false);
     if (result.error === '') {
       setList(result.list);
+    } else {
+      alert(result.error);
+    }
+  }
+  const getCategory = async () => {
+    const result = await api.getDocumentsCategory();
+    if (result.error === '') {
+      setListCategory(result.list);
     } else {
       alert(result.error);
     }
@@ -132,12 +141,15 @@ export default () => {
 
   }
 
+  
+
   return (
     <>
       <CRow>
         <CCol>
           <h2>Documentos</h2>
           <CCard>
+            
             <CCardHeader>
               <CButton onClick={handleNewButton} style={{ display: 'flex', alignItems: 'center' }}>
                 <CIcon icon={cilSave} className="small-icon me-2" />Novo Documento
@@ -191,6 +203,9 @@ export default () => {
               value={modalTitleField}
               onChange={e => setModalTitleField(e.target.value)}
               disabled={modalLoading}
+            />
+             <CSelect
+            
             />
           </CFormGroup>
           <CFormGroup>
