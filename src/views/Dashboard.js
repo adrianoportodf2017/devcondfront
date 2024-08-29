@@ -267,19 +267,7 @@ const getOwnerInfo = (ownerId) => {
       <h1 className="h2">Área do Condômino</h1>
             <p></p>
             <div className="row my-4">
-              <div className="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                <div className="card">
-                  <h5 className="card-header">Documentos</h5>
-                  <div className="card-body">
-                    <h5 className="card-title"> <FontAwesomeIcon icon={faFolderOpen} width={40} className=" me-3" />
-                    </h5>
-                    <p className="card-text">Acesso a documentos relacionado ao Condomínio</p>
-                    <Link to='/ListFolders/0'>
-                    <p className="card-text text-success">Clique AQUI</p>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+         
               <div className="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
                 <div className="card">
                   <h5 className="card-header">Avisos</h5>
@@ -306,19 +294,7 @@ const getOwnerInfo = (ownerId) => {
                   </div>
                 </div>
               </div>
-              <div className="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                <div className="card">
-                  <h5 className="card-header">Reservas</h5>
-                  <div className="card-body">
-                    <h5 className="card-title"> <FontAwesomeIcon icon={faCalendarAlt} width={30} className=" me-3" />
-                    </h5>
-                    <p className="card-text">Reservas de espaços comuns do Condomínio</p>
-                    <Link to='/reservations'>
-                    <p className="card-text text-success">Clique AQUI</p>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+         
             </div>
             <div className="row">
             <CRow>

@@ -98,12 +98,12 @@ const loadMenu = async () => {
         to: '/ListFolders/0',
         icon: <CIcon icon={freeSet.cilShortText} className="small-icon" />,
       },
-      {
+     /* {
         _tag: 'CSidebarNavItem',
         name: 'Documentos',
         to: '/documents',
         icon: 'cil-file',
-      },
+      },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Avisos',
