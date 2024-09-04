@@ -113,7 +113,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Notícias',
-        to: '/news',
+        to: '/noticias',
         icon: <CIcon icon="cil-notes" className="small-icon" />,
       },
       /*{
@@ -141,7 +141,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Classificados',
-        to: '/classifield',
+        to: '/classificados',
         icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
             },
      /* {
@@ -181,8 +181,14 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Convênios/Parceiros',
-        to: '/benefits',
+        to: '/beneficios',
         icon: <CIcon icon={freeSet.cilTouchApp} className="small-icon" />,
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Prestadores de Serviços',
+        to: '/prestadorServico',
+        icon: <CIcon icon={freeSet.cilAddressBook} className="small-icon" />,
       },
       {
         _tag: 'CSidebarNavItem',

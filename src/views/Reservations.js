@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from 'moment';
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 import {
   CButton,
@@ -210,10 +211,10 @@ const Reservation = () => {
             <CCardHeader>
               <CButton
                 onClick={handleAddButton}
-                color="primary"
+                color="light"
                 disabled={modalUnitList.length === 0 || modalAreaList === 0}
-              >
-                <CIcon icon="cil-check" className="small-icon" /> Nova Reserva
+              >               
+                <CIcon icon={cilPlus}  className="small-icon"/> Nova Reserva
               </CButton>
             </CCardHeader>
 
@@ -240,7 +241,7 @@ const Reservation = () => {
                     <td>
                       <CButtonGroup>
                         <CButton
-                          color="info"
+                          color="light"
                           onClick={() => handleEditButton(item.id)}
                           disabled={modalUnitList.length === 0 || modalAreaList === 0}>
                           Editar

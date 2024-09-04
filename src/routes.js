@@ -12,7 +12,7 @@ const Logout = React.lazy(() => import('./views/logout'));
 const Wall = React.lazy(() => import('./views/Wall'));
 const News = React.lazy(() => import('./views/News'));
 const Benefits = React.lazy(() => import('./views/Benefits'));
-
+const ServiceProviders = React.lazy(() => import('./views/ServiceProviders'));
 const Classified = React.lazy(() => import('./views/Classified'));
 const Gallery = React.lazy(() => import('./views/Gallery'));
 const Videos = React.lazy(() => import('./views/Videos'));
@@ -57,6 +57,7 @@ const routes = [
   { path: '/wall', name: 'Wall', component: Wall },
   { path: '/noticias', name: 'Notícias', component: News },
   { path: '/beneficios', name: 'Benefícios', component: Benefits },
+  { path: '/prestadorServico', name: 'Prestadores de Serviços', component: ServiceProviders },
 
   { path: '/classificados', name: 'Classificados', component: Classified },
   { path: '/galeria', name: 'Galeria de Fotos', component: Gallery },

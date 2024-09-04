@@ -26,7 +26,7 @@ import CIcon from "@coreui/icons-react";
 
 import useApi from '../services/api'
 
-const Beneficios = () => {
+const ServicesProviders = () => {
     const api = useApi();
 
     const [loading, setLoading] = useState(true);
@@ -36,6 +36,7 @@ const Beneficios = () => {
     const [modalId, setModalId] = useState('');
     const [modalNameField, setModalNameField] = useState('');
     const [modalEmailField, setModalEmailField] = useState('');
+    const [modalServicesField, setModalServicesField] = useState('');
     const [modalPhoneField, setModalPhoneField] = useState('');
     const [modalDescriptionField, setModalDescriptionField] = useState('');
     const [modalAdressField, setModalAdressField] = useState('');
@@ -45,13 +46,17 @@ const Beneficios = () => {
     const [modalWebSiteField, setModalWebSiteField] = useState('');
     const [modalThumbField, setModalThumbField] = useState('');
     const [modalStatusField, setModalStatusField] = useState('');
+    const [modalIndicationField, setModalIndicationField] = useState('');
+    const [ModalIndicatioIdField, setModalIndicatioIdField] = useState('');
+
+
 
     const fields = [
         { label: 'Ativo', key: 'status', sorter: false, filter: false },
-        { label: 'Capa', key: 'thumb', sorter: false, filter: false },
+        { label: 'Foto', key: 'thumb', sorter: false, filter: false },
         { label: 'Título', key: 'name' },
         { label: 'Descrição', key: 'description' },
-        { label: 'Relatório', key: 'total_ratings', sorter: false, filter: false },
+        { label: 'Indicação', key: 'indicated_by_name' },
         { label: 'Data da publicação', key: 'created_at' },
         { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
     ]
@@ -62,7 +67,7 @@ const Beneficios = () => {
 
     const getList = async () => {
         setLoading(true);
-        const result = await api.getBenefits();
+        const result = await api.getServiceProviders();
         console.log(result);
         setLoading(false);
 
@@ -78,9 +83,12 @@ const Beneficios = () => {
     };
 
     const handleAddButton = () => {
+        const userId = localStorage.getItem('userId'); // Pega o ID do usuário do localStorage
+        const userName = localStorage.getItem('userName'); // Pega o ID do usuário do localStorage
         setModalId('');
         setModalNameField('');
         setModalEmailField('');
+        setModalServicesField('');
         setModalPhoneField('');
         setModalDescriptionField('');
         setModalAdressField('');
@@ -90,7 +98,8 @@ const Beneficios = () => {
         setModalWebSiteField('');
         setModalThumbField('');
         setModalStatusField('');
-
+        setModalIndicationField(userName); // Define o campo Indicação com o ID do usuário logado
+        setModalIndicatioIdField(userId);
         setShowModal(true);
     };
 
@@ -107,22 +116,26 @@ const Beneficios = () => {
                 name: modalNameField,
                 description: modalDescriptionField,
                 email: modalEmailField,
+                service_type: modalServicesField,
                 phone: modalPhoneField,
                 address: modalAdressField,
                 city: modalCityField,
                 state: modalStateField,
                 zipCode: modalZipCodeField,
-                website: modalWebSiteField
+                website: modalWebSiteField,
+                //indication_by: modalIndicationField
+
             };
 
             if (modalThumbField) {
                 data.thumb = modalThumbField;
             }
 
-            if (modalId === '') {
-                result = await api.addBenefit(data)
+            if (modalId == '') {
+                data.indication_by = ModalIndicatioIdField;
+                result = await api.addServiceProviders(data)
             } else {
-                result = await api.updateBenefit(modalId, data);
+                result = await api.updateServiceProviders(modalId, data);
             }
 
             setModalLoading(false)
@@ -144,6 +157,7 @@ const Beneficios = () => {
         setModalThumbField('');
         setModalNameField(list[index]['name']);
         setModalEmailField(list[index]['email']);
+        setModalServicesField(list[index]['service_type']);
         setModalPhoneField(list[index]['phone']);
         setModalDescriptionField(list[index]['description']);
         setModalAdressField(list[index]['address']);
@@ -151,12 +165,13 @@ const Beneficios = () => {
         setModalStateField(list[index]['state']);
         setModalZipCodeField(list[index]['zipCode']);
         setModalWebSiteField(list[index]['website']);
+        setModalIndicationField(list[index]['indicated_by_name']);
         setShowModal(true);
     }
 
     const handleDelButton = async (id) => {
         if (window.confirm('Tem certeza que deseja excluir?')) {
-            const result = await api.removeBenefit(id);
+            const result = await api.removeServiceProviders(id);
             if (result.error === '' || result.erro === undefined) {
                 getList();
             } else {
@@ -168,7 +183,7 @@ const Beneficios = () => {
     const handleSwitchClick = async (item) => {
         setLoading(true);
         const dataStatus = item.status == '1' ? '0' : '1'; // Troca o status entre 1 e 0
-        const result = await api.updateBenefitStatus(item.id, { 'status': dataStatus }); // Envie o novo status para a API
+        const result = await api.updateServiceProvidersStatus(item.id, { 'status': dataStatus }); // Envie o novo status para a API
         setLoading(false);
         if (result.error === '' || result.error === undefined) {
             getList();
@@ -180,6 +195,7 @@ const Beneficios = () => {
     const handleModalSwitchClick = () => {
         setModalStatusField(modalStatusField == '1' ? '0' : '1');
     }
+    
   
 
     Quill.register('modules/htmlEditButton', htmlEditButton);
@@ -215,11 +231,15 @@ const Beneficios = () => {
         <>
             <CRow>
                 <CCol>
-                    <h2>Convênios</h2>
+                    <h2>Prestadores de Serviços </h2>
                     <CCard>
                         <CCardHeader>
-                        <CButton onClick={handleAddButton} color="light" border="true">
-                        <CIcon icon={cilPlus}  className="small-icon"/> Novo Convênio
+                            <CButton
+                                onClick={handleAddButton}
+                                color=""
+                            >
+                                <CIcon icon={cilPlus}  className="small-icon"/>
+                                Novo Prestador de Serviço
                             </CButton>
                         </CCardHeader>
                         <CCardBody>
@@ -260,11 +280,6 @@ const Beneficios = () => {
                                         {item.description.length > 30 ? '...' : ''}
                                         </td>
                                     ),
-                                    'total_ratings': (item) => (
-                                        <td>
-                                            <tr>Curtidas: {item.total_ratings}</tr>
-                                        </td>
-                                    ),
                                     'created_at': (item) => (
                                         <td>
                                             {new Date(item.created_at).toLocaleDateString('pt-BR')}
@@ -273,12 +288,12 @@ const Beneficios = () => {
                                     'actions': (item, index) => (
                                         <td>
                                             <CButtonGroup>
-                                                <CButton color="light" onClick={() => handleEditButton(item.id)} >
+                                                <CButton color="" onClick={() => handleEditButton(item.id)} >
                                                 <CIcon icon={cilPencil}  className="small-icon"/>
    
                                                     Editar
                                                 </CButton>
-                                                <CButton color="light" onClick={() => handleDelButton(item.id)}>
+                                                <CButton color="" onClick={() => handleDelButton(item.id)}>
                                                 <CIcon icon={cilTrash}  className="small-icon"/>
                                                     Excluir</CButton>
                                             </CButtonGroup>
@@ -292,7 +307,7 @@ const Beneficios = () => {
             </CRow>
 
             <CModal show={showModal} onClose={handleCloseModal} size="lg" closeOnBackdrop={false}>
-                <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Novo'} Benefício </CModalHeader>
+                <CModalHeader closeButton>{modalId !== '' ? 'Editar' : 'Novo'} Prestador de Serviço </CModalHeader>
                 <CModalBody>
                     <CFormGroup>
                         <CLabel htmlFor="modal_status">Ativo</CLabel><br />
@@ -300,6 +315,18 @@ const Beneficios = () => {
                             color="success"
                             checked={modalStatusField == '0' ? '' : 'true'}
                             onChange={handleModalSwitchClick}
+                        />
+                    </CFormGroup>
+
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_title">Indicado Por</CLabel>
+                        <CInput
+                            type="text"
+                            id='modal_indication'
+                            name="indication"
+                            value={modalIndicationField}
+                            disabled
+                            //onChange={(e) => setModalIndicationField(e.target.value)}
                         />
                     </CFormGroup>
 
@@ -322,6 +349,17 @@ const Beneficios = () => {
                             name="email"
                             value={modalEmailField}
                             onChange={(e) => setModalEmailField(e.target.value)}
+                        />
+                    </CFormGroup>
+
+                    <CFormGroup>
+                        <CLabel htmlFor="modal_email">Área de Atuação</CLabel>
+                        <CInput
+                            type="text"
+                            id='modal_services'
+                            name="services"
+                            value={modalServicesField}
+                            onChange={(e) => setModalServicesField(e.target.value)}
                         />
                     </CFormGroup>
 
@@ -424,4 +462,4 @@ const Beneficios = () => {
 
 
 };
-export default Beneficios;
+export default ServicesProviders;

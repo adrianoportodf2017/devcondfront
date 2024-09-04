@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import InputMask from 'react-input-mask';
 
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 import {
     CButton,
@@ -258,8 +259,9 @@ const Galerias = () => {
 
                             <CButton
                                 onClick={handleAddButton}
-                                color="primary"                            >
-                                <CIcon icon="cil-check" className="small-icon" /> Nova Galeria
+                                color="light"                            >
+                                <CIcon icon={cilPlus}  className="small-icon"/>
+                                Nova Galeria
                             </CButton>
                         </CCardHeader>
 
@@ -328,11 +330,15 @@ const Galerias = () => {
 
                                     'actions': (item, index) => (
                                         <td>
-                                            <CButtonGroup>
-                                                <CButton color="info" onClick={() => handleEditButton(item.id)} >
+                                          <CButtonGroup>
+                                                <CButton color="light" onClick={() => handleEditButton(item.id)} >
+                                                <CIcon icon={cilPencil}  className="small-icon"/>
+   
                                                     Editar
                                                 </CButton>
-                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                                <CButton color="light" onClick={() => handleDelButton(item.id)}>
+                                                <CIcon icon={cilTrash}  className="small-icon"/>
+                                                    Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
                                     )

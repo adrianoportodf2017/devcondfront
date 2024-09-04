@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactQuill, { Quill } from 'react-quill';
 import { htmlEditButton } from 'quill-html-edit-button';
 import 'react-quill/dist/quill.snow.css';
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 import {
     CButton,
@@ -232,12 +233,8 @@ const Noticias = () => {
 
                     <CCard>
                         <CCardHeader>
-                            <CButton
-                                onClick={handleAddButton}
-                                color="primary"
-
-                            >
-                                <CIcon icon="cil-check" className="small-icon" /> Novo Noticia
+                        <CButton onClick={handleAddButton} color="light" border="true">
+                        <CIcon icon={cilPlus}  className="small-icon"/> Novo Noticia
                             </CButton>
                         </CCardHeader>
 
@@ -300,11 +297,15 @@ const Noticias = () => {
 
                                     'actions': (item, index) => (
                                         <td>
-                                            <CButtonGroup>
-                                                <CButton color="info" onClick={() => handleEditButton(item.id)} >
+                                             <CButtonGroup>
+                                                <CButton color="light" onClick={() => handleEditButton(item.id)} >
+                                                <CIcon icon={cilPencil}  className="small-icon"/>
+   
                                                     Editar
                                                 </CButton>
-                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                                <CButton color="light" onClick={() => handleDelButton(item.id)}>
+                                                <CIcon icon={cilTrash}  className="small-icon"/>
+                                                    Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
                                     )

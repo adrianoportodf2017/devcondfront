@@ -3,6 +3,7 @@ import './../scss/_custom.scss'; // Importe o arquivo CSS personalizado aqui
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import InputMask from 'react-input-mask';
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 
 import {
@@ -275,10 +276,8 @@ const Ocorrencia = () => {
                     <CCard>
                         <CCardHeader>
 
-                            <CButton
-                                onClick={handleAddButton}
-                                color="primary"                            >
-                                <CIcon icon="cil-check" className="small-icon" /> Registar Nova Ocorrência
+                        <CButton onClick={handleAddButton} color="light" border="true">
+                        <CIcon icon={cilPlus}  className="small-icon"/> Registar Nova Ocorrência
                             </CButton>
                         </CCardHeader>
 
@@ -358,10 +357,14 @@ const Ocorrencia = () => {
                                     'actions': (item, index) => (
                                         <td>
                                             <CButtonGroup>
-                                                <CButton color="info" onClick={() => handleEditButton(item.id)} >
+                                                <CButton color="light" onClick={() => handleEditButton(item.id)} >
+                                                <CIcon icon={cilPencil}  className="small-icon"/>
+   
                                                     Editar
                                                 </CButton>
-                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                                <CButton color="light" onClick={() => handleDelButton(item.id)}>
+                                                <CIcon icon={cilTrash}  className="small-icon"/>
+                                                    Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
                                     )

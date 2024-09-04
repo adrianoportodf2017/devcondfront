@@ -116,6 +116,10 @@ const Login = () => {
       if (result.error === '') {
         localStorage.setItem('token', result.token);
         localStorage.setItem('userId', result.user.id);
+        localStorage.setItem('userName', result.user.name);
+        localStorage.setItem('userEmail', result.user.email);
+
+
         history.push('/');
       } else {
         setError(result.error);

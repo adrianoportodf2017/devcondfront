@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash } from "@coreui/icons";
 
 import {
     CButton,
@@ -203,8 +204,9 @@ const Avisos = () => {
                     <h2>Avisos </h2>
                     <CCard>
                         <CCardHeader>
-                            <CButton onClick={handleAddButton} color="primary">
-                                <CIcon icon="cil-check" className="small-icon" /> Novo Aviso
+                            <CButton onClick={handleAddButton} color="light" border="true">
+                            <CIcon icon={cilPlus}  className="small-icon"/>
+                            Novo Aviso
                             </CButton>
                         </CCardHeader>
 
@@ -272,10 +274,14 @@ const Avisos = () => {
                                     'actions': (item, index) => (
                                         <td>
                                             <CButtonGroup>
-                                                <CButton color="info" onClick={() => handleEditButton(item.id)} >
+                                                <CButton color="light" onClick={() => handleEditButton(item.id)} >
+                                                <CIcon icon={cilPencil}  className="small-icon"/>
+   
                                                     Editar
                                                 </CButton>
-                                                <CButton color="danger" onClick={() => handleDelButton(item.id)}>Excluir</CButton>
+                                                <CButton color="light" onClick={() => handleDelButton(item.id)}>
+                                                <CIcon icon={cilTrash}  className="small-icon"/>
+                                                    Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
                                     )
