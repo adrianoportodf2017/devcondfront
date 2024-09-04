@@ -92,13 +92,13 @@ const loadMenu = async () => {
           }),
         ]
       },
-      {
+     /* {
         _tag: 'CSidebarNavItem',
         name: 'Visualizar Pastas',
         to: '/ListFolders/0',
         icon: <CIcon icon={freeSet.cilShortText} className="small-icon" />,
-      },
-     /* {
+      },*/
+      /*{
         _tag: 'CSidebarNavItem',
         name: 'Documentos',
         to: '/documents',
@@ -106,11 +106,17 @@ const loadMenu = async () => {
       },*/
       {
         _tag: 'CSidebarNavItem',
-        name: 'Avisos',
+        name: 'Comunicados',
         to: '/wall',
         icon: <CIcon icon="cil-warning" className="small-icon" />,
       },
       {
+        _tag: 'CSidebarNavItem',
+        name: 'Notícias',
+        to: '/news',
+        icon: <CIcon icon="cil-notes" className="small-icon" />,
+      },
+      /*{
         _tag: 'CSidebarNavDropdown',
         name: 'Notícias',
         route: '/news',
@@ -131,8 +137,14 @@ const loadMenu = async () => {
             className: 'ml-3',
           },
         ],
-      },
+      },*/
       {
+        _tag: 'CSidebarNavItem',
+        name: 'Classificados',
+        to: '/classifield',
+        icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
+            },
+     /* {
         _tag: 'CSidebarNavDropdown',
         name: 'Classificados',
         to: '/classifield',
@@ -153,7 +165,7 @@ const loadMenu = async () => {
             className: 'ml-3',
           },
         ],
-      },
+      },*/
       {
         _tag: 'CSidebarNavItem',
         name: 'Galeria de Fotos',
