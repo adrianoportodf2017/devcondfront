@@ -1509,6 +1509,59 @@ export default () => {
       return json;
     },
 
+      /********************************************************************************/
+    /******************************--__-- Enquetes --__--***********************************/
+    /********************************************************************************/
+    getPolls: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/polls`, {}, token);
+      return json;
+    },
+    addPoll: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/poll`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updatePoll: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/poll/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updatePollStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/poll/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removePoll: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/poll/${id}`, {}, token);
+      return json;
+    },
+
 
   }
 }
