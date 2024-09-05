@@ -193,7 +193,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavItem',
         name: 'Enquetes',
-        to: '/classifield',
+        to: '/enquetes',
         icon: <CIcon icon="cil-list" className="small-icon" />,
       },
       {
