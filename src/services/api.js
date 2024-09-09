@@ -71,6 +71,21 @@ export default () => {
       return json;
     },
 
+     /********************************************************************************/
+    /******************************--__--  Visitas --__--***********************************/
+    /********************************************************************************/  
+    getAccessStats: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/access-stats`, {}, token);
+      return json;
+    },
+    getLastOnlineUsers: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/online-users`, {}, token);
+      return json;
+    },
     /********************************************************************************/
     /******************************--__-- Pages/Paginas --__--***********************************/
     /********************************************************************************/

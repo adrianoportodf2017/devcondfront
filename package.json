@@ -71,6 +71,7 @@
     "react": "18.2.0",
     "react-app-polyfill": "^2.0.0",
     "react-bootstrap": "^2.0.0-rc.1",
+    "react-chartjs-2": "^5.2.0",
     "react-codemirror2": "^8.0.0",
     "react-dom": "18.2.0",
     "react-input-mask": "^2.0.4",
