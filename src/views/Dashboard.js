@@ -13,27 +13,21 @@ const Dashboard = () => {
   const [userCount, setUserCount] = useState(0);
   const [warningCount, setWarningCount] = useState(0);
   const [lastOnlineUsers, setLastOnlineUsers] = useState([]);
+  const [mostVisitedPages, setMostVisitedPages] = useState([]); // Novo estado para as páginas mais visitadas
 
   useEffect(() => {
-    const fetchData = async () => {
+    getList();
+  }, []);
+
+  const getList = async () => {
       const accessData = await api.getAccessStats();
-      const usersData = [];
-      const warningsData = [];
       const onlineUsersData = await api.getLastOnlineUsers();
-  
-      console.log('Access Data:', accessData);
-      console.log('Users Data:', usersData);
-      console.log('Warnings Data:', warningsData);
-      console.log('Online Users Data:', onlineUsersData);
-  
-      setAccessStats(accessData);
-      setUserCount(usersData.totalUsers || 0);
-      setWarningCount(warningsData.count || 0);
+        setAccessStats(accessData);
+      setUserCount(accessData.totalUsers || 0);
+      setWarningCount(accessData.totalWarnings || 0);
+      setMostVisitedPages(accessData.mostVisitedPages || []); // Definindo as páginas mais visitadas
       setLastOnlineUsers(onlineUsersData.list || []);
-    };
-  
-    fetchData();
-  }, [api]);
+  }
 
   // Configurações para o gráfico de acessos
   const accessChartData = {
@@ -49,15 +43,15 @@ const Dashboard = () => {
     ]
   };
 
-  // Configurações para o gráfico de novos usuários
-  const userChartData = {
-    labels: ['Usuários'],
+  // Configurações para o gráfico das páginas mais visitadas
+  const pagesChartData = {
+    labels: mostVisitedPages.map(page => page.url), // URLs das páginas
     datasets: [
       {
-        label: 'Quantidade de Usuários',
-        data: [userCount],
-        backgroundColor: 'rgba(153, 102, 255, 0.6)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        label: 'Páginas Mais Visitadas',
+        data: mostVisitedPages.map(page => page.visit_count), // Quantidade de visitas
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+        borderColor: 'rgba(255, 159, 64, 1)',
         borderWidth: 1,
       }
     ]
@@ -110,6 +104,9 @@ const Dashboard = () => {
                 {userCount} Usuários
               </h5>
               <p className="card-text">Total de usuários cadastrados</p>
+              <Link to='/users'>
+                <p className="card-text text-success">Clique AQUI</p>
+              </Link>
             </div>
           </div>
         </div>
@@ -144,12 +141,12 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Gráfico de Novos Usuários */}
+        {/* Gráfico de Páginas Mais Visitadas */}
         <div className="col-12 col-lg-6 mb-4">
           <div className="card">
-            <h5 className="card-header">Quantidade de Usuários</h5>
+            <h5 className="card-header">Páginas Mais Visitadas</h5>
             <div className="card-body">
-              <Line data={userChartData} />
+              <Bar data={pagesChartData} />
             </div>
           </div>
         </div>
