@@ -9,6 +9,8 @@ import {
   CSidebarNavItem,
   CSidebarNavDropdown,
 } from '@coreui/react';
+import CustomSidebarNav from '../components/SideBar'; // Importar o componente personalizado
+
 import loadMenu from './_nav';
 
 const TheSidebar = () => {
@@ -24,6 +26,8 @@ const TheSidebar = () => {
     fetchMenu();
   }, []);
 
+  
+
   return (
     <CSidebar
       show={show}
@@ -31,14 +35,8 @@ const TheSidebar = () => {
     >
       <CSidebarNav>
         <img src="/homelogo.png" className="mt-2 mb-3 ml-auto mr-auto" width="70%" />
-        <CCreateElement
-          items={menuItems}
-          components={{
-            CSidebarNavItem,
-            CSidebarNavTitle,
-            CSidebarNavDropdown,
-          }}
-        />
+     {/* Renderiza os itens de menu personalizados */}
+     <CustomSidebarNav items={menuItems} />
       </CSidebarNav>
       <CSidebarMinimizer className="c-d-md-down-none" />
     </CSidebar>

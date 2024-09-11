@@ -37,7 +37,7 @@ const generateMenu = (jsonData) => {
 
     if (item.children && item.children.length > 0) {
       menuItem._tag = 'CSidebarNavDropdown';
-      menuItem.route = '/Folders/' + item.id;
+      menuItem. to = '/Folders/' + item.id;
       menuItem._children = generateMenu(item.children);
 
       menuItem._children.forEach((child) => {
@@ -73,7 +73,7 @@ const loadMenu = async () => {
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Pastas',
-        route: '/Folders/1',
+         to: '',
         icon: <CIcon icon={freeSet.cilWindow} className="small-icon" />,
         _children: [
           {
@@ -144,28 +144,7 @@ const loadMenu = async () => {
         to: '/classificados',
         icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
             },
-     /* {
-        _tag: 'CSidebarNavDropdown',
-        name: 'Classificados',
-        to: '/classifield',
-        icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
-        _children: [
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Classificados',
-            to: '/classificados/',
-            icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
-            className: 'ml-3',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Categorias',
-            to: '/categorias/classificados',
-            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
-            className: 'ml-3',
-          },
-        ],
-      },*/
+   
       {
         _tag: 'CSidebarNavItem',
         name: 'Galeria de Fotos',
@@ -224,17 +203,69 @@ const loadMenu = async () => {
         to: '/users',
         icon: <CIcon icon="cil-people" className="small-icon" />,
       },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Unidades',
-        to: '/units',
-        icon: <CIcon icon="cil-home" className="small-icon" />,
-      },
-      {
+       {
         _tag: 'CSidebarNavItem',
         name: 'Áreas Comuns',
         to: '/commonareas',
         icon: <CIcon icon="cil-paperclip" className="small-icon" />,
+      },
+      {
+        _tag: 'CSidebarNavDropdown',
+        name: 'Unidades',
+        to: '/units',
+        icon: <CIcon icon="cil-home" className="small-icon" />,
+        _children: [
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Animais',
+            to: '/autorizacoes/',
+            icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
+            className: 'ml-3',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Empregados',
+            to: '/categorias/classificados',
+            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
+            className: 'ml-3',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Veículos',
+            to: '/categorias/classificados',
+            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
+            className: 'ml-3',
+          },
+        ],
+      },
+      {
+        _tag: 'CSidebarNavDropdown',
+        name: 'Portaria',
+        to: '/',
+        icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
+        _children: [
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Animais',
+            to: '/autorizacoes/',
+            icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
+            className: 'ml-3',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Empregados',
+            to: '/categorias/classificados',
+            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
+            className: 'ml-3',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Veículos',
+            to: '/categorias/classificados',
+            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
+            className: 'ml-3',
+          },
+        ],
       },
       {
         _tag: 'CSidebarNavTitle',
