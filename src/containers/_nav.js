@@ -210,63 +210,17 @@ const loadMenu = async () => {
         icon: <CIcon icon="cil-paperclip" className="small-icon" />,
       },
       {
-        _tag: 'CSidebarNavDropdown',
+        _tag: 'CSidebarNavItem',
         name: 'Unidades',
         to: '/units',
         icon: <CIcon icon="cil-home" className="small-icon" />,
-        _children: [
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Animais',
-            to: '/autorizacoes/',
-            icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
-            className: 'ml-3',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Empregados',
-            to: '/categorias/classificados',
-            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
-            className: 'ml-3',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Veículos',
-            to: '/categorias/classificados',
-            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
-            className: 'ml-3',
-          },
-        ],
-      },
+       },
       {
-        _tag: 'CSidebarNavDropdown',
+        _tag: 'CSidebarNavItem',
         name: 'Portaria',
-        to: '/',
-        icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
-        _children: [
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Animais',
-            to: '/autorizacoes/',
-            icon: <CIcon icon={freeSet.cilCart} className="small-icon" />,
-            className: 'ml-3',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Empregados',
-            to: '/categorias/classificados',
-            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
-            className: 'ml-3',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Veículos',
-            to: '/categorias/classificados',
-            icon: <CIcon icon={freeSet.cilLayers} className="small-icon" />,
-            className: 'ml-3',
-          },
-        ],
-      },
+        to: '/Guardhouse',
+        icon: <CIcon icon={freeSet.cilLockLocked } className="small-icon" />,
+       },
       {
         _tag: 'CSidebarNavTitle',
         _children: ['Configurações']
@@ -359,13 +313,7 @@ const loadMenu = async () => {
             icon: <CIcon icon={freeSet.cilCheck} className="small-icon" />,
             className: 'ml-3',
           },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Resetar Banco de Dados',
-            to: '/resetarbanco',
-            icon: <CIcon icon={freeSet.cilCheck} className="small-icon" />,
-            className: 'ml-3',
-          },
+         
         ],
       },
       {
