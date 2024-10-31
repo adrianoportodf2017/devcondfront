@@ -72,7 +72,7 @@ export default () => {
     },
 
      /********************************************************************************/
-    /******************************--__--  Visitas --__--***********************************/
+    /******************************--__--  Visitas do site--__--***********************************/
     /********************************************************************************/  
     getAccessStats: async () => {
       let token = localStorage.getItem('token');
@@ -1575,6 +1575,59 @@ export default () => {
       return json;
     },
 
+
+     /********************************************************************************/
+    /******************************--__-- Visitantes e Liberação de Acesso ao Condominio --__--***********************************/
+    /********************************************************************************/
+    getVisitantes: async () => {
+      let token = localStorage.getItem('token');
+      console.log(token);
+      let json = await request('get', `/visitantes`, {}, token);
+      return json;
+    },
+    addVisitante: async (data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      let req = await fetch(
+        `${baseUrl}/visitante`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateVisitante: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let formData = new FormData();
+      for (let i in data) {
+        formData.append(i, data[i])
+      }
+      console.log(formData);
+      let req = await fetch(
+        `${baseUrl}/visitante/${id}`,
+        {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+      let json = req.json();
+      return json;
+    },
+    updateVisitanteStatus: async (id, dataStatus) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/visitante/${id}/status`, dataStatus, token);
+      return json;
+    },
+    removeVisitante: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/visitante/${id}`, {}, token);
+      return json;
+    },
 
   }
 }

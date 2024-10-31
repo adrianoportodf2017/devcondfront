@@ -20,13 +20,13 @@ const Videos = React.lazy(() => import('./views/Videos'));
 const Warning = React.lazy(() => import('./views/Warning'));
 const LostAndFound = React.lazy(() => import('./views/LostAndFound'));
 
-
 const Category = React.lazy(() => import('./views/Category'));
 const Documents = React.lazy(() => import('./views/Documents'));
 const Reservations = React.lazy(() => import('./views/Reservations'));
 const Users = React.lazy(() => import('./views/Users'));
 const Profiles = React.lazy(() => import('./views/Profiles'));
-const Guardhouse = React.lazy(() => import('./views/Guardhouse'));
+const AcessosPortaria = React.lazy(() => import('./views/AcessosPortaria'));
+const Portaria = React.lazy(() => import('./views/Portaria'));
 
 const Commonareas= React.lazy(() => import('./views/Commonareas'));
 const Units= React.lazy(() => import('./views/Units'));
@@ -80,7 +80,9 @@ const routes = [
   { path: '/RecoveryPassword', name: 'RecoveryPassword', component: RecoveryPassword },
   { path: '/categorias/:type', name: 'Categorias', component: Category },
   { path: '/categorias/', name: 'Categorias', component: Category },
-  { path: '/Guardhouse/', name: 'Portaria', component: Guardhouse },
+  { path: '/portaria/', name: 'Portaria', component: Portaria },
+  { path: '/todos-acessos/', name: 'Portaria', component: AcessosPortaria },
+
 
 
   /***site */
