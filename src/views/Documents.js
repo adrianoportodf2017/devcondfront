@@ -34,6 +34,7 @@ export default () => {
   const [modalTitleField, setModalTitleField] = useState('');
   const [modalFileField, setModalFileField] = useState('');
   const [modalId, setModalId] = useState('');
+  const [modalCategoryId, setModalCategoryId] = useState(''); // New state for category
 
   const fields = [
     { label: 'Título', key: 'title' },
@@ -75,6 +76,7 @@ export default () => {
     setModalId(list[index]['id']);
     setModalTitleField(list[index]['title']);
     setModalFileField(list[index]['fileurl']);
+    setModalCategoryId(list[index]['category_id']); // Set category when editing
     setShowModal(true);
   }
 
@@ -98,25 +100,25 @@ export default () => {
     setModalId('');
     setModalTitleField('');
     setModalFileField('');
+    setModalCategoryId(''); // Reset category when creating new
     setShowModal(true);
   }
 
   const handleModalSave = async () => {
-
-    if (modalTitleField) {
+    if (modalTitleField && modalCategoryId) { // Added category validation
       setModalLoading(true);
       let result;
 
       let data = {
-        title: modalTitleField
+        title: modalTitleField,
+        category_id: modalCategoryId // Include category_id in the data
       };
 
       if (modalId === '') {
         if (modalFileField) {
           data.file = modalFileField;
           result = await api.addDocument(data);
-        }
-        else {
+        } else {
           alert('Selecione o arquivo');
           setModalLoading(false);
           return;
@@ -136,9 +138,8 @@ export default () => {
         alert(result.error);
       }
     } else {
-      alert('Preencha os campos!');
+      alert('Preencha todos os campos!');
     }
-
   }
 
   
@@ -204,9 +205,23 @@ export default () => {
               onChange={e => setModalTitleField(e.target.value)}
               disabled={modalLoading}
             />
-             <CSelect
-            
-            />
+            <CFormGroup>
+            <CLabel htmlFor="modal-category">Categoria</CLabel>
+            <CSelect
+              id="modal-category"
+              value={modalCategoryId}
+              onChange={e => setModalCategoryId(e.target.value)}
+              disabled={modalLoading}
+            >
+              <option value="">Selecione uma categoria</option>
+              {listCategory.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </CSelect>
+          </CFormGroup>
+            /** criar o select category id aqui pfv */
           </CFormGroup>
           <CFormGroup>
             <CLabel htmlFor="modal-file">Insira uma Imagem ou PDF</CLabel>
