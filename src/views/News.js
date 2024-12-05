@@ -22,7 +22,8 @@ import {
     CModalHeader,
     CRow,
     CSwitch,
-    CSelect
+    CSelect,
+    CTextarea
 
 } from '@coreui/react';
 import CIcon from "@coreui/icons-react";
@@ -191,21 +192,19 @@ const Noticias = () => {
 
     const modules = {
         toolbar: [
-            [{ header: '1' }, { header: '2' }],
-            ['bold', 'italic', 'underline', 'strike'], // Formatação de texto
-            [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
-            ['link', 'image'], // Inserção de links e imagens
-            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-
-
-            ['clean'], // Remoção de formatação
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            [{ align: [] }],
+            [{ color: [] }, { background: [] }],
+            ['clean']
         ],
+        keyboard: {
+            bindings: {
+                tab: false
+            }
+        },
         htmlEditButton: {
             debug: true, // logging, default:false
             msg: "Edit the content in HTML format", //Custom message to display in the editor, default: Edit HTML here, when you click "OK" the quill editor's contents will be replaced
@@ -217,12 +216,35 @@ const Noticias = () => {
             prependSelector: 'div#myelement', // a string used to select where you want to insert the overlayContainer, default: null (appends to body),
             editorModules: {} // The default mod
         }
-
     };
 
+    class CustomClipboard {
+        constructor(quill, options) {
+            this.quill = quill;
+            this.options = options;
+            
+            quill.root.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const text = e.clipboardData.getData('text/html') || e.clipboardData.getData('text');
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = text;
+                
+                // Preserve classes from elements
+                const elements = tempDiv.getElementsByTagName('*');
+                Array.from(elements).forEach(el => {
+                    if (el.classList.length > 0) {
+                        el.setAttribute('class', el.getAttribute('class'));
+                    }
+                });
+                
+                const cleanHtml = tempDiv.innerHTML;
+                const delta = quill.clipboard.convert(cleanHtml);
+                quill.setContents(delta, 'silent');
+            });
+        }
+    }
 
-
-
+    ReactQuill.Quill.register('modules/customClipboard', CustomClipboard, true);
 
 
     return (
@@ -233,8 +255,8 @@ const Noticias = () => {
 
                     <CCard>
                         <CCardHeader>
-                        <CButton onClick={handleAddButton} color="light" border="true">
-                        <CIcon icon={cilPlus}  className="small-icon"/> Novo Noticia
+                            <CButton onClick={handleAddButton} color="light" border="true">
+                                <CIcon icon={cilPlus} className="small-icon" /> Novo Noticia
                             </CButton>
                         </CCardHeader>
 
@@ -297,14 +319,14 @@ const Noticias = () => {
 
                                     'actions': (item, index) => (
                                         <td>
-                                             <CButtonGroup>
+                                            <CButtonGroup>
                                                 <CButton color="light" onClick={() => handleEditButton(item.id)} >
-                                                <CIcon icon={cilPencil}  className="small-icon"/>
-   
+                                                    <CIcon icon={cilPencil} className="small-icon" />
+
                                                     Editar
                                                 </CButton>
                                                 <CButton color="light" onClick={() => handleDelButton(item.id)}>
-                                                <CIcon icon={cilTrash}  className="small-icon"/>
+                                                    <CIcon icon={cilTrash} className="small-icon" />
                                                     Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
@@ -376,14 +398,15 @@ const Noticias = () => {
 
 
                     <CFormGroup className="mb-5">
-                        <CLabel htmlFor="modal_Content">Descrição</CLabel>
-                        <ReactQuill
-                            style={{ height: '300px' }} // Defina a altura desejada aqui
-                            theme="snow"
-                            modules={modules}
-                            value={modalContentField}
-                            onChange={(content) => setModalContentField(content)}
-                        />
+    <CLabel htmlFor="modal_Content">Descrição</CLabel>
+    <CTextarea
+        id="modal_Content"
+        name="content"
+        value={modalContentField}
+        onChange={(e) => setModalContentField(e.target.value)}
+        style={{ height: '300px', marginBottom: '50px' }}
+    />
+                       
                     </CFormGroup>
 
 
