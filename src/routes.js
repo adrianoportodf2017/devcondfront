@@ -31,7 +31,12 @@ const Portaria = React.lazy(() => import('./views/Portaria'));
 const Commonareas= React.lazy(() => import('./views/Commonareas'));
 const Units= React.lazy(() => import('./views/Units'));
 const RecoveryPassword = React.lazy(() => import('./views/RecoveryPassword'));
-
+const CompanySettings = React.lazy(() => import('./views/settings/CompanySettings'));
+const EmailSettings = React.lazy(() => import('./views/settings/EmailSettings'));
+const AppearanceSettings = React.lazy(() => import('./views/settings/AppearanceSettings'));
+const Integrations = React.lazy(() => import('./views/integrations/Integrations'));
+const WebhooksIntegration = React.lazy(() => import('./views/integrations/WebhooksIntegration'));
+const PaymentIntegration = React.lazy(() => import('./views/integrations/PaymentIntegration'));
 
 /***
  * 
@@ -92,7 +97,12 @@ const routes = [
   { path: '/paginas', name: 'Páginas', component: Paginas },
 
 
-
+  { path: '/settings/appearance', name: 'Aparência', component: AppearanceSettings },
+  { path: '/settings/company', name: 'Dados da Empresa', component: CompanySettings },
+  { path: '/settings/email', name: 'Email', component: EmailSettings },
+  { path: '/settings', name: 'Configurações', component: CompanySettings },
+  { path: '/integrations/payment', name: 'Pagamentos', component: PaymentIntegration },
+  { path: '/integrations/webhooks', name: 'Webhooks', component: WebhooksIntegration }
 
 
 

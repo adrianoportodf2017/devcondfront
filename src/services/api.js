@@ -1629,5 +1629,128 @@ export default () => {
       return json;
     },
 
+  /********************************************************************************/
+    /******************************--__-- Configurações --__--***********************************/
+    /********************************************************************************/
+
+    sendEmail: async (emailData) => {
+      let token = localStorage.getItem('token');
+
+      let req = await fetch(`${baseUrl}/sendmail`, { // Use o mesmo padrão de URL
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: emailData
+      });
+
+
+
+      let json = await req.json();
+      return json;
+    },
+
+    // Email Settings
+    getEmailSettings: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/settings/email', {}, token);
+      return json;
+    },
+
+    updateEmailSettings: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/settings/email', data, token);
+      return json;
+    },
+
+    testEmailSettings: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/settings/email/test', {}, token);
+      return json;
+    },
+
+    // Company Settings
+    getCompanySettings: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/settings/company', {}, token);
+      return json;
+    },
+
+    updateCompanySettings: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/settings/company', data, token);
+      return json;
+    },
+
+    // Appearance Settings
+    getAppearanceSettings: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/settings/appearance', {}, token);
+      return json;
+    },
+
+    updateAppearanceSettings: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/settings/appearance', data, token);
+      return json;
+    },
+
+    // Payment Settings 
+    getPaymentSettings: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/settings/payment', {}, token);
+      return json;
+    },
+
+    updateStripeSettings: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/settings/payment/stripe', data, token);
+      return json;
+    },
+
+    updateAssasSettings: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/settings/payment/assas', data, token);
+      return json;
+    },
+
+    testPaymentWebhook: async (gateway) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/settings/payment/${gateway}/test-webhook`, {}, token);
+      return json;
+    },
+
+    // Webhooks
+    getWebhooks: async () => {
+      let token = localStorage.getItem('token');
+      let json = await request('get', '/webhooks', {}, token);
+      return json;
+    },
+
+    createWebhook: async (data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', '/webhooks', data, token);
+      return json;
+    },
+
+    updateWebhook: async (id, data) => {
+      let token = localStorage.getItem('token');
+      let json = await request('put', `/webhooks/${id}`, data, token);
+      return json;
+    },
+
+    deleteWebhook: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('delete', `/webhooks/${id}`, {}, token);
+      return json;
+    },
+
+    testWebhook: async (id) => {
+      let token = localStorage.getItem('token');
+      let json = await request('post', `/webhooks/${id}/test`, {}, token);
+      return json;
+    }
   }
 }
+
+ 

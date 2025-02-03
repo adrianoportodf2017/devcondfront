@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useApi from '../services/api';
+import EmailComposerModal from './../components/EmailModal';
+import { Mail } from 'lucide-react';
 
 import {
   TheContent,
@@ -14,6 +16,9 @@ const TheLayout = () => {
   const api = useApi();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+   const [showModal, setShowModal] = useState(false);
+
+
 
   useEffect(()=>{
     const checkLogin = async () => {
@@ -48,6 +53,15 @@ const TheLayout = () => {
             </div>
             <TheFooter />
           </div>
+          <>
+          <button
+  onClick={() => setShowModal(true)}
+  className="floating-email-btn"
+>
+  <Mail className="w-6 h-6" />
+</button>
+<EmailComposerModal showModal={showModal} onClose={() => setShowModal(false)} />
+          </>
         </>
       }
     </div>

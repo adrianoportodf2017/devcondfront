@@ -14,3 +14,31 @@
   .file-column .align-bottom {
     margin-top: auto;
   }
+  .floating-email-btn{
+    background-color: red;
+}
+ 
+.floating-email-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 1rem;
+  border-radius: 9999px;
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  transition: all 0.2s;
+}
+
+.floating-email-btn:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.1);
+}
+
+.floating-email-btn:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+  ring-offset: 2px;
+}
+ 

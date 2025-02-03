@@ -1,113 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import useApi from '../services/api'
-import { useHistory } from 'react-router-dom'
-
-import {
-  CAlert,
-  CButton,
-  CCard,
-  CCardBody,
-  CCardGroup,
-  CCol,
-  CContainer,
-  CForm,
-  CInput,
-  CInputGroup,
-  CInputGroupPrepend,
-  CInputGroupText,
-  CRow,
-  CModal, // Importe CModal
-  CModalHeader, // Importe CModalHeader
-  CModalBody, // Importe CModalBody
-  CModalFooter, // Importe CModalFooter
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-
-
+import useApi from '../services/api';
+import { useHistory } from 'react-router-dom';
+import LoadSpinner from './../components/LoadingSpinner';
 
 const Login = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-    // Adicione esses estados para o modal
-    const [modalOpen, setModalOpen] = useState(false);
-    const [resetEmail, setResetEmail] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [appearanceSettings, setAppearanceSettings] = useState(null);
+  const [companySettings, setCompanySettings] = useState(null);
+  const [pageLoading, setPageLoading] = useState(true);
 
   const api = useApi();
   const history = useHistory();
-
   const location = useLocation();
-  const   {resetSuccess}  = location.state || {}; // Acessa resetSuccess do objeto de estado
+  const { resetSuccess } = location.state || {};
 
-  const handleLoginButton = async () => {
-    if (email && password) {
-      setLoading(true);
-      const result = await api.login(email, password);
-      setLoading(false);
-      if (result.error === "") {
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('userId', result.user.id);
-        alert(result.user.id);
-       // alert(result.token);
-      // history.push('/');
-      } else {
-        setError(result.error);
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const [appearanceResult, companyResult] = await Promise.all([
+          api.getAppearanceSettings(),
+          api.getCompanySettings()
+        ]);
+
+        if (!appearanceResult.error) {
+          setAppearanceSettings(appearanceResult.settings);
+        }
+        
+        if (!companyResult.error) {
+          setCompanySettings(companyResult.settings);
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      } finally {
+        setPageLoading(false);
       }
-    } else {
-      setError("Digite seus dados");
-    }
-  }
+    };
 
-  const openResetPasswordModal = () => {
-    setModalOpen(true);
-  };
-  
-  const handleResetPassword = async () => {
-
-    setLoading(true);
-
-    // Enviar a solicitação de recuperação de senha ao servidor usando o email em resetEmail
-    // Aqui você pode usar a API para enviar um email de recuperação de senha ou realizar qualquer ação necessária
-    // Certifique-se de que a API retorne uma resposta com uma propriedade 'error' que indique se houve um erro
-    
-    // Simulando uma resposta da API com base no valor de resetEmail
-    const result = await api.recoveryPassword(resetEmail);  
-    if (result.error === false) {
-      setModalOpen(false);
-      // Exiba uma mensagem de sucesso para o usuário, informando que as instruções foram enviadas para a caixa de entrada
-      setSuccess(result.message);
-      setError('');
-    } else {
-      // Exiba uma mensagem de erro para o usuário
-      setModalOpen(false);
-      setError(result.message);
-      setSuccess('');
-
-    }
-    setLoading(false);
-
-  };
-  
-  // Função de simulação de solicitação de redefinição de senha (substitua com a chamada real à sua API)
-  const simulateResetPasswordRequest = async (email) => {
-    // Aqui, você pode simular a chamada real à sua API para enviar um email de recuperação de senha
-    // e retornar uma resposta simulada com base no valor de resetEmail
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulando uma chamada assíncrona
-  
-    if (email === 'usuario@email.com') {
-      return { error: false };
-    } else {
-      return { error: true };
-    }
-  };
+    loadSettings();
+  }, []);
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Evita que o formulário seja enviado normalmente (evita atualização da página)
-
+    e.preventDefault();
     if (email && password) {
       setLoading(true);
       const result = await api.login(email, password);
@@ -118,8 +58,6 @@ const Login = () => {
         localStorage.setItem('userId', result.user.id);
         localStorage.setItem('userName', result.user.name);
         localStorage.setItem('userEmail', result.user.email);
-
-
         history.push('/');
       } else {
         setError(result.error);
@@ -131,98 +69,341 @@ const Login = () => {
     }
   };
 
+  const handleResetPassword = async () => {
+    setLoading(true);
+    const result = await api.recoveryPassword(resetEmail);
+    
+    if (result.error === false) {
+      setModalOpen(false);
+      setSuccess(result.message);
+      setError('');
+    } else {
+      setModalOpen(false);
+      setError(result.message);
+      setSuccess('');
+    }
+    setLoading(false);
+  };
+
+  if (pageLoading) {
+    return <LoadSpinner />;
+  }
+
+  const getThemeStyles = () => {
+    const { theme, primaryColor, buttonColor, grayColor } = appearanceSettings || {};
+    
+    return {
+      background: theme === 'dark' 
+        ? 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+        : 'linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%)',
+      color: theme === 'dark' ? '#ffffff' : '#1e293b',
+      buttonBackground: `linear-gradient(135deg, ${primaryColor} 0%, ${buttonColor} 100%)`,
+      inputBackground: theme === 'dark' ? '#2d2d2d' : '#f8fafc',
+      inputColor: theme === 'dark' ? '#ffffff' : '#1e293b',
+      cardBackground: theme === 'dark' ? '#363636' : 'white',
+      grayText: grayColor || '#64748b'
+    };
+  };
+
+  const themeStyles = getThemeStyles();
+
   return (
-    <div className="c-app c-default-layout flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md="8">
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
-                <CForm onSubmit={handleLogin}>
-                    <h1>Login</h1>
-                    <p className="text-muted">Digite seus dados de acesso</p>
-                  {error !== '' &&
-                  <CAlert color='danger'>{error}</CAlert>
-                  }
-                  {success !== '' &&
-                  <CAlert color='success'>{success}</CAlert>
-                  }
-                  {/* Exibir a mensagem de sucesso se estiver presente */}
-                  {resetSuccess && <CAlert color='success'>{resetSuccess}</CAlert>}
+    <div className="login-container">
+      <div className="login-card">
+        <img 
+          src={appearanceSettings?.customLogo || "/homelogo.png"}
+          alt="Logo" 
+          className="logo"
+        />
+        
+        <form onSubmit={handleLogin} className="login-form">
+          {error && <div className="alert alert-error">{error}</div>}
+          {success && <div className="alert alert-success">{success}</div>}
+          {resetSuccess && <div className="alert alert-success">{resetSuccess}</div>}
 
-                    <CInputGroup className="mb-3">
-                      <CInputGroupPrepend>
-                        <CInputGroupText>
-                          <CIcon name="cil-user" />
-                        </CInputGroupText>
-                      </CInputGroupPrepend>
-                      <CInput type="text" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)}   disabled={loading}    />
-                    </CInputGroup>
+          <div className="input-group">
+            <div className="icon-wrapper">
+              <i className="fas fa-envelope"></i>
+            </div>
+            <input
+              type="email"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+            />
+          </div>
 
-                    <CInputGroup className="mb-4">
-                      <CInputGroupPrepend>
-                        <CInputGroupText>
-                          <CIcon name="cil-lock-locked" />
-                        </CInputGroupText>
-                      </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)}   disabled={loading}    />
-                    </CInputGroup>
+          <div className="input-group">
+            <div className="icon-wrapper">
+              <i className="fas fa-lock"></i>
+            </div>
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+            />
+          </div>
 
-                    <CRow>
-                      <CCol xs="6">
-                      <CButton
-                        type="submit"
-                        className="btn btn-primary px-4"
-                        disabled={loading}
-                      >
-                        {loading ? 'Carregando' : 'Entrar'}
-                      </CButton>
-                      </CCol>
-                    </CRow>
-                    <Link to="#" onClick={openResetPasswordModal}>Esqueceu a senha?</Link>
+          <button 
+            type="submit" 
+            className="submit-button"
+            disabled={loading}
+          >
+            {loading ? 'Carregando...' : 'Entrar'}
+          </button>
 
+          <div className="reset-password">
+            <span onClick={() => setModalOpen(true)}>
+              Esqueceu a senha?
+            </span>
+          </div>
+        </form>
 
-                  </CForm>
-                </CCardBody>
-              </CCard>
-              <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
-                  <div>
-                    <h2>SuperCond</h2>
-                    <p>Gerenciador de Condôminios.</p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>Feitor por: agenciatecnet.com.br</CButton>
-                    </Link>
-                  </div>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
-          </CCol>
-        </CRow>
-      </CContainer>
-      <CModal show={modalOpen} onClose={() => setModalOpen(false)}>
-  <CModalHeader closeButton>Recuperar Senha</CModalHeader>
-  <CModalBody>
-    <p>Informe seu endereço de e-mail para receber instruções de recuperação de senha.</p>
-    <CInput
-      type="email"
-      placeholder="E-mail"
-      value={resetEmail}
-      onChange={(e) => setResetEmail(e.target.value)}
-    />
-  </CModalBody>
-  <CModalFooter>
-  <CButton  color="primary" disabled={loading}  onClick={handleResetPassword}>                       
-    {loading ? 'Carregando' : 'Recuperar Senha'}
- </CButton>
-    <CButton color="secondary" onClick={() => setModalOpen(false)}>
-      Cancelar
-    </CButton>
-  </CModalFooter>
-</CModal>
+        <div className="footer">
+          <p>{companySettings?.company_name || ' '}</p>
+          <p> {companySettings?.cnpj || ' '}</p>
+          {companySettings?.address && <p>{companySettings.address}</p>}
+        </div>
+      </div>
+
+      {modalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Recuperar Senha</h3>
+            <p>Informe seu endereço de e-mail para receber instruções de recuperação de senha.</p>
+            
+            <div className="input-group">
+              <div className="icon-wrapper">
+                <i className="fas fa-envelope"></i>
+              </div>
+              <input
+                type="email"
+                placeholder="E-mail"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="modal-actions">
+              <button
+                onClick={handleResetPassword}
+                className="submit-button"
+                disabled={loading}
+              >
+                {loading ? 'Enviando...' : 'Recuperar Senha'}
+              </button>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="cancel-button"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        .login-container {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: ${themeStyles.background};
+          padding: 20px;
+          color: ${themeStyles.color};
+        }
+
+        .login-card {
+          background: ${themeStyles.cardBackground};
+          border-radius: 20px;
+          padding: 40px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+          width: 100%;
+          max-width: 500px;
+          text-align: center;
+        }
+
+        .logo {
+          max-width: 200px;
+          margin-bottom: 40px;
+        }
+
+        .login-form {
+          margin: 20px 0;
+        }
+
+        .alert {
+          padding: 12px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          font-size: 14px;
+        }
+
+        .alert-error {
+          background-color: ${appearanceSettings?.accentColor || '#fee2e2'};
+          color: #ffffff;
+        }
+
+        .alert-success {
+          background-color: #dcfce7;
+          color: #16a34a;
+        }
+
+        .input-group {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+          background: ${themeStyles.inputBackground};
+          border-radius: 12px;
+          padding: 5px;
+          border: 2px solid transparent;
+          transition: all 0.3s ease;
+        }
+
+        .input-group:focus-within {
+          border-color: ${appearanceSettings?.primaryColor || '#1e3a8a'};
+        }
+
+        .icon-wrapper {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: ${appearanceSettings?.primaryColor || '#1e3a8a'};
+        }
+
+        input {
+          flex: 1;
+          border: none;
+          background: transparent;
+          padding: 12px;
+          font-size: 16px;
+          color: ${themeStyles.inputColor};
+          outline: none;
+        }
+
+        input::placeholder {
+          color: ${themeStyles.grayText};
+        }
+
+        .submit-button {
+          width: 100%;
+          padding: 16px;
+          background: ${themeStyles.buttonBackground};
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px ${appearanceSettings?.primaryColor}33;
+        }
+
+        .submit-button:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .reset-password {
+          margin-top: 20px;
+        }
+
+        .reset-password span {
+          color: ${appearanceSettings?.primaryColor || '#2563eb'};
+          cursor: pointer;
+          font-size: 14px;
+          transition: color 0.3s ease;
+        }
+
+        .reset-password span:hover {
+          color: ${appearanceSettings?.buttonColor || '#1e3a8a'};
+          text-decoration: underline;
+        }
+
+        .footer {
+          margin-top: 40px;
+          color: ${themeStyles.grayText};
+          font-size: 14px;
+        }
+
+        .footer p {
+          margin: 5px 0;
+        }
+
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+        }
+
+        .modal-content {
+          background: ${themeStyles.cardBackground};
+          padding: 30px;
+          border-radius: 20px;
+          width: 90%;
+          max-width: 400px;
+          color: ${themeStyles.color};
+        }
+
+        .modal-content h3 {
+          margin: 0 0 20px;
+          color: ${themeStyles.color};
+        }
+
+        .modal-content p {
+          color: ${themeStyles.grayText};
+          margin-bottom: 20px;
+        }
+
+        .modal-actions {
+          display: flex;
+          gap: 10px;
+          margin-top: 30px;
+        }
+
+        .cancel-button {
+          flex: 1;
+          padding: 16px;
+          background: ${themeStyles.inputBackground};
+          color: ${themeStyles.grayText};
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .cancel-button:hover {
+          background: ${appearanceSettings?.grayColor}33;
+        }
+
+        @media (max-width: 640px) {
+          .login-card {
+            padding: 30px 20px;
+          }
+        }
+      `}</style>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

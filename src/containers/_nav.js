@@ -227,72 +227,50 @@ const loadMenu = async () => {
       },
       {
         _tag: 'CSidebarNavDropdown',
-        name: 'Site',
-        to: '',
-        icon: <CIcon icon={freeSet.cilBrowser} className="small-icon" />,
-        _children: [
+        name: 'Configurações',
+        icon: <CIcon icon={freeSet.cilSettings} className="small-icon" />,
+        to: '/settings/company',
+         _children: [
           {
             _tag: 'CSidebarNavItem',
-            name: 'Páginas',
-            to: '/paginas',
-            icon: <CIcon icon={freeSet.cilFindInPage} className="small-icon" />,
-          },
-          {
+            name: 'Dados da Empresa',
+            to: '/settings/company',
+           },
+           {
             _tag: 'CSidebarNavItem',
-            name: 'Slider',
-            to: '/slider',
-            icon: <CIcon icon={freeSet.cilLibrary} className="small-icon" />,
-          },
-          {
+            name: 'Aparência',
+            to: '/settings/appearance',
+           },
+           {
             _tag: 'CSidebarNavItem',
-            name: 'Dados de Contatos',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilPhone} className="small-icon" />,
-          },
-          {
+            name: 'Email',
+            to: '/settings/email',
+           },
+
+           {
             _tag: 'CSidebarNavItem',
-            name: 'Serviços',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilBriefcase} className="small-icon" />,
-          },
-          {
+            name: 'Plans',
+            to: '/plans',
+           },   
+           {
             _tag: 'CSidebarNavItem',
-            name: 'Time',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilGroup} className="small-icon" />,
-          },
-          {
+            name: 'Integrações de Pagamento -  em construção',
+            to: '/integrations/payment',
+           },
+           
+  
+           {
             _tag: 'CSidebarNavItem',
-            name: 'Sobre Nos',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilAddressBook} className="small-icon" />,
-          },
-          {
+            name: 'WebHooks em construção',
+            to: '/integrations/webhooks',
+           },
+           {
             _tag: 'CSidebarNavItem',
-            name: 'Acesso Rápido',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilTouchApp} className="small-icon" />,
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Rodapé',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilInfo} className="small-icon" />,
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Utilidades',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilTags} className="small-icon" />,
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Configurações do Site',
-            to: '/contatos',
-            icon: <CIcon icon={freeSet.cilPhone} className="small-icon" />,
-          },
+            name: 'Permissões em construção',
+            to: '/profiles',
+           },
         ],
-      },
+      }, 
       {
         _tag: 'CSidebarNavDropdown',
         name: 'Sistema',
