@@ -21,6 +21,8 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cibAtom, cilArrowCircleLeft, cilFolder, cilPencil, cilPlus, cilSave, cilTrash, cilCloudDownload } from "@coreui/icons";
+import { Eye, Trash2, Search, Download, Edit } from 'lucide-react';
+import DocumentosTable from './../components/DocumentosTable';
 import useApi from '../services/api';
 
 export default () => {
@@ -157,35 +159,13 @@ export default () => {
               </CButton>
             </CCardHeader>
             <CCardBody>
-              <CDataTable
-                items={list}
-                fields={fields}
-                loading={loading}
-                noItemsViewSlot=" "
-                hover
-                striped
-                bordered
-                pagination
-                itemsPerPage={5}
-                scopedSlots={{
-                  'actions': (item, index) => (
-                    <td>
-                      <CButtonGroup>
-                        <CButton onClick={() => handleDownloadButton(index)} style={{ display: 'flex', alignItems: 'center' }}>
-                          <CIcon icon={cilCloudDownload} className="small-icon me-2" />
-                        </CButton>
-                        <CButton  onClick={() => handleEditButton(index)} style={{ display: 'flex', alignItems: 'center' }}>
-                          <CIcon icon={cilPencil} className="small-icon me-2" />
-                        </CButton>
-                        <CButton  onClick={() => handleRemoveButton(index)} style={{ display: 'flex', alignItems: 'center' }}>
-                          <CIcon icon={cilTrash} className="small-icon me-2" />
-                        </CButton>
-                      </CButtonGroup>
-                    </td>
-
-                  )
-                }}
-              />
+            <DocumentosTable
+  list={list}
+  loading={loading}
+  onEdit={handleEditButton}  
+  onRemove={handleRemoveButton}
+  onDownload={handleDownloadButton}
+/>
             </CCardBody>
           </CCard>
         </CCol>

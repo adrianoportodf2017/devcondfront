@@ -386,13 +386,16 @@ const Avisos = () => {
                     </CFormGroup>
                     <CFormGroup className="mb-5">
                         <CLabel htmlFor="modal_Content">Descrição</CLabel>
-                        <ReactQuill
-                            style={{ height: '300px' }} // Defina a altura desejada aqui
-                            theme="snow"
-                            modules={modules}
-                            value={modalContentField}
-                            onChange={(content) => setModalContentField(content)}
-                        />
+                        <CFormGroup className="mb-5">
+    <CLabel htmlFor="modal_Content">Descrição</CLabel>
+    <textarea
+        id="modal_Content"
+        className="form-control"
+        style={{ height: '250px' }} // Defina a altura desejada aqui
+        value={modalContentField}
+        onChange={(e) => setModalContentField(e.target.value)}
+    />
+</CFormGroup>
                     </CFormGroup>
 
 

@@ -294,10 +294,12 @@ const Noticias = () => {
                                         </td>
                                     ),
 
-                                    'content': (item) => (
+                                    'content': (item) => (  // Corrigido: adicionado a chave 'content' e a função
                                         <td>
-                                            {item.content.replace(/<[^>]*>/g, '').substring(0, 30)}
-                                            {item.content.length > 30 ? '...' : ''}
+                                            {item.content 
+                                                ? item.content.replace(/<[^>]*>/g, '').substring(0, 30) + 
+                                                  (item.content.length > 30 ? '...' : '')
+                                                : 'N/A'}
                                         </td>
                                     ),
 

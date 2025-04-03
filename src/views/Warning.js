@@ -276,8 +276,8 @@ const Ocorrencia = () => {
                     <CCard>
                         <CCardHeader>
 
-                        <CButton onClick={handleAddButton} color="light" border="true">
-                        <CIcon icon={cilPlus}  className="small-icon"/> Registar Nova Ocorrência
+                            <CButton onClick={handleAddButton} color="light" border="true">
+                                <CIcon icon={cilPlus} className="small-icon" /> Registar Nova Ocorrência
                             </CButton>
                         </CCardHeader>
 
@@ -358,12 +358,12 @@ const Ocorrencia = () => {
                                         <td>
                                             <CButtonGroup>
                                                 <CButton color="light" onClick={() => handleEditButton(item.id)} >
-                                                <CIcon icon={cilPencil}  className="small-icon"/>
-   
+                                                    <CIcon icon={cilPencil} className="small-icon" />
+
                                                     Editar
                                                 </CButton>
                                                 <CButton color="light" onClick={() => handleDelButton(item.id)}>
-                                                <CIcon icon={cilTrash}  className="small-icon"/>
+                                                    <CIcon icon={cilTrash} className="small-icon" />
                                                     Excluir</CButton>
                                             </CButtonGroup>
                                         </td>
@@ -486,13 +486,16 @@ const Ocorrencia = () => {
 
                     <CFormGroup className="mb-5">
                         <CLabel htmlFor="modal_Content">Descrição</CLabel>
-                        <ReactQuill
-                            style={{ height: '250px' }} // Defina a altura desejada aqui
-                            theme="snow"
-                            modules={modules}
-                            value={modalContentField}
-                            onChange={(content) => setModalContentField(content)}
-                        />
+                        <CFormGroup className="mb-5">
+                            <CLabel htmlFor="modal_Content">Descrição</CLabel>
+                            <textarea
+                                id="modal_Content"
+                                className="form-control"
+                                style={{ height: '250px' }} // Defina a altura desejada aqui
+                                value={modalContentField}
+                                onChange={(e) => setModalContentField(e.target.value)}
+                            />
+                        </CFormGroup>
                     </CFormGroup>
 
 
