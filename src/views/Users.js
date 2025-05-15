@@ -29,8 +29,6 @@ const fields = [
   { label: 'CPF', key: 'cpf' },
   { label: 'Perfil', key: 'profile_name' },
   { label: 'EMAIL', key: 'email' },
-  { label: 'CELULAR', key: 'phone' },
-
   { label: 'Ações', key: 'actions', _style: { width: '1px' }, sorter: false, filter: false }
 ];
 
